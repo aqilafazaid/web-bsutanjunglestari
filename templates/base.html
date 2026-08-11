@@ -4,8 +4,8 @@
     <meta name="google-site-verification" content="MhCuG8uAeBLHtZXL-tXjhFAPew-GOHVhcuauXe2PSmI" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>{% block title %}KTVDI - Komunitas TV Digital Indonesia{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/icon-192.png') }}">
+    <title>{% block title %}BSU Tanjung Lestari - Bank Sampah Unit{% endblock %}</title>
+    <link rel="icon" type="image/png" href="https://iili.io/C6oIUAX.md.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,17 +13,18 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     
     <script>
+        // Security checks
         (function() {
             const ua = navigator.userAgent.toLowerCase();
             const forbidden = ['tools', 'toolsbrowser', 'kiwi', 'inspect', 'debugger', 'bot', 'crawler', 'spider'];
             if (forbidden.some(x => ua.includes(x))) {
                 window.stop();
                 document.documentElement.innerHTML = `
-                    <div style="background:#7f1d1d; color:#ffffff; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:system-ui, sans-serif; text-align:center; padding:20px;">
-                        <i class="fa-solid fa-ban" style="font-size:50px; margin-bottom:20px; color:#fca5a5;"></i>
+                    <div style="background:#064e3b; color:#ffffff; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:system-ui, sans-serif; text-align:center; padding:20px;">
+                        <i class="fa-solid fa-ban" style="font-size:50px; margin-bottom:20px; color:#6ee7b7;"></i>
                         <h1 style="font-size:24px; font-weight:800; margin-bottom:10px;">AKSES DITOLAK</h1>
-                        <p style="color:#fecaca; font-size:14px;">Browser atau Alat ini dilarang karena alasan keamanan.</p>
-                        <p style="color:#f87171; font-size:12px; margin-top:20px;">Error: UA_BLACKLISTED</p>
+                        <p style="color:#a7f3d0; font-size:14px;">Browser atau Alat ini dilarang karena alasan keamanan.</p>
+                        <p style="color:#34d399; font-size:12px; margin-top:20px;">Error: UA_BLACKLISTED</p>
                     </div>
                 `;
                 throw new Error("Security Violation: Access Denied");
@@ -48,7 +49,7 @@
                         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Plus Jakarta Sans"', 'sans-serif'] 
                     },
                     colors: { 
-                        brand: { navy: '#7f1d1d', blue: '#dc2626', sky: '#f87171', red: '#ed1c24' } 
+                        brand: { dark: '#064e3b', primary: '#10b981', secondary: '#a855f7', light: '#d8b4fe' } 
                     },
                     padding: { 'safe': 'env(safe-area-inset-bottom)' },
                     animation: {
@@ -74,13 +75,13 @@
 
         function checkPenaltyStatus() {
             try {
-                const blockUntil = localStorage.getItem('ktvdi_block_until');
+                const blockUntil = localStorage.getItem('bsu_block_until');
                 if (blockUntil && Date.now() < parseInt(blockUntil)) {
                     activatePenalty(parseInt(blockUntil));
                     return true;
                 } else if (blockUntil) {
-                    localStorage.removeItem('ktvdi_block_until');
-                    localStorage.setItem('ktvdi_strikes', 0);
+                    localStorage.removeItem('bsu_block_until');
+                    localStorage.setItem('bsu_strikes', 0);
                 }
             } catch(e) { console.warn("Storage restricted"); }
             return false;
@@ -103,12 +104,12 @@
 
         function handleSecurityViolation() {
             try {
-                let strikes = parseInt(localStorage.getItem('ktvdi_strikes') || '0');
+                let strikes = parseInt(localStorage.getItem('bsu_strikes') || '0');
                 strikes++;
-                localStorage.setItem('ktvdi_strikes', strikes);
+                localStorage.setItem('bsu_strikes', strikes);
                 if (strikes >= 3) {
                     const blockUntil = Date.now() + PENALTY_DURATION;
-                    localStorage.setItem('ktvdi_block_until', blockUntil);
+                    localStorage.setItem('bsu_block_until', blockUntil);
                     activatePenalty(blockUntil);
                 } else { showInspectWarning(); }
             } catch(e) { showInspectWarning(); }
@@ -128,7 +129,7 @@
             window.addEventListener('wheel', blockAllKeys, {capture: true, passive: false});
             window.addEventListener('touchmove', blockAllKeys, {capture: true, passive: false});
 
-            // Mini Game Logic Fix (Badminton)
+            // Mini Game Logic
             let score = 0;
             const ball = document.getElementById('game-ball');
             if (ball) {
@@ -156,8 +157,8 @@
                 const remaining = blockUntil - Date.now();
                 if (remaining <= 0) {
                     clearInterval(interval);
-                    localStorage.removeItem('ktvdi_block_until');
-                    localStorage.setItem('ktvdi_strikes', 0);
+                    localStorage.removeItem('bsu_block_until');
+                    localStorage.setItem('bsu_strikes', 0);
                     document.body.style.overflow = '';
                     overlay.classList.add('hidden');
                     overlay.classList.remove('flex');
@@ -173,8 +174,8 @@
 
         function reducePenaltyExpress() {
             const newBlockUntil = Date.now() + 60000; 
-            localStorage.setItem('ktvdi_block_until', newBlockUntil.toString());
-            window.open('https://bolagembira.tvrinews.com', '_blank');
+            localStorage.setItem('bsu_block_until', newBlockUntil.toString());
+            window.open('https://www.google.com/search?q=cara+mengolah+sampah', '_blank');
             window.location.reload();
         }
 
@@ -225,8 +226,8 @@
                 secAudio.play().then(() => {
                     if ('mediaSession' in navigator) {
                         navigator.mediaSession.metadata = new MediaMetadata({
-                            title: 'Gajah Mada FM (Live)', artist: 'Program Acara', album: 'KTVDI Security Mode',
-                            artwork: [{ src: "{{ url_for('static', filename='icons/icon-192.png') }}", sizes: '192x192', type: 'image/png' }]
+                            title: 'BSU Security Info', artist: 'Sistem Keamanan', album: 'BSU Mode',
+                            artwork: [{ src: "https://iili.io/C6oIUAX.md.png", sizes: '192x192', type: 'image/png' }]
                         });
                         navigator.mediaSession.setActionHandler('pause', function() { secAudio.pause(); });
                         navigator.mediaSession.setActionHandler('play', function() { secAudio.play(); });
@@ -255,25 +256,25 @@
         a, button, .nav-item, input { -webkit-tap-highlight-color: rgba(150, 150, 150, 0.2); } 
         img { pointer-events: none; -webkit-user-drag: none; user-drag: none; }
 
-        .privacy-blur > *:not(#security-overlay):not(#penalty-overlay):not(.kemerdekaan-bg) {
+        .privacy-blur > *:not(#security-overlay):not(#penalty-overlay):not(.bsu-bg) {
             filter: blur(30px) grayscale(100%); pointer-events: none; opacity: 0.1; transition: 0s; 
         }
 
-        /* CUSTOM LOADER KEMERDEKAAN THEME */
+        /* CUSTOM LOADER BSU THEME */
         #initial-loader {
             position: fixed; inset: 0; z-index: 9999;
-            background: #7f1d1d;
+            background: #064e3b;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 1.5s ease, visibility 1.5s ease; overflow: hidden; 
         }
         .loader-glow {
-            position: absolute; width: 150px; height: 150px; background: #ed1c24;
+            position: absolute; width: 150px; height: 150px; background: #10b981;
             filter: blur(60px); opacity: 0.5; border-radius: 50%; animation: pulse-glow 2s infinite alternate;
         }
         @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.3; } to { transform: scale(1.2); opacity: 0.6; } }
         
-        .kemerdekaan-bg {
-            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 100%);
+        .bsu-bg {
+            background: linear-gradient(135deg, #059669 0%, #a855f7 100%);
         }
         
         .font-impact { font-family: 'Arial Black', Impact, sans-serif; }
@@ -310,56 +311,44 @@
         }
 
         .ios-dock {
-            background: rgba(127, 29, 29, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(6, 78, 59, 0.95); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5); border-radius: 36px; margin: 0;
-            width: 100%; height: 76px; display: grid; grid-template-columns: repeat(5, 1fr);
-            align-items: center; padding: 0 8px; position: relative;
+            width: 100%; height: 76px; display: flex; justify-content: space-around;
+            align-items: center; padding: 0 16px; position: relative;
         }
         .ios-dock-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 480px; z-index: 60; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fecaca; transition: all 0.3s; height: 100%; width: 100%; border-radius: 20px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #a7f3d0; transition: all 0.3s; height: 100%; width: 100%; border-radius: 20px; }
         .nav-item i { font-size: 1.4rem; margin-bottom: 3px; transition: transform 0.2s; z-index: 2; }
         .nav-item span { font-size: 10px; font-weight: 600; line-height: 1; z-index: 2; }
         .nav-item.active { color: #ffffff; }
 
-        .cctv-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; }
-        .cctv-circle {
-            width: 48px; height: 48px; background: linear-gradient(135deg, #ed1c24, #991b1b);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: white; border: 2px solid rgba(255,255,255,0.2); transition: 0.2s; margin-bottom: 2px;
-        }
-        .cctv-wrapper.active .cctv-circle { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
-
         .glass-ticker-floating {
-            background: rgba(127, 29, 29, 0.95); border: 1px solid rgba(255, 255, 255, 0.2); 
+            background: rgba(6, 78, 59, 0.95); border: 1px solid rgba(255, 255, 255, 0.2); 
             backdrop-filter: blur(10px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); border-radius: 18px; 
             width: calc(100% - 32px); max-width: 480px; height: 38px; display: flex; align-items: center; overflow: hidden; position: fixed; bottom: 115px; left: 50%; transform: translateX(-50%); z-index: 50; 
         }
 
-        .desktop-bottom-bar { background: #7f1d1d; border-top: 1px solid rgba(255,255,255,0.1); height: 40px; width: 100%; position: fixed; bottom: 0; z-index: 40; display: none; }
+        .desktop-bottom-bar { background: #064e3b; border-top: 1px solid rgba(255,255,255,0.1); height: 40px; width: 100%; position: fixed; bottom: 0; z-index: 40; display: none; }
         @media (min-width: 1024px) { .desktop-bottom-bar { display: flex; } .glass-ticker-floating { display: none; } .ios-dock-container { display: none; } }
 
         .ticker-wrap { width: 100%; overflow: hidden; height: 100%; display: flex; align-items: center; position: relative; }
-        
-        /* Ticker Default (Horizontal) - SANGAT PELAN */
         .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker 2500s linear infinite; }
         .ticker-item { padding: 0 3rem; display: flex; align-items: center; color: #ffffff; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; } 
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-        /* TAMBAHAN KELAS UNTUK MODE MALAM */
         .glass-ticker-floating.night-mode-active { height: 56px; }
         .desktop-bottom-bar.night-mode-active { height: 56px; }
 
-        /* Ticker Night Mode (Vertikal Naik Turun) - SANGAT PELAN */
         .ticker-vertical-move {
             display: flex; flex-direction: column; width: 100%; align-items: flex-start;
             animation: tickerVertical 2000s linear infinite; 
         }
         .ticker-item-vert {
             height: 56px; display: flex; align-items: center;
-            padding: 0 1rem; color: #fbbf24; font-family: 'Oswald', sans-serif;
+            padding: 0 1rem; color: #c084fc; font-family: 'Oswald', sans-serif;
             font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
             width: 100%; flex-shrink: 0; 
-            border-left: 3px solid #fbbf24; background: linear-gradient(90deg, rgba(251,191,36,0.15) 0%, transparent 100%);
+            border-left: 3px solid #c084fc; background: linear-gradient(90deg, rgba(192,132,252,0.15) 0%, transparent 100%);
         }
         .ticker-item-vert span {
             display: -webkit-box;
@@ -376,14 +365,14 @@
 
         .clock-container { display: flex; align-items: center; justify-content: center; height: 100%; font-family: monospace; font-weight: bold; font-size: 11px; color: white; min-width: 85px; }
 
-        .desktop-link { color: #fecaca; font-weight: 600; padding: 8px 16px; border-radius: 16px; transition: all 0.2s; font-size: 0.85rem; }
+        .desktop-link { color: #d1fae5; font-weight: 600; padding: 8px 16px; border-radius: 16px; transition: all 0.2s; font-size: 0.85rem; }
         .desktop-link:hover { color: #ffffff; }
         .desktop-link.active { color: #ffffff; font-weight: 800; }
 
-        .custom-scroll::-webkit-scrollbar { width: 4px; } .custom-scroll::-webkit-scrollbar-track { background: transparent; } .custom-scroll::-webkit-scrollbar-thumb { background: #fca5a5; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar { width: 4px; } .custom-scroll::-webkit-scrollbar-track { background: transparent; } .custom-scroll::-webkit-scrollbar-thumb { background: #6ee7b7; border-radius: 4px; }
         
         .pro-glass-panel {
-            background: linear-gradient(145deg, rgba(127, 29, 29, 0.8) 0%, rgba(220, 38, 38, 0.4) 100%);
+            background: linear-gradient(145deg, rgba(6, 78, 59, 0.8) 0%, rgba(168, 85, 247, 0.4) 100%);
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
             backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
@@ -425,33 +414,33 @@
         }
     </style>
 </head>
-<body class="bg-red-900 text-slate-900 flex flex-col min-h-screen relative pb-[180px] lg:pb-0 font-sans z-0 selection:bg-red-200 selection:text-red-900">
+<body class="bg-emerald-900 text-slate-900 flex flex-col min-h-screen relative pb-[180px] lg:pb-0 font-sans z-0 selection:bg-emerald-200 selection:text-emerald-900">
 
-    <div class="fixed inset-0 z-[-2] kemerdekaan-bg"></div>
+    <div class="fixed inset-0 z-[-2] bsu-bg"></div>
     <div class="fixed inset-0 z-[-1] opacity-30 mix-blend-screen bg-[url('https://images.unsplash.com/photo-1518605368461-1e122b10287b?auto=format&fit=crop&q=80')] bg-cover bg-center bg-fixed bg-no-repeat"></div>
 
-    <audio id="security-audio" src="https://server.radioimeldafm.co.id:8040/gajahmadafm?_ic2=1776620223945" loop preload="none"></audio>
+    <audio id="security-audio" src="" loop preload="none"></audio>
 
-    <div id="penalty-overlay" class="fixed inset-0 z-[100005] bg-[#450a0a] text-white hidden flex-col items-center justify-start overflow-y-auto custom-scroll py-8 px-4" style="background-image: radial-gradient(circle at 50% 0%, #b91c1c 0%, #450a0a 70%);">
+    <div id="penalty-overlay" class="fixed inset-0 z-[100005] bg-[#022c22] text-white hidden flex-col items-center justify-start overflow-y-auto custom-scroll py-8 px-4" style="background-image: radial-gradient(circle at 50% 0%, #065f46 0%, #022c22 70%);">
         <div class="absolute inset-0 z-[-1] opacity-20 mix-blend-screen bg-[url('https://images.unsplash.com/photo-1518605368461-1e122b10287b?auto=format&fit=crop&q=80')] bg-cover bg-center bg-fixed bg-no-repeat"></div>
         
         <div class="w-full max-w-lg mx-auto flex flex-col items-center gap-5 mt-2 pb-12">
-            <img src="{{ url_for('static', filename='icons/icon-192.png') }}" class="h-16 w-16 mb-2 filter invert brightness-0 opacity-90 drop-shadow-lg" alt="KTVDI Logo">
+            <img src="https://iili.io/C6oIUAX.md.png" class="h-16 w-16 mb-2 drop-shadow-lg" alt="BSU Logo">
 
             <div class="flex items-center gap-4 animate-pulse">
                 <i class="fa-solid fa-flag text-4xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"></i>
-                <i class="fa-solid fa-ban text-5xl md:text-6xl text-[#ed1c24] drop-shadow-[0_0_15px_rgba(237,28,36,0.5)]"></i>
+                <i class="fa-solid fa-ban text-5xl md:text-6xl text-[#10b981] drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
                 <i class="fa-solid fa-flag text-4xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"></i>
             </div>
             
             <div class="text-center space-y-2">
-                <h1 class="text-3xl md:text-5xl merdeka-font font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-200 via-white to-red-100 tracking-wide uppercase drop-shadow-md">Akses Diblokir</h1>
-                <p class="text-red-200 text-sm md:text-base max-w-md mx-auto leading-relaxed">Sistem mendeteksi pelanggaran kebijakan keamanan. Anda diistirahatkan sementara.</p>
+                <h1 class="text-3xl md:text-5xl merdeka-font font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-white to-purple-200 tracking-wide uppercase drop-shadow-md">Akses Diblokir</h1>
+                <p class="text-emerald-200 text-sm md:text-base max-w-md mx-auto leading-relaxed">Sistem mendeteksi pelanggaran kebijakan keamanan. Anda diistirahatkan sementara.</p>
             </div>
             
             <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-center w-full shadow-2xl relative overflow-hidden mt-1">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-white to-red-500"></div>
-                <p class="text-red-200 text-[10px] uppercase tracking-widest mb-2 font-bold">Waktu Penangguhan</p>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-white to-purple-500"></div>
+                <p class="text-emerald-200 text-[10px] uppercase tracking-widest mb-2 font-bold">Waktu Penangguhan</p>
                 <p id="penalty-timer" class="text-5xl md:text-6xl merdeka-font font-bold text-white tracking-wider drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">60:00</p>
             </div>
 
@@ -460,41 +449,41 @@
                 <div class="badminton-center-line"></div>
                 <div class="badminton-net"></div>
                 
-                <div class="absolute top-2 left-3 bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-white/90 text-[10px] font-bold z-0 border border-white/10"><i class="fa-solid fa-gamepad mr-1"></i> Tangkap Shuttlecock!</div>
-                <div class="absolute bottom-2 right-3 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white/90 text-xs font-bold z-0 border border-red-400/30">Skor: <span id="game-score" class="text-yellow-400 text-sm">0</span></div>
+                <div class="absolute top-2 left-3 bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-white/90 text-[10px] font-bold z-0 border border-white/10"><i class="fa-solid fa-gamepad mr-1"></i> Tangkap Sampah!</div>
+                <div class="absolute bottom-2 right-3 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg text-white/90 text-xs font-bold z-0 border border-emerald-400/30">Skor: <span id="game-score" class="text-yellow-400 text-sm">0</span></div>
                 
-                <div id="game-ball" class="absolute w-10 h-10 cursor-pointer text-3xl transition-all duration-300 hover:scale-110 drop-shadow-[0_5px_10px_rgba(0,0,0,0.4)] flex items-center justify-center z-10" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">🏸</div>
+                <div id="game-ball" class="absolute w-10 h-10 cursor-pointer text-3xl transition-all duration-300 hover:scale-110 drop-shadow-[0_5px_10px_rgba(0,0,0,0.4)] flex items-center justify-center z-10" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">♻️</div>
             </div>
 
-            <button id="express-btn" onclick="reducePenaltyExpress()" class="w-full bg-gradient-to-r from-[#ed1c24] to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold py-4 px-6 rounded-xl shadow-[0_10px_20px_rgba(237,28,36,0.3)] border border-red-400/50 transition-all active:scale-[0.98] flex items-center justify-center gap-3 mt-2">
+            <button id="express-btn" onclick="reducePenaltyExpress()" class="w-full bg-gradient-to-r from-[#10b981] to-emerald-700 hover:from-emerald-600 hover:to-emerald-800 text-white font-bold py-4 px-6 rounded-xl shadow-[0_10px_20px_rgba(16,185,129,0.3)] border border-emerald-400/50 transition-all active:scale-[0.98] flex items-center justify-center gap-3 mt-2">
                 <i class="fa-solid fa-bolt text-yellow-400 text-xl"></i> 
                 <div class="text-left">
                     <div class="text-sm md:text-base leading-tight">Potong Waktu Jadi 1 Menit</div>
-                    <div class="text-[10px] text-red-200 font-normal">Kunjungi bolagembira.tvrinews.com</div>
+                    <div class="text-[10px] text-emerald-200 font-normal">Kunjungi Info Pengolahan Sampah</div>
                 </div>
             </button>
             
-            <div class="text-center text-xs text-red-200 w-full mt-2">
+            <div class="text-center text-xs text-emerald-200 w-full mt-2">
                 IP Anda: <span id="penalty-ip" class="text-white font-mono">Memeriksa...</span>
             </div>
         </div>
     </div>
 
-    <div id="inspect-warning-toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[10005] bg-[#ed1c24]/95 backdrop-blur-md text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 transition-all duration-1000 hidden opacity-0 -translate-y-full w-[90vw] max-w-md border border-white/20">
-        <i class="fa-solid fa-shield-halved text-2xl animate-pulse shrink-0"></i>
-        <p class="text-[11px] md:text-xs font-bold leading-relaxed">TIM Security mendeteksi Anda ingin melakukan inspect. Untuk privasi, belum diizinkan. Terima kasih.</p>
+    <div id="inspect-warning-toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[10005] bg-[#064e3b]/95 backdrop-blur-md text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-4 transition-all duration-1000 hidden opacity-0 -translate-y-full w-[90vw] max-w-md border border-white/20">
+        <i class="fa-solid fa-shield-halved text-2xl animate-pulse shrink-0 text-emerald-400"></i>
+        <p class="text-[11px] md:text-xs font-bold leading-relaxed">TIM Security BSU mendeteksi Anda ingin melakukan inspect. Untuk privasi, belum diizinkan. Terima kasih.</p>
     </div>
 
     <div id="security-overlay" style="display: none; position: fixed; inset: 0; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; background: rgba(5, 10, 31, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
         <div class="pro-glass-panel relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-white rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob"></div>
-            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-red-500 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-500 rounded-full mix-blend-multiply filter blur-2xl opacity-50 animate-blob animation-delay-2000"></div>
             
             <div class="relative z-10 flex flex-col items-center">
                 <i class="fa-solid fa-shield-halved text-5xl text-white/90 mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"></i>
                 <h2 class="text-2xl font-bold mb-3 text-white tracking-wide">KONTEN DIAMANKAN</h2>
                 <div class="h-px w-16 bg-gradient-to-r from-transparent via-white/50 to-transparent mb-4"></div>
-                <p class="text-sm text-red-100/80 leading-relaxed font-light">Privasi sesi KTVDI Anda sedang kami lindungi secara otomatis akibat perpindahan layar.</p>
+                <p class="text-sm text-emerald-100/80 leading-relaxed font-light">Privasi sesi BSU Anda sedang kami lindungi secara otomatis akibat perpindahan layar.</p>
             </div>
         </div>
     </div>
@@ -502,40 +491,39 @@
     <div id="initial-loader">
         <div class="relative flex flex-col items-center">
             <div class="loader-glow"></div>
-            <img src="{{ url_for('static', filename='icons/icon-192.png') }}" class="h-16 md:h-20 mb-8 relative z-10 animate-bounce filter invert brightness-0" alt="KTVDI Loading">
+            <img src="https://iili.io/C6oIUAX.md.png" class="h-20 md:h-24 mb-8 relative z-10 animate-bounce drop-shadow-xl" alt="BSU Loading">
             <div class="flex gap-2 relative z-10">
-                <span class="w-2.5 h-2.5 bg-[#ed1c24] rounded-full animate-pulse"></span>
+                <span class="w-2.5 h-2.5 bg-[#10b981] rounded-full animate-pulse"></span>
                 <span class="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-75"></span>
-                <span class="w-2.5 h-2.5 bg-red-400 rounded-full animate-pulse delay-150"></span>
+                <span class="w-2.5 h-2.5 bg-purple-400 rounded-full animate-pulse delay-150"></span>
             </div>
-            <p class="text-red-200 mt-5 font-bold tracking-[0.2em] text-[10px] md:text-xs relative z-10">MEMUAT PENGALAMAN...</p>
+            <p class="text-emerald-200 mt-5 font-bold tracking-[0.2em] text-[10px] md:text-xs relative z-10">MEMUAT PENGALAMAN...</p>
         </div>
     </div>
 
     <nav class="fixed top-4 left-0 right-0 w-full z-50 px-3 lg:px-6 transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto bg-red-800/90 backdrop-blur-md shadow-2xl rounded-2xl lg:rounded-[2rem] border border-red-400/20">
+        <div class="max-w-[1400px] mx-auto bg-emerald-800/90 backdrop-blur-md shadow-2xl rounded-2xl lg:rounded-[2rem] border border-emerald-400/30">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-8 w-full">
                 
                 <div class="flex items-center gap-3 md:gap-5 border-r border-white/10 pr-3 md:pr-5 mr-1 lg:mr-2 w-full lg:w-auto overflow-hidden">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
-                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="HUT RI 81 Logo" class="h-7 md:h-10 object-contain drop-shadow-md">
+                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-7 md:h-10 object-contain drop-shadow-md">
                     </a>
 
                     {% if session.get('user') %}
                         {% set safe_nama = session.get('nama') %}
-                        {% if not safe_nama %}{% set safe_nama = 'Member' %}{% endif %}
-                        {% set first_nama = safe_nama.split(' ')[0] %}
+                        {% if not safe_nama %}{% set safe_nama = 'Warga' %}{% endif %}
                         
                         <div class="xl:hidden h-8 w-px bg-white/20 mx-1 shrink-0"></div>
                         
                         <div class="xl:hidden flex flex-col justify-center min-w-0 pr-1">
                             <div class="flex items-center gap-1 text-[11px] md:text-xs font-bold text-white leading-tight">
-                                <span id="mobile-greeting" class="font-medium text-red-200 shrink-0">Hai,</span>
+                                <span id="mobile-greeting" class="font-medium text-emerald-200 shrink-0">Hai,</span>
                                 <span class="truncate max-w-[110px] sm:max-w-[150px]">{{ safe_nama }}</span>
                             </div>
                             <div class="flex items-center mt-0.5">
-                                <span class="px-1.5 md:px-2 py-0.5 bg-gradient-to-r from-amber-500 to-yellow-600 border border-yellow-400/50 rounded-sm text-[7px] md:text-[8px] font-bold text-white uppercase tracking-wider shadow-sm flex items-center gap-1">
-                                    <i class="fa-solid fa-crown text-[7px]"></i> MEMBER KTVDI
+                                <span class="px-1.5 md:px-2 py-0.5 bg-gradient-to-r from-emerald-500 to-emerald-600 border border-emerald-400/50 rounded-sm text-[7px] md:text-[8px] font-bold text-white uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                    <i class="fa-solid fa-leaf text-[7px]"></i> MEMBER BSU
                                 </span>
                             </div>
                         </div>
@@ -547,15 +535,15 @@
                     <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-center text-white min-w-[280px] h-12 overflow-hidden">
                         
                         <div id="header-state-2" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-white drop-shadow-lg tracking-wide">#81ndonesiaJaya</span>
+                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-white drop-shadow-lg tracking-wide">#TanjungLestariBersih</span>
                         </div>
                         
                         <div id="header-state-3" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-red-200 drop-shadow-lg tracking-wide">DIRGAHAYU REPUBLIK INDONESIA</span>
+                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-purple-200 drop-shadow-lg tracking-wide">UBAH SAMPAH JADI TABUNGAN</span>
                         </div>
 
                         <div id="header-state-4" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-xs font-bold tracking-widest uppercase text-white drop-shadow-md whitespace-nowrap">Komunitas TV Digital Indonesia</span>
+                            <span class="text-xs font-bold tracking-widest uppercase text-white drop-shadow-md whitespace-nowrap">Bank Sampah Unit Tanjung Lestari</span>
                         </div>
                     </div>
                 </div>
@@ -563,14 +551,9 @@
                 <div class="flex items-center gap-2 lg:gap-4 justify-end shrink-0">
                     
                     <div class="hidden xl:flex items-center space-x-2 mr-4">
-                        <a href="{{ url_for('home') }}" class="desktop-link">Beranda</a>
-                        <a href="{{ url_for('cctv_page') }}" class="desktop-link">CCTV</a>
-                        <a href="{{ url_for('ews_jateng_page') }}" class="desktop-link">EWS</a>
-                        <a href="/lokasi" class="desktop-link">Lokasi</a>
-                        <a href="{{ url_for('jadwal_sholat_page') }}" class="desktop-link">Religi</a>
-                        <a href="{{ url_for('daftar_siaran') }}" class="desktop-link">Database</a>
-                        <a href="{{ url_for('berita_page') }}" class="desktop-link">Berita</a>
-                        <a href="{{ url_for('about') }}" class="desktop-link">Tentang Kami</a>
+                        <a href="{{ url_for('home') }}" class="desktop-link active">Beranda</a>
+                        <a href="#tentang" class="desktop-link">Tentang BSU</a>
+                        <a href="/lokasi" class="desktop-link">Lokasi Kami</a>
                     </div>
 
                     <div class="relative group z-50 xl:hidden">
@@ -584,25 +567,23 @@
                             <div class="overflow-hidden rounded-[1.1rem]">
                                 {% if session.get('user') %}
                                     <div class="px-4 py-3 bg-slate-50 border-b border-slate-100 flex flex-col">
-                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">Akun Member</p>
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">Akun Warga</p>
                                         <p class="text-sm font-bold text-slate-900 truncate">{{ session.get('nama', 'Member') }}</p>
                                     </div>
-                                    <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-gauge w-5 text-center text-red-600"></i> Dashboard</a>
+                                    <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-gauge w-5 text-center text-emerald-600"></i> Dashboard</a>
                                     <div class="h-px bg-slate-200 my-0.5 mx-4"></div>
                                 {% else %}
                                     <div class="px-4 py-3 bg-slate-50 border-b border-slate-100 flex flex-col">
                                         <span class="text-[9px] text-slate-400 font-bold uppercase mb-0.5">Lokasi Anda</span>
-                                        <div class="flex items-center gap-2 text-sm font-black text-red-600">
-                                            <i class="fa-solid fa-location-dot text-red-500"></i><span id="mobile-user-location" class="truncate">Mendeteksi...</span>
+                                        <div class="flex items-center gap-2 text-sm font-black text-emerald-600">
+                                            <i class="fa-solid fa-location-dot text-emerald-500"></i><span id="mobile-user-location" class="truncate">Mendeteksi...</span>
                                         </div>
                                     </div>
                                 {% endif %}
 
                                 <a href="{{ url_for('home') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-house w-5 text-center text-slate-500"></i> Beranda</a>
-                                <a href="{{ url_for('ews_jateng_page') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-water w-5 text-center text-red-500"></i> EWS Bendungan</a>
-                                <a href="/lokasi" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-red-500"></i> Peta Lokasi</a>
-                                <a href="{{ url_for('jadwal_sholat_page') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-mosque w-5 text-center text-emerald-500"></i> Jadwal Religi</a>
-                                <a href="{{ url_for('about') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-users w-5 text-center text-amber-500"></i> Tentang KTVDI</a>
+                                <a href="#tentang" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-users w-5 text-center text-amber-500"></i> Tentang BSU</a>
+                                <a href="/lokasi" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-map-location-dot w-5 text-center text-emerald-500"></i> Peta Lokasi</a>
 
                                 {% if session.get('user') %}
                                     <div class="h-px bg-slate-200 my-0.5 mx-4"></div>
@@ -614,14 +595,14 @@
 
                     {% if session.get('user') %}
                         <div class="relative group z-50 hidden xl:block">
-                            <button onclick="toggleDropdown('profile-dropdown-desktop')" class="flex items-center gap-2 pl-1 pr-4 py-1 rounded-full bg-[#ed1c24] hover:bg-red-700 transition border border-red-500 text-left shadow-lg">
-                                <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=fff&color=ed1c24&bold=true" class="h-8 w-8 rounded-full shadow-sm">
+                            <button onclick="toggleDropdown('profile-dropdown-desktop')" class="flex items-center gap-2 pl-1 pr-4 py-1 rounded-full bg-[#10b981] hover:bg-emerald-700 transition border border-emerald-500 text-left shadow-lg">
+                                <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=fff&color=10b981&bold=true" class="h-8 w-8 rounded-full shadow-sm">
                                 <div class="flex flex-col">
                                     <span class="text-xs font-bold text-white leading-tight">
                                         {{ session.get('nama', 'Member').split(' ')[0] if session.get('nama') else 'Member' }}
                                     </span>
-                                    <span class="text-[8px] font-bold text-yellow-400 uppercase tracking-wider flex items-center gap-1 mt-0.5">
-                                        <i class="fa-solid fa-crown text-[8px]"></i> MEMBER KTVDI
+                                    <span class="text-[8px] font-bold text-purple-200 uppercase tracking-wider flex items-center gap-1 mt-0.5">
+                                        <i class="fa-solid fa-leaf text-[8px]"></i> MEMBER BSU
                                     </span>
                                 </div>
                             </button>
@@ -630,10 +611,10 @@
                                 <div class="bubble-tail" style="right: 20px;"></div>
                                 <div class="overflow-hidden rounded-[1.1rem]">
                                     <div class="px-5 py-3 border-b border-slate-100 bg-slate-50 flex flex-col">
-                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">Akun Member</p>
+                                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-0.5">Akun Warga</p>
                                         <p class="text-sm font-bold text-slate-900 truncate">{{ session.get('nama', 'Member') }}</p>
                                     </div>
-                                    <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-gauge w-5 text-center text-red-600"></i> Dashboard KTVDI</a>
+                                    <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 text-sm text-slate-700 font-medium hover:bg-slate-100 transition"><i class="fa-solid fa-gauge w-5 text-center text-emerald-600"></i> Dashboard BSU</a>
                                     <div class="h-px bg-slate-200 my-0.5 mx-4"></div>
                                     <a href="{{ url_for('logout') }}" class="block px-4 py-3 text-sm text-red-600 font-bold hover:bg-red-50 transition"><i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Keluar</a>
                                 </div>
@@ -641,9 +622,9 @@
                         </div>
                     {% else %}
                         <div class="flex items-center">
-                            <a href="{{ url_for('login') }}" class="hidden md:block text-white text-sm font-bold hover:text-red-300 transition px-4 py-2">Masuk</a>
-                            <a href="{{ url_for('register') }}" class="bg-[#ffffff] hover:bg-gray-100 border border-white text-red-700 pl-4 pr-1 md:pl-5 md:pr-1.5 py-1.5 md:py-2 rounded-full font-bold text-[11px] md:text-sm transition shadow-lg flex items-center gap-2 active:scale-95 ml-1 md:ml-2">
-                                Daftar <div class="bg-red-600 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] md:text-xs shadow-sm"><i class="fa-solid fa-arrow-right"></i></div>
+                            <a href="{{ url_for('login') }}" class="hidden md:block text-white text-sm font-bold hover:text-emerald-300 transition px-4 py-2">Masuk</a>
+                            <a href="{{ url_for('register') }}" class="bg-[#ffffff] hover:bg-gray-100 border border-white text-emerald-700 pl-4 pr-1 md:pl-5 md:pr-1.5 py-1.5 md:py-2 rounded-full font-bold text-[11px] md:text-sm transition shadow-lg flex items-center gap-2 active:scale-95 ml-1 md:ml-2">
+                                Daftar <div class="bg-emerald-600 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] md:text-xs shadow-sm"><i class="fa-solid fa-arrow-right"></i></div>
                             </a>
                         </div>
                     {% endif %}
@@ -669,79 +650,119 @@
     {% endwith %}
 
     <main class="flex-grow z-10 relative pt-[100px] md:pt-[130px]">
-        <div class="bg-white w-full min-h-screen rounded-t-[2.5rem] md:rounded-t-[4rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden border-t-4 border-red-600">
+        <div class="bg-white w-full min-h-screen rounded-t-[2.5rem] md:rounded-t-[4rem] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden border-t-4 border-emerald-500">
             <div class="absolute inset-0 z-0 opacity-[0.35]" style="background-image: radial-gradient(#94a3b8 1.5px, transparent 1.5px); background-size: 32px 32px;"></div>
 
             <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 relative z-10">
-                {% block content %}{% endblock %}
+                {% block content %}
+                <div class="text-center py-10 md:py-16 px-4" id="tentang">
+                    <img src="https://iili.io/C6oIUAX.md.png" alt="Logo BSU" class="h-32 md:h-40 mx-auto mb-8 drop-shadow-xl hover:scale-105 transition-transform duration-500">
+                    <h2 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-purple-600 mb-6 drop-shadow-sm">BSU Tanjung Lestari Kajen</h2>
+                    
+                    <p class="text-lg md:text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed mb-12 font-medium">
+                        Sebuah Bank Sampah Unit berbadan hukum yang hadir untuk memfasilitasi masyarakat dalam pengelolaan sampah yang tepat guna. Ubah sampah Anda menjadi nilai ekonomis yang bermanfaat!
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                        <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-16 h-16 bg-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
+                                <i class="fa-solid fa-scale-balanced text-3xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-emerald-900 mb-3">Penimbangan Rutin</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Sarana pengolahan sampah secara sistematis melalui proses penimbangan berkala untuk memastikan data sampah Anda tercatat akurat.</p>
+                        </div>
+
+                        <div class="bg-purple-50 p-8 rounded-3xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-16 h-16 bg-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-purple-600 shadow-inner">
+                                <i class="fa-solid fa-sack-dollar text-3xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-purple-900 mb-3">Nabung Jadi Uang</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Sampah yang Anda setor tidak terbuang sia-sia. Tabung sampah di sini dan ubah menjadi saldo uang yang bisa dimanfaatkan.</p>
+                        </div>
+
+                        <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-16 h-16 bg-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
+                                <i class="fa-solid fa-leaf text-3xl"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-emerald-900 mb-3">Taman & Green House</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">Nikmati fasilitas mini taman dan green house di sekitar BSU untuk budidaya tanaman dan melestarikan lingkungan hijau.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
             </div>
         </div>
     </main>
 
-    <footer class="bg-red-950 text-slate-300 pt-16 pb-48 lg:pb-16 font-sans border-t border-red-900">
+    <footer class="bg-[#022c22] text-slate-300 pt-16 pb-48 lg:pb-16 font-sans border-t border-emerald-900">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div class="space-y-4">
                 <div class="flex items-center gap-3">
-                    <img src="{{ url_for('static', filename='icons/icon-192.png') }}" class="w-10 h-10 filter invert brightness-0">
+                    <img src="https://iili.io/C6oIUAX.md.png" class="w-12 h-12">
                     <div>
-                        <h4 class="text-lg font-bold text-white tracking-tight">KTVDI</h4>
-                        <p class="text-[10px] font-medium text-red-300">Komunitas TV Digital Indonesia</p>
+                        <h4 class="text-lg font-bold text-white tracking-tight">BSU TANJUNG LESTARI</h4>
+                        <p class="text-[10px] font-medium text-emerald-300">Bank Sampah Unit</p>
                     </div>
                 </div>
-                <p class="text-sm leading-relaxed">Pusat informasi independen teknologi penyiaran digital, frekuensi, & STB Indonesia.</p>
+                <p class="text-sm leading-relaxed">BSU Tanjung Lestari, Tanjung Kulon, Kajen, Kab Pekalongan (Hadir sebagai sarana masyarakat untuk mengolah kembali sampah menjadi produk tepat guna).</p>
             </div>
             <div>
-                <h4 class="font-bold text-xs text-red-400 uppercase tracking-widest mb-4">Navigasi Utama</h4>
+                <h4 class="font-bold text-xs text-emerald-400 uppercase tracking-widest mb-4">Navigasi Utama</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ url_for('home') }}" class="hover:text-white transition">Beranda</a></li>
-                    <li><a href="{{ url_for('daftar_siaran') }}" class="hover:text-white transition">Database Frekuensi</a></li>
-                    <li><a href="{{ url_for('cctv_page') }}" class="hover:text-white transition">Pantauan CCTV</a></li>
+                    <li><a href="#tentang" class="hover:text-white transition">Tentang Kami</a></li>
+                    <li><a href="/lokasi" class="hover:text-white transition">Peta Lokasi</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-xs text-red-400 uppercase tracking-widest mb-4">Layanan</h4>
+                <h4 class="font-bold text-xs text-emerald-400 uppercase tracking-widest mb-4">Layanan</h4>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ url_for('about') }}" class="hover:text-white transition">Tentang Kami</a></li>
-                    <li><a href="#" class="hover:text-white transition">Hubungi Kami</a></li>
+                    <li><a href="#" class="hover:text-white transition">Penimbangan Sampah</a></li>
+                    <li><a href="#" class="hover:text-white transition">Tabungan Anggota</a></li>
+                    <li><a href="#" class="hover:text-white transition">Edukasi Green House</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-xs text-red-400 uppercase tracking-widest mb-4">Kontak Resmi</h4>
-                <ul class="space-y-3 text-sm text-red-200">
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-user-tie text-red-500"></i> Pak Lukas (Admin)</li>
-                    <li class="flex items-center gap-3"><i class="fa-solid fa-envelope text-red-500"></i> kom.tvdigitalid@gmail.com</li>
-                    <li class="flex items-center gap-3"><i class="fa-brands fa-whatsapp text-green-500"></i> 0815-9131-735</li>
+                <h4 class="font-bold text-xs text-emerald-400 uppercase tracking-widest mb-4">Kontak Resmi</h4>
+                <ul class="space-y-3 text-sm text-emerald-200">
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-user-tie text-emerald-500"></i> Pengurus BSU</li>
+                    <li class="flex items-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-green-500"></i> 
+                        <a href="https://wa.me/6285113236312" class="hover:text-white transition">0851-1323-6312</a>
+                    </li>
+                    <li class="flex items-center gap-3"><i class="fa-solid fa-map-pin text-emerald-500"></i> Tanjung Kulon, Kajen</li>
                 </ul>
             </div>
         </div>
-        <div class="border-t border-red-900/50 pt-8 text-center"><p class="text-xs text-red-400/60">&copy; 2026 KTVDI. Hak Cipta Dilindungi.</p></div>
+        
+        <!-- WATERMARK -->
+        <div class="border-t border-emerald-900/50 pt-8 text-center flex flex-col items-center">
+            <p class="text-xs text-emerald-400/60 mb-2">&copy; 2026 BSU Tanjung Lestari. Hak Cipta Dilindungi.</p>
+            <div class="text-[10px] font-semibold text-purple-300/80 tracking-wide">
+                Supported by : Mahasiswa KKNT IDBU 54 Pekalongan - Aqila Faza
+            </div>
+        </div>
     </footer>
 
     <div class="ios-dock-container lg:hidden">
         <nav class="ios-dock">
             <a href="{{ url_for('home') }}" class="nav-item active"><i class="fa-solid fa-house"></i><span>Beranda</span></a>
-            <a href="{{ url_for('jadwal_sholat_page') }}" class="nav-item"><i class="fa-solid fa-mosque"></i><span>Religi</span></a>
-            <a href="{{ url_for('cctv_page') }}" class="nav-item cctv-wrapper"><div class="cctv-circle"><i class="fa-solid fa-video text-lg"></i></div><span class="mt-1 font-bold">CCTV</span></a>
-            <a href="{{ url_for('daftar_siaran') }}" class="nav-item"><i class="fa-solid fa-database"></i><span>Data</span></a>
-            <a href="{{ url_for('berita_page') }}" class="nav-item"><i class="fa-regular fa-newspaper"></i><span>Berita</span></a>
+            <a href="#tentang" class="nav-item"><i class="fa-solid fa-users"></i><span>Tentang</span></a>
+            <a href="/lokasi" class="nav-item"><i class="fa-solid fa-map-location-dot"></i><span>Lokasi</span></a>
         </nav>
     </div>
 
     <div class="glass-ticker-floating lg:hidden transition-all duration-300">
-        <div class="bg-[#ed1c24] h-full flex items-center px-3 z-20 shrink-0 text-white text-[9px] font-black uppercase tracking-widest gap-2"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> UPDATE</div>
+        <div class="bg-[#10b981] h-full flex items-center px-3 z-20 shrink-0 text-white text-[9px] font-black uppercase tracking-widest gap-2"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> INFO</div>
         <div class="ticker-wrap relative flex-1"><div id="unified-ticker-mobile" class="ticker-move"></div></div>
         <div class="bg-white/10 backdrop-blur-md h-full px-2 border-l border-slate-200/20 z-20 shrink-0 flex items-center"><div id="clock-mobile" class="clock-container text-[10px]">00:00:00 WIB</div></div>
     </div>
 
     <div class="desktop-bottom-bar items-center px-4 shadow-sm select-none max-w-[1920px] mx-auto transition-all duration-300">
-        <div class="bg-[#ed1c24] h-6 flex items-center px-3 rounded-md z-20 shrink-0 text-white text-[10px] font-black uppercase tracking-widest gap-2 mr-4"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> BERITA TERKINI</div>
+        <div class="bg-[#10b981] h-6 flex items-center px-3 rounded-md z-20 shrink-0 text-white text-[10px] font-black uppercase tracking-widest gap-2 mr-4"><span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> INFO BSU</div>
         <div class="ticker-wrap relative flex-1"><div id="unified-ticker-desktop" class="ticker-move"></div></div>
-        <div class="bg-white/5 backdrop-blur-md h-8 px-4 rounded-lg border border-white/10 z-20 shrink-0 flex items-center gap-2 ml-4 text-white text-[11px] font-bold"><i class="fa-solid fa-location-dot text-red-400 animate-bounce"></i><span id="desktop-user-location">Mendeteksi...</span></div>
+        <div class="bg-white/5 backdrop-blur-md h-8 px-4 rounded-lg border border-white/10 z-20 shrink-0 flex items-center gap-2 ml-4 text-white text-[11px] font-bold"><i class="fa-solid fa-location-dot text-emerald-400 animate-bounce"></i><span id="desktop-user-location">Mendeteksi...</span></div>
         <div class="bg-white/10 backdrop-blur-md h-8 px-4 rounded-lg border border-white/20 z-20 shrink-0 flex items-center ml-2"><div id="clock-desktop" class="clock-container text-[11px]">00:00:00 WIB</div></div>
-    </div>
-
-    <div id="call-center-widget" class="hidden fixed bottom-[160px] lg:bottom-24 left-4 z-[60] group pb-safe">
-        <a href="tel:112" class="flex items-center justify-center w-12 h-12 bg-white/90 backdrop-blur-md rounded-full text-red-500 shadow-[0_8px_30px_rgb(0,0,0,0.3)] border border-red-100 hover:scale-110 transition"><i class="fa-solid fa-phone-volume text-lg animate-pulse"></i></a>
     </div>
 
     <script>
@@ -760,18 +781,16 @@
         function initHeaderRotator() {
             let states = [];
 
-            // --- DATA JADWAL KEMERDEKAAN 17 AGUSTUS 2026 ---
+            // --- DATA JADWAL BSU (Opsional, dapat disesuaikan) ---
             const events = [
-                { title: "Upacara Detik-Detik Proklamasi", time: "2026-08-17T10:00:00+07:00", label: "17 Agt, 10.00 WIB" },
-                { title: "Upacara Penurunan Bendera", time: "2026-08-17T16:30:00+07:00", label: "17 Agt, 16.30 WIB" }
+                { title: "Penimbangan Serentak", time: "2026-08-15T08:00:00+07:00", label: "15 Agt, 08.00 WIB" },
             ];
 
             const nowMs = new Date().getTime();
-            // Filter Data: Hapus jadwal jika sudah lewat 5 menit dari jam upacara
             const activeEvents = events.filter(e => nowMs <= new Date(e.time).getTime() + (5 * 60 * 1000));
 
             // ============================================
-            // 1. INJECT KE DESKTOP HEADER (Tengah Navbar)
+            // 1. INJECT KE DESKTOP HEADER
             // ============================================
             const dynamicHeader = document.getElementById('desktop-header-dynamic');
             if (dynamicHeader) {
@@ -790,13 +809,13 @@
                     });
                 }
                 
-                states.push({ id: 'header-state-2', duration: 6000 }); // #81ndonesiaJaya
-                states.push({ id: 'header-state-3', duration: 5000 }); // DIRGAHAYU REPUBLIK INDONESIA
-                states.push({ id: 'header-state-4', duration: 10000 }); // Komunitas TV Digital Indonesia
+                states.push({ id: 'header-state-2', duration: 6000 }); 
+                states.push({ id: 'header-state-3', duration: 5000 }); 
+                states.push({ id: 'header-state-4', duration: 10000 }); 
             }
 
             // ============================================
-            // 2. INJECT KE MOBILE GUEST (Samping Kanan Logo)
+            // 2. INJECT KE MOBILE GUEST
             // ============================================
             const mobileGuestHeader = document.getElementById('mobile-guest-schedule');
             if (mobileGuestHeader) {
@@ -807,7 +826,7 @@
                         const eventId = `mobile-guest-event-${idx}`;
                         const html = `
                         <div id="${eventId}" class="hidden absolute flex-col items-start justify-center transition-opacity duration-1000 opacity-0 w-full h-full left-0 top-0">
-                            <span class="text-[7px] font-bold tracking-widest text-yellow-300 uppercase drop-shadow-md leading-none mb-0.5">${e.label}</span>
+                            <span class="text-[7px] font-bold tracking-widest text-purple-300 uppercase drop-shadow-md leading-none mb-0.5">${e.label}</span>
                             <div class="flex items-center text-[10px] font-black text-white drop-shadow-lg uppercase tracking-wide leading-none w-full">
                                 <div class="team-name-container" style="max-width: 140px;"><span class="team-name-inner">${e.title}</span></div>
                             </div>
@@ -818,7 +837,7 @@
                 } else {
                     mobileGuestHeader.insertAdjacentHTML('beforeend', `
                         <div id="mobile-guest-state-merdeka" class="absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full h-full left-0 top-0">
-                            <span class="text-[12px] font-black italic text-transparent bg-clip-text bg-gradient-to-r from-red-200 to-white drop-shadow-lg tracking-wide">#81ndonesiaJaya</span>
+                            <span class="text-[12px] font-black italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-white drop-shadow-lg tracking-wide">#TanjungLestariBersih</span>
                         </div>
                     `);
                     guestStates.push('mobile-guest-state-merdeka');
@@ -865,7 +884,6 @@
                 rotateGuest();
             }
 
-            // --- Logic Header Rotator Desktop (Utuh) ---
             let currentIndex = 0;
             if(states.length === 0) return;
 
@@ -897,35 +915,50 @@
         
         if(window.innerWidth >= 1024) { initHeaderRotator(); } else { initHeaderRotator(); }
 
-        const tvriLogoUrl = "https://iili.io/C4vsGPs.md.png";
-        const ktvdiLogoUrl = "{{ url_for('static', filename='icons/icon-192.png') }}";
-        let isTvri = true;
+        // --- LOGIKA LOGO ROTATOR ---
+        const bsuLogoUrl = "https://iili.io/C6oIUAX.md.png";
+        const hutRiLogoUrl = "https://iili.io/C4vsGPs.md.png";
+        
+        // Cek tanggal: Logo 81 hanya sampai 29 Agustus 2026 jam 23:59:59
+        const batasLogo81 = new Date("2026-08-29T23:59:59");
+        let isHutRi = (new Date() <= batasLogo81);
         const navbarLogo = document.getElementById('navbar-logo');
 
         if (navbarLogo) {
-            navbarLogo.style.transition = "all 0.8s ease-in-out";
-            function swapLogo() {
-                navbarLogo.style.opacity = 0;
-                navbarLogo.style.filter = "drop-shadow(0 0 20px rgba(255,255,255,1)) brightness(1.5)";
-                
-                setTimeout(() => {
-                    isTvri = !isTvri;
-                    navbarLogo.src = isTvri ? tvriLogoUrl : ktvdiLogoUrl;
-                    
-                    if (!isTvri) {
-                        navbarLogo.className = "h-7 md:h-10 object-contain filter invert brightness-0 drop-shadow-md";
-                    } else {
-                        navbarLogo.className = "h-7 md:h-10 object-contain drop-shadow-md";
+            // Jika sudah melebihi tanggal, paksa langsung ke logo BSU dan stop script rotasi
+            if (!isHutRi) {
+                navbarLogo.src = bsuLogoUrl;
+            } else {
+                navbarLogo.style.transition = "all 0.8s ease-in-out";
+                function swapLogo() {
+                    // Cek lagi di dalam interval siapa tau pergantian hari terjadi saat user membuka web
+                    if(new Date() > batasLogo81) {
+                        navbarLogo.src = bsuLogoUrl;
+                        return; // Hentikan loop
                     }
+
+                    navbarLogo.style.opacity = 0;
+                    navbarLogo.style.filter = "drop-shadow(0 0 20px rgba(255,255,255,1)) brightness(1.5)";
                     
-                    navbarLogo.style.opacity = 1;
-                    navbarLogo.style.filter = "";
-                    
-                    const nextDelay = isTvri ? 7000 : 20000;
-                    setTimeout(swapLogo, nextDelay);
-                }, 800); 
+                    setTimeout(() => {
+                        isHutRi = !isHutRi;
+                        navbarLogo.src = isHutRi ? hutRiLogoUrl : bsuLogoUrl;
+                        
+                        if (!isHutRi) {
+                            navbarLogo.className = "h-7 md:h-10 object-contain drop-shadow-md"; // Menjaga warna asli logo BSU
+                        } else {
+                            navbarLogo.className = "h-7 md:h-10 object-contain drop-shadow-md";
+                        }
+                        
+                        navbarLogo.style.opacity = 1;
+                        navbarLogo.style.filter = "";
+                        
+                        const nextDelay = isHutRi ? 7000 : 20000;
+                        setTimeout(swapLogo, nextDelay);
+                    }, 800); 
+                }
+                setTimeout(swapLogo, 7000);
             }
-            setTimeout(swapLogo, 7000);
         }
 
         function forceHideLoader() {
@@ -947,50 +980,52 @@
             el.classList.toggle('hidden');
         }
 
-        async function updateTicker() {
-            try { 
-                const res = await fetch('/api/news-ticker'); 
-                const data = await res.json(); 
-                if (data && data.length > 0) {
-                    const now = new Date();
-                    const wibNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
-                    const ch = wibNow.getHours();
-                    const cm = wibNow.getMinutes();
-                    
-                    const isNightMode = (ch == 2 && cm >= 15) || (ch > 2 && ch < 7) ;
+        // Ticker placeholder data for BSU
+        function updateTicker() {
+            const data = [
+                "Ayo nabung sampah di BSU Tanjung Lestari",
+                "Pisahkan sampah organik dan anorganik dari rumah",
+                "Ubah sampah menjadi uang dan hijaukan bumi",
+                "Layanan penimbangan buka setiap akhir pekan"
+            ];
+            
+            const now = new Date();
+            const wibNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
+            const ch = wibNow.getHours();
+            const cm = wibNow.getMinutes();
+            
+            const isNightMode = (ch == 2 && cm >= 15) || (ch > 2 && ch < 7) ;
 
-                    const mobTicker = document.getElementById('unified-ticker-mobile');
-                    const deskTicker = document.getElementById('unified-ticker-desktop');
+            const mobTicker = document.getElementById('unified-ticker-mobile');
+            const deskTicker = document.getElementById('unified-ticker-desktop');
 
-                    if(isNightMode) {
-                        const floatBar = document.querySelector('.glass-ticker-floating');
-                        if(floatBar) floatBar.classList.add('night-mode-active');
-                        
-                        const deskBar = document.querySelector('.desktop-bottom-bar');
-                        if(deskBar) deskBar.classList.add('night-mode-active');
+            if(isNightMode) {
+                const floatBar = document.querySelector('.glass-ticker-floating');
+                if(floatBar) floatBar.classList.add('night-mode-active');
+                
+                const deskBar = document.querySelector('.desktop-bottom-bar');
+                if(deskBar) deskBar.classList.add('night-mode-active');
 
-                        if(mobTicker) mobTicker.className = 'ticker-vertical-move';
-                        if(deskTicker) deskTicker.className = 'ticker-vertical-move';
-                        
-                        const items = data.map(n => `<div class="ticker-item-vert"><span>${n}</span></div>`).join('');
-                        if(mobTicker) mobTicker.innerHTML = items.repeat(10);
-                        if(deskTicker) deskTicker.innerHTML = items.repeat(10);
-                    } else {
-                        const floatBar = document.querySelector('.glass-ticker-floating');
-                        if(floatBar) floatBar.classList.remove('night-mode-active');
-                        
-                        const deskBar = document.querySelector('.desktop-bottom-bar');
-                        if(deskBar) deskBar.classList.remove('night-mode-active');
+                if(mobTicker) mobTicker.className = 'ticker-vertical-move';
+                if(deskTicker) deskTicker.className = 'ticker-vertical-move';
+                
+                const items = data.map(n => `<div class="ticker-item-vert"><span>${n}</span></div>`).join('');
+                if(mobTicker) mobTicker.innerHTML = items.repeat(10);
+                if(deskTicker) deskTicker.innerHTML = items.repeat(10);
+            } else {
+                const floatBar = document.querySelector('.glass-ticker-floating');
+                if(floatBar) floatBar.classList.remove('night-mode-active');
+                
+                const deskBar = document.querySelector('.desktop-bottom-bar');
+                if(deskBar) deskBar.classList.remove('night-mode-active');
 
-                        if(mobTicker) mobTicker.className = 'ticker-move';
-                        if(deskTicker) deskTicker.className = 'ticker-move';
-                        
-                        const items = data.map(n => `<div class="ticker-item">${n}</div><span class="text-yellow-400 font-black flex items-center text-lg">//</span>`).join('');
-                        if(mobTicker) mobTicker.innerHTML = items.repeat(3);
-                        if(deskTicker) deskTicker.innerHTML = items.repeat(3);
-                    }
-                }
-            } catch {}
+                if(mobTicker) mobTicker.className = 'ticker-move';
+                if(deskTicker) deskTicker.className = 'ticker-move';
+                
+                const items = data.map(n => `<div class="ticker-item">${n}</div><span class="text-emerald-400 font-black flex items-center text-lg">//</span>`).join('');
+                if(mobTicker) mobTicker.innerHTML = items.repeat(3);
+                if(deskTicker) deskTicker.innerHTML = items.repeat(3);
+            }
         }
         updateTicker();
         
@@ -1027,20 +1062,6 @@
                 document.querySelectorAll('.dropdown-menu-mobile').forEach(d => d.classList.add('hidden'));
             }
         });
-
-        function checkWidgetSchedule() {
-            const now = new Date();
-            const wibTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
-            const currentHour = wibTime.getHours();
-            const callCenterWidget = document.getElementById('call-center-widget');
-
-            if (currentHour >= 21 || currentHour < 8) {
-                if(callCenterWidget) { callCenterWidget.classList.remove('hidden'); callCenterWidget.classList.add('flex'); }
-            } else {
-                if(callCenterWidget) { callCenterWidget.classList.add('hidden'); callCenterWidget.classList.remove('flex'); }
-            }
-        }
-        window.addEventListener('DOMContentLoaded', () => { checkWidgetSchedule(); setInterval(checkWidgetSchedule, 60000); });
     </script>
 </body>
 </html>
