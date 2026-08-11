@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
-{% block title %}KTVDI MAPS CITY - Geospasial Xpander{% endblock %}
+{% block title %}Peta & Navigasi - BSU Tanjung Lestari{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
-    /* === THEME: MITSUBISHI XPANDER CROSS MID (AUTOMOTIVE ROBUST) === */
+    /* === THEME: BSU ECO-GREEN & PURPLE === */
     .maps-city-bg {
-        /* Matte Dark Grey / Carbon Texture */
-        background-color: #0b0f19;
+        background-color: #020617;
         background-image: 
-            linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2) 20%, rgba(0,0,0,0.2) 80%, rgba(0,0,0,0.8)),
-            radial-gradient(ellipse at top, rgba(56, 189, 248, 0.1) 0%, transparent 60%),
+            linear-gradient(to right, rgba(2, 44, 34, 0.8), rgba(2, 44, 34, 0.2) 20%, rgba(2, 44, 34, 0.2) 80%, rgba(2, 44, 34, 0.8)),
+            radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
             url("data:image/svg+xml,%3Csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h4v4H0V0zm4 4h4v4H4V4z' fill='%23ffffff' fill-opacity='0.015' fill-rule='evenodd'/%3E%3C/svg%3E");
         
         min-height: calc(100vh - 60px);
         color: #f1f5f9;
         font-family: 'Inter', sans-serif;
         
-        /* Full-Bleed Breakout (Anti Celah Putih base.html) */
+        /* Full-Bleed Breakout */
         width: 100vw !important;
         max-width: 100vw !important;
         position: relative;
@@ -48,13 +47,13 @@
     /* === SCROLLBAR === */
     .premium-scroll::-webkit-scrollbar { width: 5px; }
     .premium-scroll::-webkit-scrollbar-track { background: #0f172a; border-radius: 4px; }
-    .premium-scroll::-webkit-scrollbar-thumb { background-color: #475569; border-radius: 4px; }
+    .premium-scroll::-webkit-scrollbar-thumb { background-color: #10b981; border-radius: 4px; }
 
-    /* === DASHBOARD PANELS (INSTRUMENT CLUSTER STYLE) === */
+    /* === DASHBOARD PANELS === */
     .dash-panel {
-        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-        border: 2px solid #334155;
-        border-top: 3px solid #cbd5e1; /* Silver metallic top accent */
+        background: linear-gradient(180deg, #064e3b 0%, #022c22 100%);
+        border: 2px solid #047857;
+        border-top: 3px solid #34d399; /* Emerald metallic accent */
         border-radius: 12px;
         box-shadow: 0 15px 30px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255,255,255,0.05);
         overflow: hidden;
@@ -64,8 +63,8 @@
     }
 
     .panel-header {
-        background: linear-gradient(180deg, #2a364a 0%, #1e293b 100%);
-        border-bottom: 2px solid #0f172a;
+        background: linear-gradient(180deg, #065f46 0%, #064e3b 100%);
+        border-bottom: 2px solid #022c22;
         padding: 12px 16px;
         font-size: 0.75rem;
         font-weight: 800;
@@ -79,28 +78,27 @@
         z-index: 2;
     }
 
-    /* === DIGITAL SPEEDOMETER (XPANDER CROSS MID) === */
+    /* === SPEEDOMETER WIDGET === */
     .speedo-wrapper {
         position: relative;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         padding: 40px 20px;
         height: 100%;
-        background: radial-gradient(circle at center, #1e293b 0%, #0b0f19 80%);
+        background: radial-gradient(circle at center, #064e3b 0%, #020617 80%);
     }
     
-    /* Aksen kurva speedometer mekanikal */
     .speedo-ring {
         position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
         width: 220px; height: 220px; border-radius: 50%;
-        border: 4px solid #334155;
-        border-top: 4px solid #ef4444; /* Redline RPM/Speed */
-        border-right: 4px solid #ef4444;
+        border: 4px solid #047857;
+        border-top: 4px solid #a855f7; /* Purple accent */
+        border-right: 4px solid #a855f7;
         pointer-events: none;
         box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5);
     }
     .speedo-ring::after {
         content: ''; position: absolute; inset: 8px; border-radius: 50%;
-        border: 4px dashed #64748b;
+        border: 4px dashed #10b981;
         opacity: 0.5;
     }
 
@@ -112,10 +110,10 @@
         line-height: 0.9;
         letter-spacing: -3px;
         z-index: 2;
-        text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        text-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
     }
     .digital-unit {
-        font-size: 1.2rem; color: #94a3b8; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-top: 5px; z-index: 2;
+        font-size: 1.2rem; color: #a7f3d0; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; margin-top: 5px; z-index: 2;
     }
 
     .eco-indicator {
@@ -126,7 +124,7 @@
         transition: opacity 0.3s;
     }
     
-    /* Warning Alert Solid Red */
+    /* Warning Alert */
     .speed-warning {
         position: absolute; top: 15px; left: 15px; right: 15px;
         background: #dc2626; border: 2px solid #991b1b;
@@ -143,73 +141,62 @@
         50% { background: #991b1b; border-color: #dc2626; }
     }
 
-    /* === SPEED TEST WIDGET === */
-    .st-box {
-        background: #0b0f19; border: 1px solid #1e293b;
-        border-radius: 8px; padding: 12px 16px; 
-        display: flex; justify-content: space-between; align-items: center;
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
-    }
-    .st-label { font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; margin: 0;}
-    .st-value { font-size: 1.3rem; font-weight: 900; color: #f8fafc; font-family: monospace; margin: 0;}
-
-    /* === MAP STYLES (DARK MODE) === */
+    /* === MAP STYLES === */
     #map {
         height: 100%;
         min-height: 400px;
         width: 100%;
-        background-color: #12151c;
+        background-color: #020617;
         z-index: 1;
     }
     @media (min-width: 1024px) {
         #map { min-height: calc(100vh - 250px); }
     }
     
-    /* OSM Dark Mode Filter (Automotive Navy Blue Tint) */
+    /* OSM Dark Mode Filter (Emerald Tint) */
     .leaflet-layer, .leaflet-control-zoom-in, .leaflet-control-zoom-out, .leaflet-control-attribution {
-        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%) sepia(20%);
+        filter: invert(100%) hue-rotate(150deg) brightness(90%) contrast(90%) sepia(30%);
     }
 
     .btn-center-map {
         position: absolute; bottom: 20px; right: 20px; z-index: 400;
-        background: #ffffff; border: 1px solid #cbd5e1;
-        color: #0f172a; padding: 10px 20px; border-radius: 4px;
+        background: #ffffff; border: 1px solid #10b981;
+        color: #064e3b; padding: 10px 20px; border-radius: 4px;
         font-size: 0.85rem; font-weight: 900; cursor: pointer;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px;
     }
-    .btn-center-map:hover { background: #e2e8f0; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); }
+    .btn-center-map:hover { background: #d1fae5; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); }
 
-    /* === LIST ITEMS (DASHBOARD LOG) === */
+    /* === LIST ITEMS === */
     .list-item-custom {
-        padding: 14px 16px; border-bottom: 1px solid #1e293b;
+        padding: 14px 16px; border-bottom: 1px solid #064e3b;
         display: flex; justify-content: space-between; align-items: center;
-        background: #0f172a;
+        background: #022c22;
         transition: background 0.2s;
     }
-    .list-item-custom:nth-child(even) { background: #151e2f; }
+    .list-item-custom:nth-child(even) { background: #021a14; }
     .list-item-custom:last-child { border-bottom: none; }
-    .list-item-custom:hover { background: #1e293b; }
+    .list-item-custom:hover { background: #064e3b; }
 
 </style>
 
 <div class="maps-city-bg">
     <div class="max-w-[1920px] mx-auto px-4 lg:px-6 relative z-10">
         
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 border-b-2 border-[#334155] pb-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 border-b-2 border-[#047857] pb-4">
             <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#0f172a] border border-[#334155] text-[#38bdf8] text-[9px] font-black tracking-widest uppercase mb-3 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></div> SATELIT AKTIF
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-[#022c22] border border-[#047857] text-[#34d399] text-[9px] font-black tracking-widest uppercase mb-3 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]"></div> GPS AKTIF
                 </div>
                 <h1 class="text-3xl md:text-5xl font-black tracking-tighter leading-none uppercase" style="text-shadow: 2px 2px 0 #000, 4px 4px 10px rgba(0,0,0,0.8);">
-                    <span class="text-slate-100">KTVDI</span> 
-                    <span class="text-slate-400">MAPS</span>
-                    <span class="text-red-600">CITY</span>
+                    <span class="text-slate-100">NAVIGASI</span> 
+                    <span class="text-emerald-500">BSU</span>
                 </h1>
             </div>
             <div class="flex gap-2">
-                <a href="/" class="px-6 py-3 rounded-lg bg-[#1e293b] hover:bg-[#334155] border-b-4 border-[#0f172a] text-slate-200 hover:text-white text-xs font-black transition flex items-center gap-2 shadow-lg uppercase tracking-wider">
-                    <i class="fa-solid fa-gauge-high"></i> Dasbor Utama
+                <a href="/" class="px-6 py-3 rounded-lg bg-[#064e3b] hover:bg-[#047857] border-b-4 border-[#022c22] text-emerald-100 hover:text-white text-xs font-black transition flex items-center gap-2 shadow-lg uppercase tracking-wider">
+                    <i class="fa-solid fa-house"></i> Beranda BSU
                 </a>
             </div>
         </div>
@@ -218,8 +205,9 @@
             
             <div class="lg:col-span-3 flex flex-col gap-6">
                 
+                <!-- Speedometer Panel -->
                 <div class="dash-panel h-72 lg:h-auto lg:flex-1">
-                    <div class="panel-header text-slate-300"><i class="fa-solid fa-gauge-simple-high text-[#38bdf8]"></i> INFO BERKENDARA</div>
+                    <div class="panel-header text-emerald-300"><i class="fa-solid fa-gauge-simple-high text-[#34d399]"></i> KECEPATAN ANDA</div>
                     <div class="speedo-wrapper">
                         <div class="speedo-ring"></div>
                         
@@ -229,7 +217,7 @@
 
                         <div id="speedWarning" class="speed-warning">
                             <i class="fa-solid fa-triangle-exclamation text-xl mb-1 text-white animate-bounce"></i><br>
-                            Terdeteksi Kecepatan Tinggi!<br>Pastikan sudah menggunakan Sabuk Keselamatan atau Helm SNI.
+                            Bawa Sampah Hati-Hati!<br>Kurangi kecepatan demi keselamatan berkendara.
                         </div>
 
                         <div class="digital-speed" id="speedVal">0</div>
@@ -237,34 +225,40 @@
                         
                         <div id="driveMode" class="text-lg font-black tracking-widest" style="color: #94a3b8;">DIAM</div>
 
-                        <div class="absolute bottom-4 left-4 right-4 flex justify-between text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-[#0b0f19] px-3 py-2 rounded-lg border border-[#1e293b]">
-                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-mountain text-emerald-500"></i> ELEVASI: <span id="altVal" class="text-white">---</span></span>
-                            <span class="flex items-center gap-1.5"><i class="fa-regular fa-compass text-[#38bdf8]"></i> <span id="headingVal" class="text-white">---</span></span>
+                        <div class="absolute bottom-4 left-4 right-4 flex justify-between text-[10px] text-emerald-400/70 font-bold uppercase tracking-widest bg-[#020617] px-3 py-2 rounded-lg border border-[#064e3b]">
+                            <span class="flex items-center gap-1.5"><i class="fa-solid fa-mountain text-purple-400"></i> ELEVASI: <span id="altVal" class="text-white">---</span></span>
+                            <span class="flex items-center gap-1.5"><i class="fa-regular fa-compass text-[#34d399]"></i> <span id="headingVal" class="text-white">---</span></span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Jarak ke BSU Target Panel -->
                 <div class="dash-panel h-[350px] flex flex-col">
-                    <div class="panel-header text-[#a855f7] justify-between">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-network-wired"></i> DIAGNOSTIK JARINGAN</span>
-                        <button onclick="runSpeedTest()" id="btn-speedtest" class="bg-[#a855f7]/20 text-[#a855f7] hover:bg-[#a855f7] hover:text-white border border-[#a855f7]/50 px-3 py-1 rounded text-[9px] transition font-bold uppercase cursor-pointer disabled:opacity-50">Uji Koneksi</button>
+                    <div class="panel-header text-purple-300 justify-between">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-route"></i> TARGET: BSU LESTARI</span>
                     </div>
-                    <div class="p-4 grid grid-cols-1 gap-3 flex-1">
-                        <div class="st-box">
-                            <p class="st-label flex items-center"><i class="fa-solid fa-tower-broadcast text-slate-400 mr-2"></i> PING</p>
-                            <p class="st-value text-slate-300" id="st-ping">-- <span class="text-[10px] text-slate-500 font-sans">ms</span></p>
+                    <div class="p-6 bg-gradient-to-b from-[#022c22] to-[#020617] flex-1 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                        
+                        <!-- Pulse effect background -->
+                        <div class="absolute w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl animate-pulse"></div>
+
+                        <i class="fa-solid fa-map-pin text-4xl text-emerald-500 mb-4 drop-shadow-[0_0_10px_rgba(16,185,129,0.8)] z-10"></i>
+                        <h3 class="text-xl font-black text-white z-10 mb-1 tracking-wide">Tanjung Kulon, Kajen</h3>
+                        <p class="text-[10px] text-emerald-200/60 uppercase tracking-widest z-10 mb-6 font-bold">Titik Lokasi Utama BSU</p>
+
+                        <div class="w-full bg-[#064e3b]/50 border border-[#047857] rounded-xl p-4 z-10 shadow-inner">
+                            <p class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Estimasi Jarak Udara</p>
+                            <p id="jarak-bsu" class="text-3xl font-black text-white tracking-tighter drop-shadow-md font-mono">MENGHITUNG...</p>
+                            
+                            <div class="mt-4 pt-4 border-t border-emerald-700/50 flex justify-between items-center">
+                                <span class="text-[9px] text-emerald-300 uppercase font-bold tracking-widest">Est Waktu:</span>
+                                <span id="eta-bsu" class="text-sm font-black text-purple-300">-- Menit</span>
+                            </div>
                         </div>
-                        <div class="st-box">
-                            <p class="st-label flex items-center"><i class="fa-solid fa-download text-[#38bdf8] mr-2"></i> UNDUH</p>
-                            <p class="st-value text-[#38bdf8]" id="st-dl">-- <span class="text-[10px] text-slate-500 font-sans">Mbps</span></p>
-                        </div>
-                        <div class="st-box">
-                            <p class="st-label flex items-center"><i class="fa-solid fa-upload text-[#a855f7] mr-2"></i> UNGGAH</p>
-                            <p class="st-value text-[#a855f7]" id="st-ul">-- <span class="text-[10px] text-slate-500 font-sans">Mbps</span></p>
-                        </div>
-                    </div>
-                    <div class="h-1.5 w-full bg-[#1e293b]">
-                        <div id="st-progress" class="h-full bg-gradient-to-r from-[#38bdf8] to-[#a855f7] w-0 transition-all duration-200"></div>
+
+                        <a href="https://maps.app.goo.gl/4PWcofyq2wk1Sbgn9" target="_blank" class="mt-6 w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-lg shadow-[0_4px_15px_rgba(16,185,129,0.4)] transition-all z-10 border border-emerald-400 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-diamond-turn-right"></i> Rute Google Maps
+                        </a>
                     </div>
                 </div>
 
@@ -272,45 +266,33 @@
 
             <div class="lg:col-span-6">
                 <div class="dash-panel h-full flex flex-col min-h-[500px] relative">
-                    <div class="panel-header text-slate-300 justify-between hidden lg:flex">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-[#38bdf8]"></i> LIVE NAVIGATION OSM</span>
+                    <div class="panel-header text-emerald-300 justify-between hidden lg:flex">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-[#34d399]"></i> PETA LOKASI LIVE</span>
                         <div id="gps-accuracy-badge" class="flex items-center gap-2 text-[10px] text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/30 font-bold tracking-widest">
                             <i class="fa-solid fa-spinner fa-spin"></i> MENCARI SATELIT...
                         </div>
                     </div>
-                    <div class="flex-1 relative bg-[#0b0f19]">
+                    <div class="flex-1 relative bg-[#020617]">
                         <div id="map"></div>
-                        <button class="btn-center-map" onclick="recenterMap()"><i class="fa-solid fa-crosshairs"></i> FOKUS LOKASI</button>
+                        <button class="btn-center-map" onclick="recenterMap()"><i class="fa-solid fa-crosshairs"></i> FOKUS LOKASI SAYA</button>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-3 flex flex-col gap-6">
                 
-                <div class="dash-panel lg:max-h-[350px] flex flex-col">
-                    <div class="panel-header text-slate-300">
-                        <i class="fa-solid fa-house-crack text-[#ef4444]"></i> RADAR BENCANA (BMKG)
+                <div class="dash-panel flex-1 flex flex-col h-[720px] lg:h-full">
+                    <div class="panel-header text-emerald-300 justify-between">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-radar text-amber-500"></i> RADAR FASILITAS UMUM</span>
+                        <i class="fa-solid fa-circle-notch fa-spin text-[10px] hidden text-emerald-400" id="poi-loader"></i>
                     </div>
-                    <div class="flex-1 overflow-y-auto premium-scroll" id="bmkg-list">
-                        <div class="p-8 text-center text-[11px] text-slate-500 font-bold uppercase tracking-widest">
-                            <i class="fa-solid fa-satellite-dish fa-spin text-3xl mb-4 block text-[#ef4444]"></i>
-                            Menyinkronkan API JSON...
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dash-panel flex-1 flex flex-col lg:max-h-[350px]">
-                    <div class="panel-header text-slate-300 justify-between">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-location-crosshairs text-amber-500"></i> RADAR LOKAL (POI)</span>
-                        <i class="fa-solid fa-circle-notch fa-spin text-[10px] hidden text-slate-400" id="poi-loader"></i>
-                    </div>
-                    <div class="p-2 bg-[#0b0f19] border-b border-[#1e293b] text-[9px] text-slate-400 font-bold text-center uppercase tracking-widest">
-                        Jarak Deteksi Aktif: 100M - 5KM
+                    <div class="p-2 bg-[#020617] border-b border-[#064e3b] text-[9px] text-emerald-400/70 font-bold text-center uppercase tracking-widest">
+                        Memantau Fasilitas dalam Radius 5KM
                     </div>
                     <div class="flex-1 overflow-y-auto premium-scroll" id="poi-list">
-                        <div class="p-8 text-center text-[11px] text-slate-500 font-bold uppercase tracking-widest">
-                            <i class="fa-solid fa-radar animate-spin text-3xl mb-4 block text-slate-600"></i>
-                            Menunggu Titik Koordinat...
+                        <div class="p-8 text-center text-[11px] text-emerald-500 font-bold uppercase tracking-widest">
+                            <i class="fa-solid fa-radar animate-spin text-3xl mb-4 block text-emerald-600"></i>
+                            Menunggu Titik Koordinat Anda...
                         </div>
                     </div>
                 </div>
@@ -327,22 +309,30 @@
     document.addEventListener("DOMContentLoaded", function() {
         
         // ==========================================
-        // 1. INISIALISASI PETA (OSM DARK MODE)
+        // 1. KOORDINAT TARGET: BSU TANJUNG LESTARI
         // ==========================================
-        const map = L.map('map', {zoomControl: false}).setView([-2.5, 118.0], 5);
+        // Koordinat untuk Tanjung Kulon, Kajen, Pekalongan
+        const bsuLat = -7.0347; 
+        const bsuLon = 109.5768;
+
+        // ==========================================
+        // 2. INISIALISASI PETA
+        // ==========================================
+        const map = L.map('map', {zoomControl: false}).setView([-7.0347, 109.5768], 12);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '© OSM | KTVDI Telemetry'
+            attribution: '© OSM | BSU Navigation'
         }).addTo(map);
         
         L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
+        const bsuLayer = L.layerGroup().addTo(map);
         const userLayer = L.layerGroup().addTo(map);
         const poiLayer = L.layerGroup().addTo(map);
-        const bmkgLayer = L.layerGroup().addTo(map);
 
         let userMarker = null;
+        let routingLine = null;
         let myLat = null; 
         let myLon = null;
         let autoCenter = true;
@@ -351,41 +341,52 @@
 
         window.recenterMap = function() {
             if(myLat && myLon) {
-                map.flyTo([myLat, myLon], 16, {animate: true, duration: 1.5});
+                map.flyTo([myLat, myLon], 15, {animate: true, duration: 1.5});
                 autoCenter = true;
             } else {
                 alert("Sedang mengunci posisi GPS satelit...");
             }
         };
 
-        // Icon Custom Otomotif (Modern Red/Blue Dot)
+        // Icon Target BSU
+        const bsuIcon = L.divIcon({
+            html: `<div class="relative flex items-center justify-center w-12 h-12">
+                     <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-40 animate-ping"></span>
+                     <div class="relative flex items-center justify-center w-8 h-8 bg-[#022c22] border-2 border-emerald-400 rounded-full shadow-[0_0_15px_#10b981] text-white">
+                        <i class="fa-solid fa-leaf text-sm"></i>
+                     </div>
+                   </div>`,
+            className: '', iconSize: [48, 48], iconAnchor: [24, 24]
+        });
+
+        // Tanam Marker BSU Secara Permanen
+        L.marker([bsuLat, bsuLon], {icon: bsuIcon}).addTo(bsuLayer)
+         .bindPopup(`<strong style="color:#022c22; font-family:'Inter';">BSU Tanjung Lestari</strong><br><span style="font-size:11px;">Tanjung Kulon, Kajen</span>`)
+         .openPopup();
+
+        // Icon Custom Otomotif (User)
         const carIcon = L.divIcon({
             html: `<div class="relative flex items-center justify-center w-10 h-10">
-                     <span class="absolute inline-flex h-full w-full rounded-full bg-[#00e5ff] opacity-30 animate-ping"></span>
-                     <div class="relative flex items-center justify-center w-6 h-6 bg-[#0f172a] border-2 border-[#00e5ff] rounded-full shadow-[0_0_15px_#00e5ff]">
+                     <span class="absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-40 animate-ping"></span>
+                     <div class="relative flex items-center justify-center w-6 h-6 bg-[#020617] border-2 border-purple-400 rounded-full shadow-[0_0_15px_#a855f7]">
                         <div class="w-2 h-2 bg-white rounded-full"></div>
                      </div>
                    </div>`,
             className: '', iconSize: [40, 40], iconAnchor: [20, 20]
         });
 
-        const bmkgIcon = L.divIcon({
-            html: '<div class="text-3xl text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.9)]"><i class="fa-solid fa-bullseye fa-fade"></i></div>',
-            className: '', iconSize: [30, 30], iconAnchor: [15, 15]
-        });
-
         const foodIcon = L.divIcon({
-            html: '<div class="w-7 h-7 bg-amber-500 text-white rounded-full flex items-center justify-center text-[11px] border-2 border-[#0f172a] shadow-lg"><i class="fa-solid fa-burger"></i></div>',
+            html: '<div class="w-7 h-7 bg-amber-500 text-white rounded-full flex items-center justify-center text-[11px] border-2 border-[#020617] shadow-lg"><i class="fa-solid fa-burger"></i></div>',
             className: '', iconSize: [28, 28]
         });
 
         const tourIcon = L.divIcon({
-            html: '<div class="w-7 h-7 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[11px] border-2 border-[#0f172a] shadow-lg"><i class="fa-solid fa-tree"></i></div>',
+            html: '<div class="w-7 h-7 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[11px] border-2 border-[#020617] shadow-lg"><i class="fa-solid fa-tree"></i></div>',
             className: '', iconSize: [28, 28]
         });
 
         // ==========================================
-        // 2. LOGIKA TELEMETRI & SPEEDOMETER (XPANDER MID)
+        // 3. LOGIKA TELEMETRI & PERHITUNGAN JARAK
         // ==========================================
         let lastHeading = null;
         const warningEl = document.getElementById('speedWarning');
@@ -395,11 +396,23 @@
         const driveModeEl = document.getElementById('driveMode');
         const accuracyBadge = document.getElementById('gps-accuracy-badge');
         const ecoIndicator = document.getElementById('ecoIndicator');
+        const jarakBsuEl = document.getElementById('jarak-bsu');
+        const etaBsuEl = document.getElementById('eta-bsu');
 
         function getDirection(heading) {
             if(heading === null || isNaN(heading)) return "N/A";
             const dirs = ["U", "TL", "T", "TG", "S", "BD", "B", "BL"];
             return dirs[Math.round(heading / 45) % 8] + ` (${Math.round(heading)}°)`;
+        }
+
+        // Haversine Formula untuk Hitung Jarak
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+            var R = 6371; 
+            var dLat = (lat2-lat1) * Math.PI/180;
+            var dLon = (lon2-lon1) * Math.PI/180; 
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            return R * c;
         }
 
         function updateLocationLogic(lat, lon, speedKmh, heading, altitude, source) {
@@ -410,43 +423,62 @@
             headingValEl.innerText = getDirection(heading);
             altValEl.innerText = (altitude !== null && !isNaN(altitude)) ? Math.round(altitude) + " MDPL" : "N/A";
             
-            // Logika Drive Mode Teks
+            // Drive Mode Logic
             let modeText = "DIAM";
-            let modeColor = "#94a3b8"; // Slate
+            let modeColor = "#94a3b8"; 
             
-            if (speedKmh > 105) { modeText = "SUPER NGEBUT"; modeColor = "#ea002a"; } // Red
-            else if (speedKmh >= 80) { modeText = "NGEBUT"; modeColor = "#f97316"; } // Orange
-            else if (speedKmh >= 60) { modeText = "CEPAT"; modeColor = "#eab308"; } // Yellow
-            else if (speedKmh >= 30) { modeText = "STANDAR"; modeColor = "#10b981"; } // Green
-            else if (speedKmh > 5) { modeText = "PELAN"; modeColor = "#38bdf8"; } // Blue
+            if (speedKmh > 105) { modeText = "NGEBUT BERBAHAYA"; modeColor = "#ea002a"; } 
+            else if (speedKmh >= 80) { modeText = "NGEBUT"; modeColor = "#f97316"; } 
+            else if (speedKmh >= 60) { modeText = "CEPAT"; modeColor = "#eab308"; } 
+            else if (speedKmh >= 30) { modeText = "STANDAR"; modeColor = "#10b981"; } 
+            else if (speedKmh > 5) { modeText = "PELAN"; modeColor = "#a855f7"; } 
             else { modeText = "DIAM"; modeColor = "#94a3b8"; }
             
             driveModeEl.innerText = modeText;
             driveModeEl.style.color = modeColor;
             driveModeEl.style.textShadow = `0 0 15px ${modeColor}`;
 
-            // Update Eco Mode
-            if(speedKmh > 80) ecoIndicator.style.opacity = '0'; // ECO Off
-            else ecoIndicator.style.opacity = '1'; // ECO On
+            if(speedKmh > 80) ecoIndicator.style.opacity = '0';
+            else ecoIndicator.style.opacity = '1';
             
-            // Update Status GPS Label
             if(source === 'GPS') {
-                accuracyBadge.innerHTML = '<div class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></div> GPS AKURAT (3D FIX)';
+                accuracyBadge.innerHTML = '<div class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]"></div> GPS AKURAT';
                 accuracyBadge.className = "flex items-center gap-2 text-[9px] text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/30 font-bold tracking-widest";
             } else {
-                accuracyBadge.innerHTML = '<div class="w-2 h-2 bg-amber-500 rounded-full shadow-[0_0_8px_#f59e0b]"></div> FALLBACK (IP/BTS)';
+                accuracyBadge.innerHTML = '<div class="w-2 h-2 bg-amber-500 rounded-full shadow-[0_0_8px_#f59e0b]"></div> LOKASI PERKIRAAN';
                 accuracyBadge.className = "flex items-center gap-2 text-[9px] text-amber-500 bg-amber-500/10 px-2 py-1 rounded border border-amber-500/30 font-bold tracking-widest";
             }
             
-            // Logika Belok Kecepatan Tinggi
-            let isTurning = false;
-            if(heading !== null && lastHeading !== null) {
-                let diff = Math.abs(heading - lastHeading);
-                if(diff > 180) diff = 360 - diff; 
-                if(diff > 15) isTurning = true;
-            }
+            // --- KALKULASI JARAK & RUTE KE BSU ---
+            let distKm = getDistanceFromLatLonInKm(lat, lon, bsuLat, bsuLon);
             
-            if(speedKmh > 80 && isTurning) {
+            if(distKm < 0.05) { // Jarak di bawah 50 Meter
+                jarakBsuEl.innerText = "SAMPAI BSU";
+                jarakBsuEl.classList.add("text-emerald-400");
+                etaBsuEl.innerText = "Selamat Datang!";
+            } else {
+                jarakBsuEl.innerText = distKm.toFixed(2) + " KM";
+                
+                // Kalkulasi Waktu (Berdasarkan Kecepatan)
+                if (speedKmh > 5) {
+                    let hours = distKm / speedKmh;
+                    let mins = Math.round(hours * 60);
+                    etaBsuEl.innerText = (mins < 1) ? "< 1 Menit" : mins + " Menit";
+                } else {
+                    // Asumsi jalan santai 30 KM/Jam jika sedang diam
+                    let estimatedMins = Math.round((distKm / 30) * 60);
+                    etaBsuEl.innerText = estimatedMins + " Menit (Est)";
+                }
+            }
+
+            // Gambar Garis Rute ke BSU
+            if(routingLine) map.removeLayer(routingLine);
+            routingLine = L.polyline([[lat, lon], [bsuLat, bsuLon]], {
+                color: '#a855f7', weight: 4, dashArray: '10, 10', opacity: 0.8
+            }).addTo(map);
+
+            // Warning High Speed
+            if(speedKmh > 80) {
                 warningEl.style.display = 'block';
                 speedValEl.style.color = '#ef4444';
                 speedValEl.style.textShadow = '0 0 20px rgba(239,68,68,0.8)';
@@ -457,10 +489,14 @@
             }
             lastHeading = heading;
 
-            // Map Marker Update
+            // Update Map Marker User
             if (!userMarker) {
                 userMarker = L.marker([lat, lon], {icon: carIcon, zIndexOffset: 1000}).addTo(userLayer);
-                map.flyTo([lat, lon], 15, {animate: true});
+                
+                // Fit bounds to show both user and BSU
+                let group = new L.featureGroup([userMarker, L.marker([bsuLat, bsuLon])]);
+                map.fitBounds(group.getBounds(), {padding: [50, 50], maxZoom: 16});
+                
                 triggerPOIFetch(lat, lon);
             } else {
                 userMarker.setLatLng([lat, lon]);
@@ -468,13 +504,13 @@
                 
                 if(lastFetchLat && lastFetchLon) {
                     let d = getDistanceFromLatLonInKm(lat, lon, lastFetchLat, lastFetchLon);
-                    if(d > 3) triggerPOIFetch(lat, lon); // Refetch setiap jalan 3KM
+                    if(d > 3) triggerPOIFetch(lat, lon); 
                 }
                 updateLocalPOIDistances();
             }
         }
 
-        // HTML5 Geolocation (Presisi Satelit/GPS)
+        // HTML5 Geolocation
         if ("geolocation" in navigator) {
             navigator.geolocation.watchPosition((pos) => {
                 let speedMs = pos.coords.speed;
@@ -482,9 +518,6 @@
                 let speedKmh = Math.round(speedMs * 3.6);
                 let heading = pos.coords.heading; 
                 let altitude = pos.coords.altitude;
-
-                // --- UNCOMMENT UNTUK SIMULASI JIKA DITEST DI LAPTOP DIAM ---
-                // speedKmh = Math.floor(Math.random() * 120); heading = Math.floor(Math.random() * 360); altitude = Math.floor(Math.random() * 500);
 
                 updateLocationLogic(pos.coords.latitude, pos.coords.longitude, speedKmh, heading, altitude, 'GPS');
             }, (err) => {
@@ -495,13 +528,10 @@
             fallbackToIPLocation();
         }
 
-        // FALLBACK LOKASI (Laptop / PC tanpa GPS)
         function fallbackToIPLocation() {
             if(myLat !== null) return; 
             headingValEl.innerText = "IP BASE";
             altValEl.innerText = "N/A";
-            driveModeEl.innerText = "DIAM";
-            driveModeEl.style.color = "#94a3b8";
             
             fetch('https://ipapi.co/json/')
                 .then(res => res.json())
@@ -518,19 +548,10 @@
         }
 
         // ==========================================
-        // 3. AUTO DETEKSI KULINER & WISATA (OVERPASS API)
+        // 4. AUTO DETEKSI POI SEKITAR (OVERPASS API)
         // ==========================================
         let rawPOIs = [];
         let lastFetchLat = null; let lastFetchLon = null;
-
-        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-            var R = 6371; 
-            var dLat = (lat2-lat1) * Math.PI/180;
-            var dLon = (lon2-lon1) * Math.PI/180; 
-            var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI/180) * Math.cos(lat2 * Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2); 
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-            return R * c;
-        }
 
         async function triggerPOIFetch(lat, lon) {
             document.getElementById('poi-loader').classList.remove('hidden');
@@ -568,7 +589,7 @@
                             });
 
                             L.marker([el.lat, el.lon], {icon: isFood ? foodIcon : tourIcon}).addTo(poiLayer)
-                             .bindPopup(`<strong style="color:#0f172a; font-family:'Inter'; font-size:12px;">${el.tags.name}</strong><br><span style="font-size:10px;color:gray;">${street}</span>`);
+                             .bindPopup(`<strong style="color:#022c22; font-family:'Inter'; font-size:12px;">${el.tags.name}</strong><br><span style="font-size:10px;color:gray;">${street}</span>`);
                         }
                     });
                 }
@@ -582,7 +603,7 @@
 
         function updateLocalPOIDistances() {
             if(!myLat || !myLon || rawPOIs.length === 0) {
-                document.getElementById('poi-list').innerHTML = '<div class="p-8 text-center text-[10px] text-slate-500 font-bold uppercase tracking-widest">0 Objek dalam radius 5KM.</div>';
+                document.getElementById('poi-list').innerHTML = '<div class="p-8 text-center text-[10px] text-emerald-400/60 font-bold uppercase tracking-widest">0 Objek dalam radius 5KM.</div>';
                 return;
             }
 
@@ -591,7 +612,7 @@
                 return p;
             });
 
-            // Hanya tampilkan yang jaraknya antara 100 Meter sampai 5 KM
+            // Tampilkan jarak antara 100M hingga 5KM
             list = list.filter(p => p.distance >= 0.1 && p.distance <= 5);
             list.sort((a,b) => a.distance - b.distance);
 
@@ -599,161 +620,29 @@
             list.forEach(p => {
                 let distText = p.distance < 1 ? (Math.round(p.distance * 1000) + ' M') : (p.distance.toFixed(1) + ' KM');
                 let color = p.isFood ? 'text-amber-400' : 'text-emerald-400';
-                let bg = p.isFood ? 'bg-amber-400/10' : 'bg-emerald-400/10';
                 let icon = p.isFood ? 'fa-utensils' : 'fa-camera';
                 
                 html += `
                     <div class="list-item-custom group">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-[#0b0f19] border border-[#334155] flex items-center justify-center ${color} shadow-[0_4px_10px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform">
+                            <div class="w-10 h-10 rounded-full bg-[#020617] border border-[#064e3b] flex items-center justify-center ${color} shadow-[0_4px_10px_rgba(0,0,0,0.5)] group-hover:scale-110 transition-transform">
                                 <i class="fa-solid ${icon} text-sm"></i>
                             </div>
                             <div>
                                 <p class="text-[13px] font-bold text-slate-200 leading-tight">${p.name}</p>
-                                <p class="text-[9px] text-slate-500 flex items-center gap-1.5 mt-1 uppercase tracking-widest"><i class="fa-solid fa-road text-slate-600"></i> ${p.street}</p>
+                                <p class="text-[9px] text-emerald-400/60 flex items-center gap-1.5 mt-1 uppercase tracking-widest"><i class="fa-solid fa-road"></i> ${p.street}</p>
                             </div>
                         </div>
-                        <div class="text-[10px] font-black text-slate-300 bg-[#0b0f19] border border-[#334155] px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap">
+                        <div class="text-[10px] font-black text-white bg-[#064e3b] border border-[#047857] px-3 py-1.5 rounded-lg shadow-sm whitespace-nowrap">
                             ${distText}
                         </div>
                     </div>
                 `;
             });
 
-            if(html === '') html = '<div class="p-8 text-center text-[10px] text-slate-500 font-bold uppercase tracking-widest">Di luar jangkauan radar.</div>';
+            if(html === '') html = '<div class="p-8 text-center text-[10px] text-emerald-400/60 font-bold uppercase tracking-widest">Di luar jangkauan radar.</div>';
             document.getElementById('poi-list').innerHTML = html;
         }
-
-        // ==========================================
-        // 4. BMKG GEMPA TERKINI (JSON API REALTIME)
-        // ==========================================
-        async function fetchBMKG() {
-            try {
-                // Ambil data resmi terbaru BMKG M >= 5.0 (Ditambah Cache Buster agar selalu baru)
-                const bmkgUrl = `https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json?t=${Date.now()}`;
-                
-                const response = await fetch(bmkgUrl);
-                const data = await response.json();
-                
-                const gempaList = data.Infogempa.gempa;
-                const bmkgContainer = document.getElementById('bmkg-list');
-                bmkgContainer.innerHTML = '';
-
-                let bounds = [];
-
-                // Tampilkan maksimal 15 gempa
-                const maxItems = Math.min(gempaList.length, 15); 
-                for (let i = 0; i < maxItems; i++) {
-                    const gempa = gempaList[i];
-                    
-                    const tanggal = gempa.Tanggal;
-                    const jam = gempa.Jam;
-                    const coords = gempa.Coordinates.split(',');
-                    const lat = parseFloat(coords[0]);
-                    const lon = parseFloat(coords[1]);
-                    const mag = gempa.Magnitude;
-                    const depth = gempa.Kedalaman;
-                    const wilayah = gempa.Wilayah;
-                    const potensi = gempa.Potensi;
-
-                    // Plot map
-                    L.circle([lat, lon], { color: '#ef4444', fillColor: '#ef4444', fillOpacity: 0.15, radius: 20000 }).addTo(bmkgLayer);
-                    L.marker([lat, lon], {icon: bmkgIcon}).addTo(bmkgLayer)
-                     .bindPopup(`<div style="font-family:'Inter',sans-serif; color:#0f172a;">
-                                    <strong style="color:#ef4444; font-size:14px;">M ${mag} - ${wilayah}</strong><br>
-                                    Kedalaman: ${depth}<br><b style="font-size:11px; text-transform:uppercase;">${potensi}</b>
-                                 </div>`);
-                    bounds.push([lat, lon]);
-
-                    // List UI Xpander Theme
-                    bmkgContainer.innerHTML += `
-                        <div class="list-item-custom flex-col items-start gap-1 hover:bg-[#1e293b] cursor-pointer">
-                            <div class="flex justify-between items-center w-full mb-1">
-                                <span class="bg-[#ef4444] text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider shadow-[0_0_10px_rgba(239,68,68,0.5)]">MAG ${mag}</span>
-                                <span class="text-[9px] text-slate-400 font-bold">${tanggal} | ${jam}</span>
-                            </div>
-                            <p class="text-[13px] font-bold text-white leading-snug mt-1">${wilayah}</p>
-                            <div class="flex justify-between items-center w-full mt-2">
-                                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest"><i class="fa-solid fa-water text-[#38bdf8] mr-1"></i> ${depth}</p>
-                                <p class="text-[8px] text-[#ef4444] font-black uppercase tracking-wider bg-[#ef4444]/10 px-2 py-1 rounded border border-[#ef4444]/30">${potensi}</p>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // Fokus map ke kumpulan gempa jika lokasi user belum didapatkan
-                if(bounds.length > 0 && !myLat) {
-                    map.fitBounds(bounds, {padding: [50,50], maxZoom: 6});
-                }
-
-            } catch (err) {
-                console.error("Gagal load BMKG", err);
-                document.getElementById('bmkg-list').innerHTML = '<div class="p-8 text-[10px] text-red-500 font-bold text-center uppercase">Gagal koneksi ke server BMKG.</div>';
-            }
-        }
-        fetchBMKG();
-
-        // ==========================================
-        // 5. SPEED TEST INTERNET (AKURAT JS NATIVE CLOUDFLARE ENDPOINT)
-        // ==========================================
-        window.runSpeedTest = async function() {
-            const btn = document.getElementById('btn-speedtest');
-            const pPing = document.getElementById('st-ping');
-            const pDl = document.getElementById('st-dl');
-            const pUl = document.getElementById('st-ul');
-            const pBar = document.getElementById('st-progress');
-
-            if(btn.disabled) return;
-            btn.disabled = true;
-            btn.innerText = "MENGUKUR...";
-            pBar.style.width = "10%";
-
-            pPing.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-slate-500"></i>';
-            pDl.innerHTML = '--'; pUl.innerHTML = '--';
-
-            try {
-                // 1. Mengukur Ping ke Cloudflare
-                const pingStart = performance.now();
-                await fetch('https://cloudflare.com/cdn-cgi/trace', {cache: 'no-store'});
-                const pingTime = Math.round(performance.now() - pingStart);
-                pPing.innerHTML = `${pingTime} <span class="text-[10px] text-slate-500 font-sans">ms</span>`;
-                pBar.style.width = "40%";
-
-                // 2. Mengukur Download (Unduh Payload 10MB dari Server Cloudflare)
-                pDl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[#38bdf8]"></i>';
-                const dlStart = performance.now();
-                const dlResp = await fetch('https://speed.cloudflare.com/__down?bytes=10000000', {cache: 'no-store'});
-                await dlResp.blob();
-                const dlEnd = performance.now();
-                const dlDuration = (dlEnd - dlStart) / 1000;
-                const dlMbps = ((10000000 * 8) / dlDuration) / 1000000;
-                pDl.innerHTML = `${dlMbps.toFixed(2)} <span class="text-[10px] text-slate-500 font-sans">Mbps</span>`;
-                pBar.style.width = "70%";
-
-                // 3. Mengukur Upload (Unggah Payload 2MB Dummy ke Cloudflare)
-                pUl.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[#a855f7]"></i>';
-                const ulStart = performance.now();
-                const uploadData = new Blob([new ArrayBuffer(2000000)]); 
-                await fetch('https://speed.cloudflare.com/__up', {
-                    method: 'POST',
-                    body: uploadData
-                });
-                const ulEnd = performance.now();
-                const ulDuration = (ulEnd - ulStart) / 1000;
-                const ulMbps = ((2000000 * 8) / ulDuration) / 1000000;
-                pUl.innerHTML = `${ulMbps.toFixed(2)} <span class="text-[10px] text-slate-500 font-sans">Mbps</span>`;
-                pBar.style.width = "100%";
-
-            } catch (err) {
-                console.error("Speedtest gagal", err);
-                pPing.innerHTML = "ERR"; pDl.innerHTML = "ERR"; pUl.innerHTML = "ERR";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "UJI ULANG";
-                setTimeout(() => { pBar.style.width = "0%"; }, 2000);
-            }
-        };
-
     });
 </script>
 
