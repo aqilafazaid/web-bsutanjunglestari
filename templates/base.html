@@ -328,8 +328,8 @@
 
         .ticker-wrap { width: 100%; overflow: hidden; height: 100%; display: flex; align-items: center; position: relative; }
         
-        /* TICKER ANIMATION (Disesuaikan agar pas, tidak terlalu cepat) */
-        .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker 40s linear infinite; }
+        /* TICKER ANIMATION (DIREVISI AGAR SANGAT PELAN) */
+        .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker 150s linear infinite; }
         .ticker-item { padding: 0 3rem; display: flex; align-items: center; color: #ffffff; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; } 
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
@@ -339,7 +339,7 @@
         /* Ticker Vertikal (Malam) */
         .ticker-vertical-move {
             display: flex; flex-direction: column; width: 100%; align-items: flex-start;
-            animation: tickerVertical 25s linear infinite; 
+            animation: tickerVertical 100s linear infinite; 
         }
         .ticker-item-vert {
             height: 56px; display: flex; align-items: center;
@@ -402,7 +402,8 @@
         <div class="absolute inset-0 z-[-1] opacity-20 mix-blend-screen bg-[url('https://images.unsplash.com/photo-1518605368461-1e122b10287b?auto=format&fit=crop&q=80')] bg-cover bg-center bg-fixed bg-no-repeat"></div>
         
         <div class="w-full max-w-lg mx-auto flex flex-col items-center gap-5 mt-2 pb-12">
-            <img src="https://iili.io/C6oIUAX.md.png" class="h-16 w-16 mb-2 drop-shadow-lg" alt="BSU Logo">
+            <!-- Menambahkan drop shadow tebal warna putih untuk logo -->
+            <img src="https://iili.io/C6oIUAX.md.png" class="h-16 w-16 mb-2 drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]" alt="BSU Logo">
 
             <div class="flex items-center gap-4 animate-pulse">
                 <i class="fa-solid fa-flag text-4xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]"></i>
@@ -470,7 +471,7 @@
     <div id="initial-loader">
         <div class="relative flex flex-col items-center">
             <div class="loader-glow"></div>
-            <img src="https://iili.io/C6oIUAX.md.png" class="h-20 md:h-24 mb-8 relative z-10 animate-bounce drop-shadow-xl" alt="BSU Loading">
+            <img src="https://iili.io/C6oIUAX.md.png" class="h-20 md:h-24 mb-8 relative z-10 animate-bounce drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]" alt="BSU Loading">
             <div class="flex gap-2 relative z-10">
                 <span class="w-2.5 h-2.5 bg-[#10b981] rounded-full animate-pulse"></span>
                 <span class="w-2.5 h-2.5 bg-white rounded-full animate-pulse delay-75"></span>
@@ -487,7 +488,7 @@
                 
                 <div class="flex items-center gap-3 md:gap-5 border-r border-white/10 pr-3 md:pr-5 mr-1 lg:mr-2 w-full lg:w-auto overflow-hidden">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
-                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-7 md:h-10 object-contain drop-shadow-md">
+                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-7 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]">
                     </a>
 
                     {% if session.get('user') %}
@@ -508,16 +509,19 @@
                             </div>
                         </div>
                     {% else %}
-                        <div id="mobile-guest-schedule" class="xl:hidden relative flex-1 h-8 ml-1 overflow-hidden min-w-[120px]">
-                            </div>
+                        <!-- REVISI: Teks #UbahSampahJadiCuan statis di mobile, bukan jadwal -->
+                        <div id="mobile-guest-schedule" class="xl:hidden relative flex-1 h-8 ml-1 overflow-hidden min-w-[120px] flex items-center">
+                            <span class="text-[11px] sm:text-[13px] font-black italic text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-200 drop-shadow-[0_0_5px_rgba(255,255,255,0.5)] tracking-wide">#UbahSampahJadiCuan</span>
+                        </div>
                     {% endif %}
 
+                    <!-- REVISI: Header Desktop dirotasi tanpa Jadwal -->
                     <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-center text-white min-w-[280px] h-12 overflow-hidden">
                         <div id="header-state-2" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
                             <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-white drop-shadow-lg tracking-wide">#TanjungLestariBersih</span>
                         </div>
                         <div id="header-state-3" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-[#ffffff] to-purple-200 drop-shadow-lg tracking-wide">UBAH SAMPAH JADI TABUNGAN</span>
+                            <span class="text-xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-200 drop-shadow-lg tracking-wide">#UbahSampahJadiCuan</span>
                         </div>
                         <div id="header-state-4" class="hidden absolute flex items-center justify-center transition-opacity duration-1000 opacity-0 w-full">
                             <span class="text-xs font-bold tracking-widest uppercase text-white drop-shadow-md whitespace-nowrap">BSU Bunga Tanjung Lestari</span>
@@ -600,10 +604,11 @@
                             </div>
                         </div>
                     {% else %}
+                        <!-- REVISI: Tombol digabung jadi "FORM PENIMBANGAN" -->
                         <div class="flex items-center">
-                            <a href="{{ url_for('login') }}" class="hidden md:block text-white text-sm font-bold hover:text-emerald-300 transition px-4 py-2">Masuk</a>
-                            <a href="{{ url_for('register') }}" class="bg-[#ffffff] hover:bg-gray-100 border border-white text-emerald-700 pl-4 pr-1 md:pl-5 md:pr-1.5 py-1.5 md:py-2 rounded-full font-bold text-[11px] md:text-sm transition shadow-lg flex items-center gap-2 active:scale-95 ml-1 md:ml-2">
-                                Daftar <div class="bg-emerald-600 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center text-[10px] md:text-xs shadow-sm"><i class="fa-solid fa-arrow-right"></i></div>
+                            <a href="/form-penimbangan" class="bg-gradient-to-r from-emerald-100 to-white hover:bg-white text-emerald-800 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-2 rounded-full font-black text-[11px] md:text-sm transition shadow-[0_0_15px_rgba(255,255,255,0.6)] flex items-center gap-2 active:scale-95 ml-1 md:ml-2 border border-white">
+                                FORM PENIMBANGAN
+                                <div class="bg-emerald-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-[10px] md:text-xs shadow-md"><i class="fa-solid fa-clipboard-list"></i></div>
                             </a>
                         </div>
                     {% endif %}
@@ -634,37 +639,49 @@
 
             <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 relative z-10">
                 {% block content %}
-                <div class="text-center py-10 md:py-16 px-4" id="tentang">
-                    <img src="https://iili.io/C6oIUAX.md.png" alt="Logo BSU" class="h-32 md:h-40 mx-auto mb-8 drop-shadow-xl hover:scale-105 transition-transform duration-500">
-                    <h2 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-purple-600 mb-6 drop-shadow-sm">BSU Bunga Tanjung Lestari</h2>
-                    
-                    <p class="text-lg md:text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed mb-12 font-medium">
-                        Sebuah Bank Sampah Unit berbadan hukum yang hadir untuk memfasilitasi masyarakat dalam pengelolaan sampah yang tepat guna. Ubah sampah Anda menjadi nilai ekonomis yang bermanfaat!
-                    </p>
+                <!-- REVISI: Layout dibedakan jadi lebih unik dengan Glass Card dan pembenahan Grid -->
+                <div class="py-10 md:py-16 px-2 md:px-4" id="tentang">
+                    <div class="relative bg-gradient-to-br from-emerald-50/90 to-white/90 p-8 md:p-14 rounded-[2.5rem] shadow-xl border border-emerald-100 overflow-hidden backdrop-blur-sm">
+                        <!-- Blob background -->
+                        <div class="absolute -top-20 -right-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+                        <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+                        
+                        <div class="relative z-10 text-center">
+                            <img src="https://iili.io/C6oIUAX.md.png" alt="Logo BSU" class="h-32 md:h-40 mx-auto mb-8 drop-shadow-[0_0_15px_rgba(255,255,255,0.9)] hover:scale-105 transition-transform duration-500">
+                            
+                            <h2 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-purple-600 mb-6 drop-shadow-sm leading-tight">
+                                BSU Bunga Tanjung Lestari
+                            </h2>
+                            
+                            <p class="text-lg md:text-xl text-slate-700 max-w-3xl mx-auto leading-relaxed mb-14 font-medium px-4">
+                                Bank Sampah Unit berbadan hukum yang hadir untuk memfasilitasi masyarakat dalam pengelolaan sampah yang tepat guna. Ubah sampah Anda menjadi nilai ekonomis yang bermanfaat!
+                            </p>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                        <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-16 h-16 bg-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
-                                <i class="fa-solid fa-scale-balanced text-3xl"></i>
-                            </div>
-                            <h3 class="font-bold text-xl text-emerald-900 mb-3">Penimbangan Rutin</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Sarana pengolahan sampah secara sistematis melalui proses penimbangan berkala untuk memastikan data sampah Anda tercatat akurat.</p>
-                        </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+                                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(16,185,129,0.08)] hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(16,185,129,0.15)] transition-all duration-300">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
+                                        <i class="fa-solid fa-scale-balanced text-3xl"></i>
+                                    </div>
+                                    <h3 class="font-bold text-xl text-emerald-900 mb-3">Penimbangan Rutin</h3>
+                                    <p class="text-slate-600 text-sm leading-relaxed">Sarana pengolahan sampah secara sistematis melalui proses penimbangan berkala untuk memastikan data sampah Anda tercatat akurat.</p>
+                                </div>
 
-                        <div class="bg-purple-50 p-8 rounded-3xl border border-purple-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-16 h-16 bg-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-purple-600 shadow-inner">
-                                <i class="fa-solid fa-sack-dollar text-3xl"></i>
-                            </div>
-                            <h3 class="font-bold text-xl text-purple-900 mb-3">Nabung Jadi Uang</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Sampah yang Anda setor tidak terbuang sia-sia. Tabung sampah di sini dan ubah menjadi saldo uang yang bisa dimanfaatkan.</p>
-                        </div>
+                                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(168,85,247,0.08)] hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(168,85,247,0.15)] transition-all duration-300">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-purple-600 shadow-inner">
+                                        <i class="fa-solid fa-sack-dollar text-3xl"></i>
+                                    </div>
+                                    <h3 class="font-bold text-xl text-purple-900 mb-3">Nabung Jadi Uang</h3>
+                                    <p class="text-slate-600 text-sm leading-relaxed">Sampah yang Anda setor tidak terbuang sia-sia. Tabung sampah di sini dan ubah menjadi saldo uang yang bisa dimanfaatkan.</p>
+                                </div>
 
-                        <div class="bg-emerald-50 p-8 rounded-3xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow">
-                            <div class="w-16 h-16 bg-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
-                                <i class="fa-solid fa-leaf text-3xl"></i>
+                                <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-[0_10px_30px_rgba(16,185,129,0.08)] hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(16,185,129,0.15)] transition-all duration-300">
+                                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-inner">
+                                        <i class="fa-solid fa-leaf text-3xl"></i>
+                                    </div>
+                                    <h3 class="font-bold text-xl text-emerald-900 mb-3">Taman & Green House</h3>
+                                    <p class="text-slate-600 text-sm leading-relaxed">Nikmati fasilitas mini taman dan green house di sekitar BSU untuk budidaya tanaman dan melestarikan lingkungan hijau.</p>
+                                </div>
                             </div>
-                            <h3 class="font-bold text-xl text-emerald-900 mb-3">Taman & Green House</h3>
-                            <p class="text-slate-600 text-sm leading-relaxed">Nikmati fasilitas mini taman dan green house di sekitar BSU untuk budidaya tanaman dan melestarikan lingkungan hijau.</p>
                         </div>
                     </div>
                 </div>
@@ -677,7 +694,7 @@
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div class="space-y-4">
                 <div class="flex items-center gap-3">
-                    <img src="https://iili.io/C6oIUAX.md.png" class="w-12 h-12">
+                    <img src="https://iili.io/C6oIUAX.md.png" class="w-12 h-12 drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]">
                     <div>
                         <h4 class="text-lg font-bold text-white tracking-tight">BSU BUNGA TANJUNG LESTARI</h4>
                         <p class="text-[10px] font-medium text-emerald-300">Bank Sampah Unit</p>
@@ -761,72 +778,14 @@
         updateMobileGreeting();
 
         function initHeaderRotator() {
-            let states = [];
-            const events = [ { title: "Penimbangan Serentak", time: "2026-08-15T08:00:00+07:00", label: "15 Agt, 08.00 WIB" } ];
-            const nowMs = new Date().getTime();
-            const activeEvents = events.filter(e => nowMs <= new Date(e.time).getTime() + (5 * 60 * 1000));
-
+            // Disederhanakan untuk Desktop, membuang event jadwal penimbangan
             const dynamicHeader = document.getElementById('desktop-header-dynamic');
+            let states = [];
+            
             if (dynamicHeader) {
-                if (activeEvents.length > 0) {
-                    activeEvents.forEach((e, idx) => {
-                        const stateId = 'header-state-event-' + idx;
-                        const html = `<div id="${stateId}" class="hidden absolute flex flex-col items-center justify-center transition-opacity duration-1000 opacity-0 w-full"><span class="text-[9px] font-bold tracking-widest text-yellow-300 uppercase drop-shadow-md mb-0.5">${e.label}</span><div class="flex items-center gap-2 text-[12px] font-black text-white drop-shadow-lg uppercase tracking-wide text-center"><span>${e.title}</span></div></div>`;
-                        dynamicHeader.insertAdjacentHTML('beforeend', html);
-                        states.push({ id: stateId, duration: 6000 });
-                    });
-                }
-                
-                states.push({ id: 'header-state-2', duration: 6000 }); 
+                states.push({ id: 'header-state-2', duration: 5000 }); 
                 states.push({ id: 'header-state-3', duration: 5000 }); 
-                states.push({ id: 'header-state-4', duration: 10000 }); 
-            }
-
-            const mobileGuestHeader = document.getElementById('mobile-guest-schedule');
-            if (mobileGuestHeader) {
-                let guestStates = [];
-                if (activeEvents.length > 0) {
-                    activeEvents.forEach((e, idx) => {
-                        const eventId = `mobile-guest-event-${idx}`;
-                        const html = `<div id="${eventId}" class="hidden absolute flex-col items-start justify-center transition-opacity duration-1000 opacity-0 w-full h-full left-0 top-0"><span class="text-[7px] font-bold tracking-widest text-purple-300 uppercase drop-shadow-md leading-none mb-0.5">${e.label}</span><div class="flex items-center text-[10px] font-black text-white drop-shadow-lg uppercase tracking-wide leading-none w-full"><div class="team-name-container" style="max-width: 140px;"><span class="team-name-inner">${e.title}</span></div></div></div>`;
-                        mobileGuestHeader.insertAdjacentHTML('beforeend', html);
-                        guestStates.push(eventId);
-                    });
-                } else {
-                    mobileGuestHeader.insertAdjacentHTML('beforeend', `<div id="mobile-guest-state-merdeka" class="absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full h-full left-0 top-0"><span class="text-[12px] font-black italic text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-white drop-shadow-lg tracking-wide">#TanjungLestariBersih</span></div>`);
-                    guestStates.push('mobile-guest-state-merdeka');
-                }
-
-                let guestIdx = 0;
-                function rotateGuest() {
-                    guestStates.forEach(id => {
-                        const el = document.getElementById(id);
-                        if(el) { el.style.opacity = '0'; setTimeout(() => { el.classList.add('hidden'); el.classList.remove('flex'); }, 1000); }
-                    });
-                    
-                    const current = document.getElementById(guestStates[guestIdx]);
-                    if(current) {
-                        const inners = current.querySelectorAll('.team-name-inner');
-                        inners.forEach(inner => { inner.style.transition = 'none'; inner.style.transform = 'translateX(0)'; });
-
-                        setTimeout(() => {
-                            current.classList.remove('hidden'); current.classList.add('flex'); current.style.opacity = '1';
-                            setTimeout(() => {
-                                inners.forEach(inner => {
-                                    const parent = inner.parentElement;
-                                    if(inner.scrollWidth > parent.clientWidth) {
-                                        inner.style.transition = 'transform 2.5s ease-in-out';
-                                        const dist = inner.scrollWidth - parent.clientWidth;
-                                        inner.style.transform = `translateX(-${dist}px)`;
-                                    }
-                                });
-                            }, 1500); 
-                        }, 1050);
-                    }
-                    guestIdx = (guestIdx + 1) % guestStates.length;
-                    setTimeout(rotateGuest, 8000); 
-                }
-                rotateGuest();
+                states.push({ id: 'header-state-4', duration: 8000 }); 
             }
 
             let currentIndex = 0;
@@ -850,7 +809,7 @@
             showNextState();
         }
         
-        if(window.innerWidth >= 1024) { initHeaderRotator(); } else { initHeaderRotator(); }
+        initHeaderRotator();
 
         const bsuLogoUrl = "https://iili.io/C6oIUAX.md.png";
         const hutRiLogoUrl = "https://iili.io/C4vsGPs.md.png";
@@ -876,7 +835,8 @@
                     setTimeout(() => {
                         isHutRi = !isHutRi;
                         navbarLogo.src = isHutRi ? hutRiLogoUrl : bsuLogoUrl;
-                        navbarLogo.className = "h-7 md:h-10 object-contain drop-shadow-md"; 
+                        // Bayangan putih diaplikasikan kembali pasca transisi
+                        navbarLogo.className = "h-7 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]"; 
                         navbarLogo.style.opacity = 1;
                         navbarLogo.style.filter = "";
                         
@@ -907,16 +867,22 @@
             el.classList.toggle('hidden');
         }
 
+        // REVISI Teks diperbanyak untuk Ticker
         function updateTicker() {
             const data = [
                 "Ayo nabung sampah di BSU Bunga Tanjung Lestari",
                 "Pisahkan sampah organik dan anorganik dari rumah",
                 "Ubah sampah menjadi uang dan hijaukan bumi kita",
-                "Layanan penimbangan buka setiap akhir pekan",
                 "Mari peduli lingkungan demi masa depan anak cucu",
                 "Sampah plastik butuh ratusan tahun untuk terurai, mari daur ulang",
                 "Green house BSU terbuka untuk edukasi pertanian warga",
-                "Jaga kebersihan lingkungan, cegah penyakit dan banjir"
+                "Jaga kebersihan lingkungan, cegah penyakit dan banjir",
+                "Satu langkah kecil memilah sampah, satu lompatan besar untuk bumi",
+                "Kardus bekas dan botol plastik memiliki nilai jual yang tinggi",
+                "Tukarkan minyak jelantah Anda menjadi saldo tabungan BSU",
+                "Bersama wujudkan Tanjung Kulon yang bersih, asri, dan mandiri",
+                "Jangan membakar sampah, salurkan ke BSU agar bermanfaat",
+                "Edukasi pemilahan sampah sejak dini bagi anak-anak kita"
             ];
             
             const now = new Date();
@@ -953,13 +919,13 @@
                 if(deskTicker) deskTicker.className = 'ticker-move';
                 
                 const items = data.map(n => `<div class="ticker-item">${n}</div><span class="text-emerald-400 font-black flex items-center text-lg">//</span>`).join('');
-                if(mobTicker) mobTicker.innerHTML = items.repeat(3);
-                if(deskTicker) deskTicker.innerHTML = items.repeat(3);
+                // Diperbanyak ulangnya agar seamless dan menopang durasi 150 detik
+                if(mobTicker) mobTicker.innerHTML = items.repeat(5);
+                if(deskTicker) deskTicker.innerHTML = items.repeat(5);
             }
         }
         updateTicker();
         
-        // UPDATE JAM KE WIB SAJA
         function updateClockWIB() {
             const now = new Date();
             const wibTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
