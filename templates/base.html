@@ -54,13 +54,12 @@
         window.userIP = "Memeriksa...";
         const PENALTY_DURATION = 60 * 60 * 1000; 
         
-        // Fungsi deteksi apakah user menggunakan Mobile (HP/Tablet)
         function isMobileDevice() {
             return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1) || window.innerWidth <= 768;
         }
 
         function checkPenaltyStatus() {
-            if (isMobileDevice()) return false; // Abaikan jika HP
+            if (isMobileDevice()) return false; 
             try {
                 const blockUntil = localStorage.getItem('bsu_block_until');
                 if (blockUntil && Date.now() < parseInt(blockUntil)) {
@@ -76,7 +75,7 @@
 
         let inspectWarningTimer;
         function showInspectWarning() {
-            if (isMobileDevice()) return; // Abaikan jika HP
+            if (isMobileDevice()) return; 
             const warningEl = document.getElementById('inspect-warning-toast');
             if (warningEl) {
                 warningEl.classList.remove('hidden', 'opacity-0', '-translate-y-full');
@@ -91,7 +90,7 @@
         }
 
         function handleSecurityViolation() {
-            if (isMobileDevice()) return; // Jika HP, lolos tanpa pinalti
+            if (isMobileDevice()) return; 
             try {
                 let strikes = parseInt(localStorage.getItem('bsu_strikes') || '0');
                 strikes++;
@@ -168,13 +167,13 @@
         }
 
         document.addEventListener('contextmenu', event => { 
-            if (isMobileDevice()) return; // Boleh klik kanan di HP
+            if (isMobileDevice()) return; 
             if (event.target.closest('#express-btn')) return;
             event.preventDefault(); handleSecurityViolation(); 
         });
         
         document.onkeydown = function(e) {
-            if (isMobileDevice()) return; // Keyboard event HP aman
+            if (isMobileDevice()) return; 
             let isBlocked = false;
             if(e.keyCode == 123) isBlocked = true; 
             if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) isBlocked = true;
@@ -182,12 +181,9 @@
             if(isBlocked) { e.preventDefault(); handleSecurityViolation(); return false; }
         }
         
-        // Nonaktifkan drag & select hanya untuk Desktop
         if (!isMobileDevice()) {
             document.addEventListener('dragstart', event => event.preventDefault());
             document.addEventListener('selectstart', event => event.preventDefault());
-            
-            // Interval deteksi DevTools khusus Desktop
             setInterval(() => {
                 const start = performance.now();
                 debugger; 
@@ -259,7 +255,6 @@
             filter: blur(25px) brightness(0.6); pointer-events: none; opacity: 0.4; transition: filter 0.3s ease; 
         }
 
-        /* CUSTOM LOADER BSU THEME - Modern Dark */
         #initial-loader {
             position: fixed; inset: 0; z-index: 9999;
             background: #0f172a;
@@ -272,14 +267,13 @@
         }
         @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.1; } to { transform: scale(1.2); opacity: 0.2; } }
         
-        /* Modernized Background (Subdued) */
         .bsu-bg {
             background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 70%);
         }
         
         .merdeka-font { font-family: 'Oswald', sans-serif; } 
+        .font-bsu { font-family: 'Inter', sans-serif; }
 
-        /* iOS MOBILE BUBBLE MENU - Adapted for Modern Dark */
         .ios-bubble-menu {
             border-radius: 1.5rem; 
             background: rgba(30, 41, 59, 0.95);
@@ -309,7 +303,6 @@
             100% { opacity: 1; transform: scale(1) translate(0, 0); }
         }
 
-        /* iOS DOCK - Modern Dark Edition */
         .ios-dock {
             background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -335,7 +328,6 @@
         @media (min-width: 1024px) { .desktop-bottom-bar { display: flex; } .glass-ticker-floating { display: none; } .ios-dock-container { display: none; } }
 
         .ticker-wrap { width: 100%; overflow: hidden; height: 100%; display: flex; align-items: center; position: relative; }
-        
         .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker 600s linear infinite; }
         .ticker-item { padding: 0 4rem; display: flex; align-items: center; color: #cbd5e1; font-weight: 400; font-size: 0.85rem; letter-spacing: 0.5px; } 
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
@@ -376,14 +368,6 @@
 
         .custom-scroll::-webkit-scrollbar { width: 4px; } .custom-scroll::-webkit-scrollbar-track { background: transparent; } .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         
-        .pro-glass-panel {
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border-radius: 32px; padding: 48px; text-align: center; max-width: 420px; width: 90%;
-        }
-
         .badminton-court {
             background-color: #334155;
             border: 1px solid rgba(255,255,255,0.1);
@@ -457,16 +441,11 @@
 
     <!-- PRIVACY OVERLAY -->
     <div id="security-overlay" style="display: none; position: fixed; inset: 0; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
-        <div class="pro-glass-panel relative overflow-hidden">
-            <div class="absolute -top-20 -right-20 w-48 h-48 bg-slate-700 rounded-full mix-blend-overlay filter blur-3xl opacity-10"></div>
-            <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-slate-800 rounded-full mix-blend-overlay filter blur-3xl opacity-10"></div>
-            
-            <div class="relative z-10 flex flex-col items-center">
-                <i class="fa-solid fa-lock text-6xl text-slate-400 mb-6"></i>
-                <h2 class="text-xl md:text-2xl font-bold mb-4 text-white tracking-widest uppercase">Layar Dikunci Otomatis</h2>
-                <div class="h-px w-24 bg-gradient-to-r from-transparent via-slate-500/30 to-transparent mb-5"></div>
-                <p class="text-sm text-slate-400 leading-relaxed font-light">Aplikasi sedang berjalan di latar belakang. Data Anda aman dan terlindungi.</p>
-            </div>
+        <div class="p-8 relative overflow-hidden bg-slate-800/90 border border-slate-700/50 shadow-2xl backdrop-blur-xl rounded-3xl text-center max-w-sm w-[90%]">
+            <i class="fa-solid fa-lock text-6xl text-slate-400 mb-6"></i>
+            <h2 class="text-xl md:text-2xl font-bold mb-4 text-white tracking-widest uppercase">Layar Dikunci Otomatis</h2>
+            <div class="h-px w-24 bg-gradient-to-r from-transparent via-slate-500/30 to-transparent mb-5 mx-auto"></div>
+            <p class="text-sm text-slate-400 leading-relaxed font-light">Aplikasi sedang berjalan di latar belakang. Data Anda aman dan terlindungi.</p>
         </div>
     </div>
 
@@ -489,13 +468,13 @@
         <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
                 
-                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo Saja) -->
+                <!-- Kiri: Logo -->
                 <div class="flex items-center shrink-0 lg:flex-1">
                     <a href="/" class="flex items-center group shrink-0">
                         <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
                     </a>
 
-                    <!-- Header Desktop Rotator (Disembunyikan di Mobile) -->
+                    <!-- Header Desktop Rotator -->
                     <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-start text-white w-full h-12 ml-4 pl-4 border-l border-slate-700 overflow-hidden">
                         <div id="header-state-2" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
                             <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Sistem Pencatatan Sampah Terpadu</span>
@@ -518,7 +497,7 @@
                         <a href="/jadwal-sholat" class="desktop-link">Religi</a>
                     </div>
 
-                    {% if session.get('user') %}
+                    {% if session and session.get('user') %}
                         <!-- Desktop Profil -->
                         <div class="relative group z-50 hidden xl:block">
                             <button onclick="toggleDropdown('profile-dropdown-desktop')" class="flex items-center gap-3 pl-1.5 pr-5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 text-left">
@@ -550,9 +529,9 @@
                             </div>
                         </div>
                     {% else %}
-                        <!-- Tombol Login Premium (Modern) diletakkan SEBELUM hamburger -->
+                        <!-- Tombol Login Premium (Modern) -->
                         <div class="flex items-center">
-                            <a href="login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-2 border border-slate-600 shadow-sm">
+                            <a href="/login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-2 border border-slate-600 shadow-sm">
                                 <span class="tracking-wide whitespace-nowrap">FORM SETOR</span>
                                 <div class="bg-slate-700 group-hover:bg-slate-600 text-white rounded-full w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-[10px] md:text-xs transition-transform group-hover:translate-x-0.5"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
                             </a>
@@ -565,12 +544,11 @@
                             <i class="fa-solid fa-bars text-sm"></i>
                         </button>
                         
-                        <!-- Menu tampil utuh karena mengikuti batas kanan layar -->
                         <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
                             <div class="bubble-tail" style="right: 12px;"></div>
                             
                             <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-inner">
-                                {% if session.get('user') %}
+                                {% if session and session.get('user') %}
                                     <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
                                         <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
                                         <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
@@ -593,7 +571,7 @@
                                     <a href="/lokasi" class="block px-5 py-3 text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hover:text-white"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Lokasi</a>
                                 </div>
 
-                                {% if session.get('user') %}
+                                {% if session and session.get('user') %}
                                     <div class="h-px bg-slate-700 my-1 mx-4"></div>
                                     <a href="/logout" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
                                 {% endif %}
@@ -630,7 +608,6 @@
         <!-- Container Utama dengan Desain Modern Elegan -->
         <div class="bg-slate-900 w-full min-h-screen rounded-t-[2.5rem] md:rounded-t-[3.5rem] shadow-[0_-20px_40px_rgba(0,0,0,0.3)] relative border-t border-white/5">
             <div class="absolute inset-0 z-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 32px 32px;"></div>
-            
             <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[300px] bg-slate-500/5 rounded-[100%] blur-[80px] pointer-events-none"></div>
 
             <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-16 relative z-10">
@@ -665,8 +642,8 @@
             <div>
                 <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Layanan BSU</h4>
                 <ul class="space-y-3 text-[13px] font-light">
-                    <li><a href="login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Form Setor Sampah</a></li>
-                    <li><a href="login.html" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Masuk Akun Warga</a></li>
+                    <li><a href="/login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Form Setor Sampah</a></li>
+                    <li><a href="/login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Masuk Akun Warga</a></li>
                     <li><a href="#" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Berita Lingkungan</a></li>
                 </ul>
             </div>
@@ -996,290 +973,19 @@
 </body>
 </html>
 
-untuk base jadikan utuh ini satu file utuh gabungan base + content html nya karena saya jadikan satu semuanya di index
+untuk base saya kasih kamu lagi 
 
-ubah content html about ke index/home jadi halaman utamanya saja gabungan dari itu semua dengan index dari index sebelumnya 
+coba bikinkan content religi  
 
-ini index sbelumnya:
+- desainnya premium gelap hijau tua tidak seperti html murahan (dibuat agak se irama sama tema base yang hijau elegan)
+- isinya dari api ini https://api.myquran.com/v2/sholat/jadwal/1406/ tahun/bulan/tanggal
+contoh nya : https://api.myquran.com/v2/sholat/jadwal/1406/2026/08/14
+- ini itu kode id kota pekalongan (1406), tahun, bulan, tanggal
+- dan untuk ini bisa menyesuaikan bulannya tidak usah fix ke jadwal itu
+- di lengkapi countdown ke jadwal sholat berikutnya yang rapih disampingnya ada keterangan "Menuju Waktu Sholat: Ashar" (contohnya)
+- dikasih keterangan tanggal Masehi dan Hijriah sesuai jadwalnya.
+- ada location API untuk mendeteksi user untuk mengubah ke api misal dia buka di semarang otomatis ke api nya kota semarang 
+API Cari Kota: https://api.myquran.com/v2/sholat/kota/cari/namakota
+jadi location APInya cari nama kotanya apa abistu dilempar ke API cari kota ini baru di ambil ID nya dan dimasukkin ke API jadwal sholat.
 
-{% extends 'base.html' %}
-
-{% block title %}Beranda - BSU Bunga Tanjung Lestari{% endblock %}
-
-{% block content %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
-    .font-bsu { font-family: 'Inter', sans-serif; }
-    
-    /* Desain Card Profesional & Clean */
-    .pro-card {
-        background: #1e293b; /* slate-800 */
-        border: 1px solid #334155; /* slate-700 */
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        transition: all 0.3s ease;
-    }
-    
-    .pro-card:hover {
-        border-color: #10b981; /* emerald-500 */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        transform: translateY(-2px);
-    }
-
-    /* FAQ interaktif yang elegan */
-    details > summary { list-style: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    details[open] summary i { transform: rotate(180deg); }
-    details[open] .faq-content { 
-        animation: slideDown 0.3s ease-out forwards; 
-    }
-    
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<!-- HERO SECTION -->
-<section class="relative pt-8 pb-16 lg:pt-16 lg:pb-24 overflow-hidden z-10 font-bsu">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
-        <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-            
-            <!-- Teks Hero -->
-            <div class="flex-1 text-center lg:text-left space-y-6 lg:space-y-8">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-medium rounded-full">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> 
-                    Langkah Kecil, Manfaat Besar
-                </div>
-                
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-                    Bersama Menjaga Desa, <br class="hidden lg:block">
-                    <span class="text-emerald-400">Meraih Berkah Bersama</span>
-                </h1>
-                
-                <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    Selamat datang di <strong class="text-slate-200 font-semibold">BSU Bunga Tanjung Lestari</strong>. Mari wujudkan lingkungan yang asri, kelola sampah rumah tangga dengan bijak, dan jadikan barang bekas Anda sebagai tabungan masa depan keluarga.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                    <a href="login.html" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wallet"></i> Mulai Menabung
-                    </a>
-                    <a href="https://wa.me/6285113236312" target="_blank" class="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-emerald-400"></i> Hubungi Pengurus
-                    </a>
-                </div>
-            </div>
-
-            <!-- Gambar Visual Drone Profesional -->
-            <div class="flex-1 w-full max-w-2xl lg:max-w-xl relative mt-8 lg:mt-0">
-                <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 bg-slate-800">
-                    <!-- Overlay gradasi halus agar gambar tidak terlalu kontras -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent z-10"></div>
-                    
-                    <img src="https://iili.io/CPp6r6N.md.png" alt="Fasilitas BSU Bunga Tanjung Lestari dari Udara" class="w-full h-auto aspect-video object-cover">
-                    
-                    <!-- Label Keterangan Gambar -->
-                    <div class="absolute bottom-4 left-5 z-20 flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-slate-800/80 backdrop-blur-sm border border-slate-600 flex items-center justify-center text-emerald-400">
-                            <i class="fa-solid fa-location-dot text-sm"></i>
-                        </div>
-                        <div>
-                            <p class="text-white font-medium text-sm">Tanjung Kulon, Kajen</p>
-                            <p class="text-slate-300 text-[10px] uppercase tracking-wide">Pusat Layanan BSU</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Informasi Statistik Clean -->
-                <div class="absolute -bottom-6 right-4 lg:-left-8 z-20 bg-slate-800 border border-slate-700 p-4 rounded-xl shadow-xl flex items-center gap-4">
-                    <div class="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                    <div>
-                        <div class="text-xl font-bold text-white leading-none">{{ stats.nasabah | default('150+') }}</div>
-                        <div class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">Warga Bergabung</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- QUOTE INSPIRATIF -->
-<section class="py-6 font-bsu relative z-20">
-    <div class="max-w-4xl mx-auto px-4 md:px-6">
-        <div class="bg-slate-800/50 p-6 md:p-8 rounded-2xl border border-slate-700/50 text-center relative">
-            <i class="fa-solid fa-quote-left text-3xl text-slate-600 mb-4 block"></i>
-            <p class="text-slate-300 text-base md:text-lg font-light leading-relaxed">
-                "Alam yang bersih adalah warisan terbaik untuk anak cucu kita. Jangan biarkan sampah terbuang sia-sia, kelola dengan bijak dan rasakan manfaat ekonominya bersama BSU Bunga Tanjung Lestari."
-            </p>
-        </div>
-    </div>
-</section>
-
-<!-- VIDEO PROFIL BSU (Seamless HTML5 Video via Google Drive) -->
-<section class="py-12 md:py-16 font-bsu">
-    <div class="max-w-5xl mx-auto px-4 md:px-6">
-        <div class="text-center mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Mengenal Kami Lebih Dekat</h2>
-            <p class="text-slate-400 mt-2 text-sm md:text-base font-light max-w-2xl mx-auto">Saksikan dedikasi dan komitmen nyata warga dalam menjaga kelestarian lingkungan desa.</p>
-        </div>
-        
-        <!-- Video Player Responsif -->
-        <div class="w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-xl relative">
-            <!-- 
-                ID Video Drive Anda: 1X8dLTwVBhnQp_OLxrIBixH3MEjxLqGc4
-                Format URL Download untuk HTML5 Video agar bisa autoplay & loop rapi di HP tanpa terpotong
-            -->
-            <video 
-                src="https://drive.google.com/uc?export=download&id=1eDt3XBvsCeC0-JdPpOak5S-nv-uLVwFz" 
-                autoplay 
-                loop 
-                muted 
-                playsinline 
-                class="w-full h-full object-cover">
-                Maaf, peramban Anda tidak mendukung pemutaran video secara langsung.
-            </video>
-        </div>
-    </div>
-</section>
-
-<!-- MENGAPA BERGABUNG -->
-<section class="py-12 md:py-20 border-t border-slate-800 font-bsu">
-    <div class="max-w-7xl mx-auto px-4 md:px-6">
-        <div class="text-center mb-12">
-            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Manfaat Bergabung Bersama BSU</h2>
-            <p class="text-slate-400 mt-3 max-w-2xl mx-auto text-sm md:text-base font-light">Sistem yang dirancang sederhana untuk memudahkan setiap warga mendapatkan keuntungan nyata.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="pro-card p-6 md:p-8 rounded-2xl">
-                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
-                    <i class="fa-solid fa-house-circle-check text-xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-white mb-2">Lingkungan Asri</h3>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Kardus dan botol bekas tidak lagi menumpuk menjadi sarang penyakit. Serahkan pada kami agar rumah Anda senantiasa rapi dan bersih.
-                </p>
-            </div>
-            
-            <div class="pro-card p-6 md:p-8 rounded-2xl">
-                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
-                    <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-white mb-2">Pemasukan Tambahan</h3>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Sampah anorganik memiliki nilai jual. Setorkan dan jadikan saldo tabungan yang dapat dicairkan kapan saja untuk membantu kebutuhan keluarga.
-                </p>
-            </div>
-
-            <div class="pro-card p-6 md:p-8 rounded-2xl">
-                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
-                    <i class="fa-solid fa-scale-balanced text-xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-white mb-2">Sistem Transparan</h3>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Setiap penimbangan dilakukan secara terbuka menggunakan alat digital. Harga beli sampah terstandarisasi dan dapat diakses dengan mudah oleh warga.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CARA KERJA -->
-<section class="py-16 bg-slate-800/30 border-y border-slate-800 font-bsu">
-    <div class="max-w-7xl mx-auto px-4 md:px-6">
-        <div class="text-center mb-12">
-            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">4 Langkah Meraih Berkah dari Sampah</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
-                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">01</div>
-                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Kumpulkan & Pilah</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Pisahkan sampah kering (kardus, botol, gelas plastik, kertas) dari sampah basah dapur.</p>
-            </div>
-
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
-                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">02</div>
-                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Bawa ke Lokasi</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Bawa hasil pilahan ke fasilitas BSU Bunga Tanjung Lestari pada jam operasional kami.</p>
-            </div>
-
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
-                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">03</div>
-                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Proses Timbang</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Petugas akan menimbang sampah Anda dengan timbangan digital yang akurat dan terbuka.</p>
-            </div>
-
-            <div class="bg-emerald-600 p-6 rounded-2xl shadow-lg relative">
-                <div class="text-4xl font-black text-emerald-700/50 absolute top-4 right-6">04</div>
-                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Terima Saldo</h4>
-                <p class="text-emerald-100 text-sm leading-relaxed font-light relative z-10">Berat otomatis dikonversi menjadi rupiah dan langsung masuk ke saldo tabungan Anda.</p>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<!-- FAQ SECTION -->
-<section class="py-16 md:py-24 font-bsu">
-    <div class="max-w-3xl mx-auto px-4 md:px-6">
-        
-        <div class="text-center mb-10">
-            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Tanya Jawab (FAQ)</h3>
-        </div>
-
-        <div class="space-y-3">
-            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer" open>
-                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
-                    <span>Apakah ada biaya untuk bergabung?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
-                    <strong>Sama sekali tidak.</strong> Pendaftaran gratis. Cukup bawa fotokopi identitas, dan petugas akan membuatkan buku tabungan atas nama Anda.
-                </div>
-            </details>
-
-            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
-                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
-                    <span>Kapan tabungan bisa dicairkan menjadi uang tunai?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
-                    Pencairan biasanya dilakukan sesuai jadwal kesepakatan bersama (misalnya menjelang Hari Raya) agar dana yang terkumpul cukup besar dan bermanfaat maksimal untuk keluarga Anda.
-                </div>
-            </details>
-
-            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
-                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
-                    <span>Apakah sampah harus dibersihkan dulu sebelum disetor?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
-                    Ya. Membilas botol plastik dari sisa minuman akan mencegah datangnya semut dan menjaga kebersihan fasilitas. Sampah yang bersih lebih mudah dikelola dan tidak berbau.
-                </div>
-            </details>
-
-            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
-                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
-                    <span>Jenis sampah apa yang tidak diterima?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
-                    Kami tidak melayani penyetoran sampah basah/sisa makanan, popok bekas, atau sampah beracun/medis. Kami berfokus pada sampah anorganik yang dapat didaur ulang.
-                </div>
-            </details>
-        </div>
-
-        <div class="mt-10 text-center">
-            <a href="https://wa.me/6285113236312" class="inline-flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 transition-colors font-medium">
-                <i class="fa-brands fa-whatsapp"></i> Punya pertanyaan lain? Hubungi Pengurus
-            </a>
-        </div>
-    </div>
-</section>
-{% endblock %}
+untuk ini saya gak bisa bantu, kerjakan sendiri
