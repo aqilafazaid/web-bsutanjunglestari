@@ -1,207 +1,243 @@
 {% extends 'base.html' %}
 
-{% block title %}Tentang Kami - KTVDI{% endblock %}
+{% block title %}Tentang Kami - BSU Bunga Tanjung Lestari{% endblock %}
 
 {% block content %}
 <style>
-    /* === WORLD CUP 2026 DARK GLASS THEME + FULL BLEED BREAKOUT === */
-    .wc-about-bg {
-        background: linear-gradient(135deg, #0a0a0f 0%, #150050 50%, #0a0a0f 100%);
-        min-height: calc(100vh - 60px);
-        color: #f8fafc;
-        
-        /* Teknik Full-Bleed Breakout untuk menjebol batasan base.html */
-        width: 100vw !important;
-        max-width: 100vw !important;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    .font-bsu { font-family: 'Inter', sans-serif; }
+
+    /* Latar Belakang Utama */
+    .about-hero-bg {
+        background: radial-gradient(circle at top right, #064e3b 0%, #0f172a 50%, #020617 100%);
         position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw !important;
-        margin-right: -50vw !important;
-        margin-top: -3rem; /* Menghilangkan jarak kosong atas base.html */
-        margin-bottom: -3rem;
-        padding-top: 6rem;
-        padding-bottom: 8rem;
-        z-index: 10;
-        
-        /* Lengkungan agar serasi dengan base.html */
-        border-top-left-radius: 2rem;
-        border-top-right-radius: 2rem;
-        overflow: hidden;
     }
 
-    @media (min-width: 768px) {
-        .wc-about-bg {
-            border-top-left-radius: 3rem;
-            border-top-right-radius: 3rem;
-        }
+    /* Efek Glassmorphism Premium */
+    .premium-glass-card {
+        background: rgba(30, 41, 59, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+    .premium-glass-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(16, 185, 129, 0.3);
+        box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.15);
     }
 
-    .glass-card {
-        background: rgba(18, 18, 26, 0.7);
-        backdrop-filter: blur(40px) saturate(180%);
-        -webkit-backdrop-filter: blur(40px) saturate(180%);
-        border: 1px solid #222236;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
-        border-radius: 32px;
+    /* Teks Gradasi Emas & Zamrud */
+    .text-gradient-emerald {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .glass-stat {
-        background: rgba(34, 34, 54, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border-radius: 24px;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Pembungkus Video Seamless */
+    .seamless-video-container {
         position: relative;
+        width: 100%;
+        border-radius: 1.5rem;
         overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255,255,255,0.1);
+        background-color: #020617;
     }
     
-    .glass-stat::before {
-        content: '';
+    /* Overlay Gradien pada Video agar Teks Terbaca */
+    .video-overlay {
         position: absolute;
-        top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-        transform: skewX(-20deg);
-        transition: 0.5s;
+        inset: 0;
+        background: linear-gradient(to top, rgba(2,6,23,0.9) 0%, rgba(2,6,23,0.4) 40%, rgba(2,6,23,0.1) 100%);
+        z-index: 10;
+        pointer-events: none;
     }
 
-    .glass-stat:hover {
-        transform: translateY(-8px);
-        background: rgba(40, 40, 65, 0.8);
-        border-color: rgba(0, 229, 255, 0.3);
-        box-shadow: 0 15px 30px -5px rgba(0, 229, 255, 0.2);
-    }
-    .glass-stat:hover::before {
-        left: 200%;
-    }
-
-    /* Animation */
-    @keyframes fadeInUp {
+    /* Animasi Masuk */
+    @keyframes fadeUp {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    .animate-in { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
-    .delay-100 { animation-delay: 0.1s; }
-    .delay-200 { animation-delay: 0.2s; }
-    .delay-300 { animation-delay: 0.3s; }
+    .animate-fade-up {
+        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .delay-100 { animation-delay: 0.1s; opacity: 0; }
+    .delay-200 { animation-delay: 0.2s; opacity: 0; }
+    .delay-300 { animation-delay: 0.3s; opacity: 0; }
 </style>
 
-<section class="wc-about-bg px-4 font-['Plus_Jakarta_Sans']">
-    
-    <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-[#4a00e0]/20 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-20 left-0 w-[500px] h-[500px] bg-[#ea002a]/10 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00e5ff]/5 rounded-full blur-[150px] pointer-events-none"></div>
-
-    <div class="max-w-6xl mx-auto relative z-10">
+<!-- 1. HERO & VIDEO SECTION -->
+<section class="about-hero-bg pt-8 pb-16 lg:pt-12 lg:pb-24 font-bsu border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-20 animate-in">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#12121a]/80 border border-[#4a00e0]/50 text-[#00e5ff] text-[10px] font-bold tracking-widest uppercase mb-6 shadow-[0_0_15px_rgba(74,0,224,0.3)] backdrop-blur-md">
-                <i class="fa-solid fa-users-viewfinder"></i> Tentang Komunitas
+        <!-- Header Text -->
+        <div class="text-center max-w-4xl mx-auto mb-10 md:mb-16 animate-fade-up">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-900/30 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-full mb-6 tracking-widest uppercase">
+                <i class="fa-solid fa-leaf"></i> Tentang BSU
             </div>
-            <h1 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight tracking-tight">
-                Menghubungkan <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#4a00e0] to-[#ea002a] drop-shadow-lg">Nusantara</span><br> Lewat Gelombang Digital
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
+                Merawat Bumi Sejak dari <br class="hidden md:block">
+                <span class="text-gradient-emerald">Pekarangan Sendiri</span>
             </h1>
-            <p class="text-slate-400 text-lg md:text-xl leading-relaxed font-medium">
-                KTVDI lahir dari semangat gotong royong untuk memastikan tidak ada satu pun rumah tangga di Indonesia yang tertinggal dalam revolusi penyiaran digital.
+            <p class="text-slate-400 text-base md:text-xl leading-relaxed font-light">
+                Mengenal lebih dekat perjalanan BSU Bunga Tanjung Lestari dalam mengubah paradigma pengelolaan sampah desa menjadi motor penggerak ekonomi sirkular.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20 animate-in delay-100">
-            <div class="glass-stat p-8 text-center group border-t-2 border-t-[#00e5ff]/20">
-                <div class="w-14 h-14 bg-[#12121a] rounded-2xl flex items-center justify-center text-[#00e5ff] border border-[#00e5ff]/30 text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(0,229,255,0.2)]">
-                    <i class="fa-solid fa-map-location-dot"></i>
+        <!-- Drone Video Embed Terintegrasi Langsung -->
+        <div class="seamless-video-container aspect-video md:aspect-[21/9] animate-fade-up delay-100 relative group">
+            <video 
+                src="https://drive.google.com/uc?export=download&id=1eDt3XBvsCeC0-JdPpOak5S-nv-uLVwFz" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105">
+            </video>
+            <div class="video-overlay flex flex-col justify-end p-6 md:p-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 backdrop-blur-md flex items-center justify-center border border-emerald-400/30 text-emerald-400 animate-pulse">
+                        <i class="fa-solid fa-drone-front"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-lg drop-shadow-lg">Fasilitas BSU Bunga Tanjung Lestari</h3>
+                        <p class="text-emerald-300 text-xs uppercase tracking-widest font-medium drop-shadow-md">Tanjung Kulon, Kajen - Kab. Pekalongan</p>
+                    </div>
                 </div>
-                <div class="text-4xl font-extrabold text-white mb-1 drop-shadow-md">34+</div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">Provinsi Terdata</p>
-            </div>
-            <div class="glass-stat p-8 text-center group border-t-2 border-t-[#4a00e0]/20">
-                <div class="w-14 h-14 bg-[#12121a] rounded-2xl flex items-center justify-center text-[#9333ea] border border-[#4a00e0]/30 text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(74,0,224,0.2)]">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-                <div class="text-4xl font-extrabold text-white mb-1 drop-shadow-md">1000+</div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">Kontributor Aktif</p>
-            </div>
-            <div class="glass-stat p-8 text-center group border-t-2 border-t-[#ea002a]/20">
-                <div class="w-14 h-14 bg-[#12121a] rounded-2xl flex items-center justify-center text-[#ea002a] border border-[#ea002a]/30 text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(234,0,42,0.2)]">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                </div>
-                <div class="text-4xl font-extrabold text-white mb-1 drop-shadow-md">24/7</div>
-                <p class="text-sm font-bold text-slate-400 uppercase tracking-wider">Update Realtime</p>
             </div>
         </div>
 
-        <div class="glass-card p-8 md:p-12 animate-in delay-200">
+    </div>
+</section>
+
+<!-- 2. CERITA KAMI (Storytelling) -->
+<section class="py-16 md:py-24 bg-slate-900 font-bsu relative overflow-hidden">
+    <!-- Dekorasi Latar -->
+    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-900/10 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2"></div>
+    
+    <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-                <div>
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                        <span class="w-8 h-1 bg-gradient-to-r from-[#00e5ff] to-[#4a00e0] rounded-full shadow-[0_0_10px_rgba(0,229,255,0.5)]"></span> Sebuah Perjalanan
-                    </h3>
-                    <p class="text-slate-300 leading-relaxed mb-4 text-justify font-medium">
-                        Transisi dari TV Analog ke TV Digital (ASO) adalah tonggak sejarah besar. Namun, di lapangan, kebingungan masih merajalela. Banyak masyarakat di pelosok yang tiba-tiba kehilangan hiburan karena layar TV mereka menjadi "semut".
-                    </p>
-                    <p class="text-slate-300 leading-relaxed text-justify font-medium">
-                        Itulah mengapa <strong class="text-white">Komunitas TV Digital Indonesia (KTVDI)</strong> dibentuk. Kami bukan lembaga pemerintah atau korporat. Kami adalah kumpulan individu—teknisi, hobiis, mahasiswa, hingga masyarakat umum—yang percaya bahwa data paling akurat adalah yang dilaporkan dari lapangan.
-                    </p>
-                </div>
-                <div class="relative h-64 md:h-80 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#222236]">
-                    <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=2070&auto=format&fit=crop" alt="TV Digital Tower" class="absolute inset-0 w-full h-full object-cover transform hover:scale-105 transition duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent flex items-end p-8">
-                        <p class="text-white font-bold italic text-lg text-shadow-hero">"Dari Rakyat, Oleh Rakyat, Untuk Siaran Jernih."</p>
+            <div class="order-2 lg:order-1 relative animate-fade-up delay-200">
+                <div class="premium-glass-card rounded-[2rem] p-8 md:p-10">
+                    <i class="fa-solid fa-quote-left text-5xl text-slate-700 mb-6 block"></i>
+                    <h3 class="text-2xl font-bold text-white mb-4 leading-snug">Berawal dari Kepedulian Kecil di Sudut Desa</h3>
+                    <div class="space-y-4 text-slate-400 text-sm md:text-base leading-relaxed font-light">
+                        <p>
+                            Berdirinya Bank Sampah Unit (BSU) Bunga Tanjung Lestari bukanlah karena proyek besar, melainkan berawal dari kegelisahan warga melihat sampah rumah tangga yang menumpuk tak terkelola di lingkungan Tanjung Kulon.
+                        </p>
+                        <p>
+                            Kami menyadari bahwa jika hanya dibakar atau dibuang, sampah akan merusak tanah dan udara yang kita wariskan untuk anak cucu. Dari sana, timbul gagasan sederhana: <strong class="text-slate-200 font-medium">Bagaimana jika sampah ini kita pilah, kita selamatkan, dan kita jadikan sesuatu yang bernilai?</strong>
+                        </p>
+                        <p>
+                            Kini, BSU Bunga Tanjung Lestari telah bertransformasi menjadi badan hukum resmi yang melayani puluhan kepala keluarga. Mengubah limbah menjadi berkah, merawat bumi, sekaligus menambah tabungan perekonomian warga desa.
+                        </p>
                     </div>
+                </div>
+                
+                <!-- Aksen Foto/Icon -->
+                <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center border-8 border-slate-900 shadow-2xl hidden md:flex">
+                    <i class="fa-solid fa-leaf text-4xl text-white"></i>
                 </div>
             </div>
 
-            <hr class="border-[#222236] mb-16">
-
-            <div class="mb-16">
-                <div class="text-center mb-10">
-                    <h3 class="text-2xl font-bold text-white drop-shadow-md">Misi Utama Kami</h3>
-                    <p class="text-slate-400 text-sm mt-2 font-medium">Pilar pergerakan komunitas KTVDI</p>
-                </div>
+            <div class="order-1 lg:order-2 animate-fade-up delay-300">
+                <h2 class="text-sm font-bold text-emerald-500 tracking-[0.2em] uppercase mb-2">Pilar Kami</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-8 leading-tight">Visi & Misi<br>Bunga Tanjung Lestari</h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-[#12121a] p-6 rounded-2xl border border-[#222236] hover:border-[#00e5ff]/50 transition-colors group shadow-lg">
-                        <div class="w-10 h-10 bg-[#00e5ff]/10 rounded-full flex items-center justify-center text-[#00e5ff] mb-4 group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(0,229,255,0.2)]">
-                            <i class="fa-solid fa-lightbulb"></i>
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 shadow-lg">
+                            <i class="fa-solid fa-earth-asia text-xl"></i>
                         </div>
-                        <h4 class="font-bold text-white mb-2">Edukasi Tanpa Henti</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed font-medium">Menyederhanakan istilah teknis (MUX, dBm, STB) agar mudah dipahami semua kalangan masyarakat.</p>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-200 mb-1">Pelestarian Ekologi</h4>
+                            <p class="text-slate-400 text-sm font-light leading-relaxed">Mencegah polusi tanah dan udara dengan meminimalisir pembakaran sampah secara terbuka di area pemukiman warga.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-teal-400 shadow-lg">
+                            <i class="fa-solid fa-arrow-up-right-dots text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-200 mb-1">Sirkular Ekonomi Rakyat</h4>
+                            <p class="text-slate-400 text-sm font-light leading-relaxed">Mengubah status barang tak terpakai menjadi instrumen finansial (tabungan) yang dapat meningkatkan daya beli rumah tangga.</p>
+                        </div>
                     </div>
 
-                    <div class="bg-[#12121a] p-6 rounded-2xl border border-[#222236] hover:border-[#4a00e0]/50 transition-colors group shadow-lg">
-                        <div class="w-10 h-10 bg-[#4a00e0]/10 rounded-full flex items-center justify-center text-[#9333ea] mb-4 group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(74,0,224,0.2)]">
-                            <i class="fa-solid fa-tower-cell"></i>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-sky-400 shadow-lg">
+                            <i class="fa-solid fa-seedling text-xl"></i>
                         </div>
-                        <h4 class="font-bold text-white mb-2">Transparansi Data</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed font-medium">Membuka akses data frekuensi seluas-luasnya agar masyarakat bisa mengarahkan antena dengan presisi.</p>
-                    </div>
-
-                    <div class="bg-[#12121a] p-6 rounded-2xl border border-[#222236] hover:border-[#ea002a]/50 transition-colors group shadow-lg">
-                        <div class="w-10 h-10 bg-[#ea002a]/10 rounded-full flex items-center justify-center text-[#ea002a] mb-4 group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(234,0,42,0.2)]">
-                            <i class="fa-solid fa-bullhorn"></i>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-200 mb-1">Edukasi Berkelanjutan</h4>
+                            <p class="text-slate-400 text-sm font-light leading-relaxed">Menjadikan area BSU dan <i>Green House</i> kami sebagai ruang belajar terbuka tentang agrikultur ramah lingkungan bagi masyarakat luas.</p>
                         </div>
-                        <h4 class="font-bold text-white mb-2">Advokasi Publik</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed font-medium">Menjadi jembatan suara masyarakat terkait area <em class="text-white">blank spot</em> kepada pemangku kebijakan.</p>
                     </div>
-                </div>
-            </div>
-
-            <div class="bg-gradient-to-br from-[#150050] to-[#ea002a] rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-[0_20px_50px_rgba(234,0,42,0.3)] border border-white/10">
-                <div class="absolute top-0 left-0 w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-                
-                <div class="relative z-10">
-                    <h3 class="text-2xl font-black mb-4 tracking-wide text-shadow-hero">Menatap Masa Depan 2026</h3>
-                    <p class="text-blue-100 mb-8 max-w-2xl mx-auto leading-relaxed text-sm md:text-base font-medium">
-                        Menjelang perhelatan akbar Piala Dunia 2026, KTVDI berkomitmen memastikan infrastruktur informasi di level komunitas siap. Kami ingin seluruh rakyat Indonesia menikmati siaran HD tanpa gangguan.
-                    </p>
-                    <a href="{{ url_for('register') }}" class="inline-flex items-center gap-2 bg-white text-[#ea002a] font-black py-3.5 px-8 rounded-xl hover:bg-[#00e5ff] hover:text-[#0a0a0f] hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] transition-all transform hover:-translate-y-1">
-                        <i class="fa-solid fa-user-plus"></i> Gabung Jadi Kontributor
-                    </a>
                 </div>
             </div>
 
         </div>
     </div>
 </section>
+
+<!-- 3. INOVASI DIGITAL (Menyisipkan konteks KKN secara elegan) -->
+<section class="py-16 md:py-24 bg-slate-800/30 border-y border-slate-800 font-bsu relative">
+    <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 24px 24px;"></div>
+    
+    <div class="max-w-5xl mx-auto px-4 md:px-6 text-center relative z-10">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-4">Mendobrak Keterbatasan dengan Digitalisasi</h2>
+        <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto rounded-full mb-8"></div>
+        
+        <p class="text-slate-400 text-base md:text-lg leading-relaxed font-light mb-10 max-w-3xl mx-auto">
+            Untuk memastikan kelancaran operasional dan keamanan data tabungan warga, BSU Bunga Tanjung Lestari kini telah bertransformasi ke arah digital. Kehadiran <strong>Portal Warga BSU</strong> ini mengakhiri era pencatatan manual di buku tulis yang rawan hilang atau rusak.
+        </p>
+        
+        <div class="premium-glass-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-10 text-left bg-slate-900/60">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-emerald-500/30 flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
+                <i class="fa-solid fa-code text-4xl text-emerald-500"></i>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-lg md:text-xl mb-2">Transparansi dalam Genggaman</h4>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed font-light mb-4">
+                    Seluruh pencatatan berat sampah, riwayat setoran, hingga nominal tabungan warga kini terekam secara sistematis di server berbasis <i>Cloud</i>. Masyarakat dapat memantau hasil tabungan mereka dengan transparan tanpa perlu datang ke lokasi.
+                </p>
+                <div class="text-[10px] uppercase tracking-widest text-emerald-500 font-semibold">
+                    <i class="fa-solid fa-microchip mr-1"></i> Infrastruktur Digital didukung oleh Mahasiswa KKNT IDBU 54 Universitas Diponegoro
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. CALL TO ACTION -->
+<section class="py-20 md:py-28 font-bsu relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900 to-[#020617] z-0"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-emerald-600/10 blur-[150px] z-0"></div>
+
+    <div class="max-w-4xl mx-auto px-4 md:px-6 relative z-10 text-center">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-full flex items-center justify-center text-white text-3xl mb-8 shadow-[0_0_30px_rgba(16,185,129,0.4)] animate-bounce" style="animation-duration: 3s;">
+            <i class="fa-solid fa-hands-holding-circle"></i>
+        </div>
+        
+        <h2 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Mari Bergabung Menjadi Bagian dari Solusi</h2>
+        <p class="text-slate-400 text-base md:text-lg mb-10 font-light max-w-2xl mx-auto">
+            Tidak ada kata terlambat untuk mulai memilah sampah. Setorkan botol dan kardus bekas di rumah Anda, selamatkan lingkungan kita, dan saksikan bagaimana sampah tersebut berubah menjadi senyuman keluarga.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="login.html" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg">
+                <i class="fa-solid fa-right-to-bracket"></i> Buat Akun Warga
+            </a>
+            <a href="https://wa.me/6285113236312" class="px-8 py-4 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-emerald-400 font-medium rounded-full transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-location-dot"></i> Kunjungi Lokasi Kami
+            </a>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
