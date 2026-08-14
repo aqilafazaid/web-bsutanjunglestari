@@ -376,7 +376,7 @@
         }
         .badminton-lines { position: absolute; inset: 6px; border: 1px solid rgba(255,255,255,0.1); }
         .badminton-center-line { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px solid rgba(255,255,255,0.1); transform: translateX(-50%); }
-        .badminton-net { position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.2); transform: translateY(-50%); }
+        .badminton-net { absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.2); transform: translateY(-50%); }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 flex flex-col min-h-screen relative pb-[180px] lg:pb-0 font-sans z-0 selection:bg-slate-600/50 selection:text-white">
@@ -474,7 +474,7 @@
         <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
                 
-                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo yang bersih) -->
+                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo Saja, Tanpa Teks) -->
                 <div class="flex items-center shrink-0 lg:flex-1">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
                         <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
@@ -509,7 +509,7 @@
                             <i class="fa-solid fa-bars text-sm"></i>
                         </button>
                         
-                        <!-- Tampil utuh tanpa dibatasi scroll internal, ukuran fleksibel menyesuaikan isinya -->
+                        <!-- Perbaikan Tampil utuh: overflow-hidden biasa, membiarkan tinggi menu mengikuti konten agar tidak kepotong -->
                         <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
                             <div class="bubble-tail" style="right: 18px;"></div>
                             
@@ -864,7 +864,7 @@
 
         function toggleDropdown(id) {
             const el = document.getElementById(id);
-            document.querySelectorAll('[id$="-dropdown"], .dropdown-menu-mobile, .ios-bubble-menu').forEach(d => { if(d.id !== id) d.classList.add('hidden'); });
+            document.querySelectorAll('.ios-bubble-menu, .dropdown-menu-mobile').forEach(d => { if(d.id !== id) d.classList.add('hidden'); });
             el.classList.toggle('hidden');
         }
 
