@@ -211,7 +211,7 @@
                 secAudio.play().then(() => {
                     if ('mediaSession' in navigator) {
                         navigator.mediaSession.metadata = new MediaMetadata({
-                            title: 'Keamanan BSU', artist: 'Sistem Keamanan BSU', album: 'Layar Privasi',
+                            title: 'Keamanan BSU Aktif', artist: 'Sistem Keamanan BSU', album: 'Layar Terkunci',
                             artwork: [{ src: "https://iili.io/C6oIUAX.md.png", sizes: '192x192', type: 'image/png' }]
                         });
                         navigator.mediaSession.setActionHandler('pause', function() { secAudio.pause(); });
@@ -474,7 +474,7 @@
         <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
                 
-                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo) -->
+                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo yang bersih) -->
                 <div class="flex items-center shrink-0 lg:flex-1">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
                         <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
@@ -509,11 +509,11 @@
                             <i class="fa-solid fa-bars text-sm"></i>
                         </button>
                         
-                        <!-- Penyesuaian max-h dan overflow agar tidak terpotong di HP kecil -->
-                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-60 z-[9999]">
-                            <div class="bubble-tail"></div>
+                        <!-- Tampil utuh tanpa dibatasi scroll internal, ukuran fleksibel menyesuaikan isinya -->
+                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
+                            <div class="bubble-tail" style="right: 18px;"></div>
                             
-                            <div class="overflow-y-auto overflow-x-hidden max-h-[60vh] rounded-[14px] custom-scroll bg-slate-900 shadow-inner">
+                            <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-inner">
                                 {% if session.get('user') %}
                                     <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
                                         <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
@@ -539,7 +539,7 @@
 
                                 {% if session.get('user') %}
                                     <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
+                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -864,7 +864,7 @@
 
         function toggleDropdown(id) {
             const el = document.getElementById(id);
-            document.querySelectorAll('[id$="-dropdown"], .dropdown-menu-mobile').forEach(d => { if(d.id !== id) d.classList.add('hidden'); });
+            document.querySelectorAll('[id$="-dropdown"], .dropdown-menu-mobile, .ios-bubble-menu').forEach(d => { if(d.id !== id) d.classList.add('hidden'); });
             el.classList.toggle('hidden');
         }
 
@@ -986,7 +986,7 @@
 
         window.addEventListener('click', function(e){   
             if (!e.target.closest('.relative.group') && !e.target.closest('.xl\\:hidden.flex-col') && !e.target.closest('#mobile-guest-schedule')){
-                document.querySelectorAll('.dropdown-menu-mobile, .ios-bubble-menu').forEach(d => d.classList.add('hidden'));
+                document.querySelectorAll('.ios-bubble-menu, .dropdown-menu-mobile').forEach(d => d.classList.add('hidden'));
             }
         });
     </script>
