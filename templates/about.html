@@ -53,7 +53,7 @@
         inset: 0;
         background: linear-gradient(to top, rgba(2,6,23,0.9) 0%, rgba(2,6,23,0.4) 40%, rgba(2,6,23,0.1) 100%);
         z-index: 10;
-        pointer-events: none;
+        pointer-events: none; /* Supaya klik tidak terhalang */
     }
 
     /* Animasi Masuk */
@@ -83,28 +83,33 @@
                 <span class="text-gradient-emerald">Pekarangan Sendiri</span>
             </h1>
             <p class="text-slate-400 text-base md:text-xl leading-relaxed font-light">
-                Mengenal lebih dekat perjalanan BSU Bunga Tanjung Lestari dalam mengubah paradigma pengelolaan sampah desa menjadi motor penggerak ekonomi sirkular.
+                Mengenal lebih dekat perjalanan BSU Bunga Tanjung Lestari dalam mengubah paradigma pengelolaan sampah desa menjadi motor penggerak ekonomi kerakyatan.
             </p>
         </div>
 
-        <!-- Drone Video Embed Terintegrasi Langsung -->
+        <!-- Drone Video Embed Terintegrasi Langsung (HTML5 AutoPlay) -->
         <div class="seamless-video-container aspect-video md:aspect-[21/9] animate-fade-up delay-100 relative group">
+            <!-- Penggunaan tag video dengan parameter mutlak untuk autoplay di HP -->
             <video 
-                src="https://drive.google.com/uc?export=download&id=1eDt3XBvsCeC0-JdPpOak5S-nv-uLVwFz" 
                 autoplay 
                 loop 
                 muted 
                 playsinline 
-                class="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105">
+                preload="auto"
+                crossorigin="anonymous"
+                class="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105 pointer-events-none">
+                <!-- Link di bawah menggunakan trick export=download agar terbaca sebagai MP4 mentah oleh browser -->
+                <source src="https://drive.google.com/uc?export=download&id=1eDt3XBvsCeC0-JdPpOak5S-nv-uLVwFz" type="video/mp4">
             </video>
+            
             <div class="video-overlay flex flex-col justify-end p-6 md:p-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 backdrop-blur-md flex items-center justify-center border border-emerald-400/30 text-emerald-400 animate-pulse">
-                        <i class="fa-solid fa-drone-front"></i>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 backdrop-blur-md flex items-center justify-center border border-emerald-400/30 text-emerald-400 animate-pulse shrink-0">
+                        <i class="fa-solid fa-drone-front text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-white font-bold text-lg drop-shadow-lg">Fasilitas BSU Bunga Tanjung Lestari</h3>
-                        <p class="text-emerald-300 text-xs uppercase tracking-widest font-medium drop-shadow-md">Tanjung Kulon, Kajen - Kab. Pekalongan</p>
+                        <h3 class="text-white font-bold text-lg md:text-xl drop-shadow-lg leading-tight">Fasilitas Terpadu BSU Bunga Tanjung Lestari</h3>
+                        <p class="text-emerald-300 text-[10px] md:text-xs uppercase tracking-widest font-medium drop-shadow-md mt-1">Tanjung Kulon, Kajen - Kab. Pekalongan</p>
                     </div>
                 </div>
             </div>
@@ -113,7 +118,7 @@
     </div>
 </section>
 
-<!-- 2. CERITA KAMI (Storytelling) -->
+<!-- 2. CERITA KAMI & KUTIPAN DIREKTUR -->
 <section class="py-16 md:py-24 bg-slate-900 font-bsu relative overflow-hidden">
     <!-- Dekorasi Latar -->
     <div class="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-900/10 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2"></div>
@@ -122,25 +127,32 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
             <div class="order-2 lg:order-1 relative animate-fade-up delay-200">
-                <div class="premium-glass-card rounded-[2rem] p-8 md:p-10">
-                    <i class="fa-solid fa-quote-left text-5xl text-slate-700 mb-6 block"></i>
-                    <h3 class="text-2xl font-bold text-white mb-4 leading-snug">Berawal dari Kepedulian Kecil di Sudut Desa</h3>
-                    <div class="space-y-4 text-slate-400 text-sm md:text-base leading-relaxed font-light">
-                        <p>
-                            Berdirinya Bank Sampah Unit (BSU) Bunga Tanjung Lestari bukanlah karena proyek besar, melainkan berawal dari kegelisahan warga melihat sampah rumah tangga yang menumpuk tak terkelola di lingkungan Tanjung Kulon.
-                        </p>
-                        <p>
-                            Kami menyadari bahwa jika hanya dibakar atau dibuang, sampah akan merusak tanah dan udara yang kita wariskan untuk anak cucu. Dari sana, timbul gagasan sederhana: <strong class="text-slate-200 font-medium">Bagaimana jika sampah ini kita pilah, kita selamatkan, dan kita jadikan sesuatu yang bernilai?</strong>
-                        </p>
-                        <p>
-                            Kini, BSU Bunga Tanjung Lestari telah bertransformasi menjadi badan hukum resmi yang melayani puluhan kepala keluarga. Mengubah limbah menjadi berkah, merawat bumi, sekaligus menambah tabungan perekonomian warga desa.
-                        </p>
+                <div class="premium-glass-card rounded-[2rem] p-8 md:p-10 relative overflow-hidden">
+                    <!-- Aksen Kutipan Background -->
+                    <i class="fa-solid fa-quote-left absolute -top-4 -left-4 text-8xl text-slate-800/50 -rotate-12 z-0"></i>
+                    
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold text-white mb-6 leading-snug">Berawal dari Kepedulian Kecil di Sudut Desa</h3>
+                        <div class="space-y-4 text-slate-400 text-sm md:text-base leading-relaxed font-light mb-8">
+                            <p>
+                                Berdirinya Bank Sampah Unit (BSU) Bunga Tanjung Lestari berawal dari kegelisahan warga melihat sampah rumah tangga yang menumpuk tak terkelola di lingkungan Tanjung Kulon.
+                            </p>
+                            <p>
+                                Jika hanya dibakar atau dibuang, sampah akan merusak tanah dan udara yang kita wariskan untuk anak cucu. Dari sana, timbul gagasan: <strong class="text-slate-200 font-medium">Bagaimana jika sampah ini kita pilah, kita selamatkan, dan kita jadikan sesuatu yang bernilai?</strong>
+                            </p>
+                        </div>
+
+                        <!-- Profil Direktur BSU -->
+                        <div class="flex items-center gap-4 p-4 bg-emerald-900/20 rounded-2xl border border-emerald-500/20">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white text-xl font-bold shrink-0 border-2 border-slate-800 shadow-md">
+                                K
+                            </div>
+                            <div>
+                                <p class="text-white text-sm font-semibold italic">"Kita tidak hanya membuang sampah, kita sedang menabung untuk kesehatan bumi dan kesejahteraan keluarga."</p>
+                                <p class="text-emerald-400 text-xs font-medium uppercase tracking-wider mt-1.5">— Ibu Kustiati, Direktur BSU</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Aksen Foto/Icon -->
-                <div class="absolute -bottom-8 -right-8 w-32 h-32 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center border-8 border-slate-900 shadow-2xl hidden md:flex">
-                    <i class="fa-solid fa-leaf text-4xl text-white"></i>
                 </div>
             </div>
 
@@ -165,7 +177,7 @@
                         </div>
                         <div>
                             <h4 class="text-lg font-bold text-slate-200 mb-1">Sirkular Ekonomi Rakyat</h4>
-                            <p class="text-slate-400 text-sm font-light leading-relaxed">Mengubah status barang tak terpakai menjadi instrumen finansial (tabungan) yang dapat meningkatkan daya beli rumah tangga.</p>
+                            <p class="text-slate-400 text-sm font-light leading-relaxed">Di bawah arahan Ibu Kustiati, barang tak terpakai diubah menjadi instrumen finansial (tabungan) yang dapat meningkatkan daya beli rumah tangga.</p>
                         </div>
                     </div>
 
@@ -175,7 +187,7 @@
                         </div>
                         <div>
                             <h4 class="text-lg font-bold text-slate-200 mb-1">Edukasi Berkelanjutan</h4>
-                            <p class="text-slate-400 text-sm font-light leading-relaxed">Menjadikan area BSU dan <i>Green House</i> kami sebagai ruang belajar terbuka tentang agrikultur ramah lingkungan bagi masyarakat luas.</p>
+                            <p class="text-slate-400 text-sm font-light leading-relaxed">Menjadikan area BSU dan fasilitas <i>Green House</i> kami sebagai ruang interaksi dan edukasi agrikultur ramah lingkungan bagi masyarakat luas.</p>
                         </div>
                     </div>
                 </div>
@@ -185,7 +197,7 @@
     </div>
 </section>
 
-<!-- 3. INOVASI DIGITAL (Menyisipkan konteks KKN secara elegan) -->
+<!-- 3. INOVASI DIGITAL (Sinergi KKN) -->
 <section class="py-16 md:py-24 bg-slate-800/30 border-y border-slate-800 font-bsu relative">
     <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 24px 24px;"></div>
     
@@ -194,20 +206,20 @@
         <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto rounded-full mb-8"></div>
         
         <p class="text-slate-400 text-base md:text-lg leading-relaxed font-light mb-10 max-w-3xl mx-auto">
-            Untuk memastikan kelancaran operasional dan keamanan data tabungan warga, BSU Bunga Tanjung Lestari kini telah bertransformasi ke arah digital. Kehadiran <strong>Portal Warga BSU</strong> ini mengakhiri era pencatatan manual di buku tulis yang rawan hilang atau rusak.
+            Untuk memastikan kelancaran operasional dan keamanan data tabungan warga, BSU Bunga Tanjung Lestari kini telah bertransformasi. Kehadiran <strong>Portal Sistem Terpadu</strong> ini mengakhiri era pencatatan manual di buku tulis yang rawan rusak atau hilang.
         </p>
         
         <div class="premium-glass-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-10 text-left bg-slate-900/60">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-emerald-500/30 flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
-                <i class="fa-solid fa-code text-4xl text-emerald-500"></i>
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-emerald-500/30 flex items-center justify-center shrink-0 shadow-inner overflow-hidden relative group">
+                <i class="fa-solid fa-microchip text-4xl text-emerald-500 transform group-hover:scale-110 transition-transform duration-300"></i>
             </div>
             <div>
                 <h4 class="text-white font-bold text-lg md:text-xl mb-2">Transparansi dalam Genggaman</h4>
                 <p class="text-slate-400 text-sm md:text-base leading-relaxed font-light mb-4">
-                    Seluruh pencatatan berat sampah, riwayat setoran, hingga nominal tabungan warga kini terekam secara sistematis di server berbasis <i>Cloud</i>. Masyarakat dapat memantau hasil tabungan mereka dengan transparan tanpa perlu datang ke lokasi.
+                    Seluruh pencatatan berat sampah, riwayat setoran, hingga nominal tabungan kini terekam secara sistematis di server berbasis komputasi awan (<i>Cloud</i>). Warga dapat memantau hasil tabungan mereka secara *real-time* kapan saja.
                 </p>
-                <div class="text-[10px] uppercase tracking-widest text-emerald-500 font-semibold">
-                    <i class="fa-solid fa-microchip mr-1"></i> Infrastruktur Digital didukung oleh Mahasiswa KKNT IDBU 54 Universitas Diponegoro
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-[10px] md:text-xs uppercase tracking-widest text-emerald-400 font-medium">
+                    <i class="fa-solid fa-code"></i> Dikembangkan oleh Mahasiswa KKNT IDBU 54 Undip
                 </div>
             </div>
         </div>
@@ -226,14 +238,14 @@
         
         <h2 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Mari Bergabung Menjadi Bagian dari Solusi</h2>
         <p class="text-slate-400 text-base md:text-lg mb-10 font-light max-w-2xl mx-auto">
-            Tidak ada kata terlambat untuk mulai memilah sampah. Setorkan botol dan kardus bekas di rumah Anda, selamatkan lingkungan kita, dan saksikan bagaimana sampah tersebut berubah menjadi senyuman keluarga.
+            Tidak ada kata terlambat untuk mulai peduli. Pilah sampah Anda dari rumah, serahkan ke BSU Bunga Tanjung Lestari, dan saksikan bagaimana tumpukan limbah berubah menjadi senyuman keluarga.
         </p>
         
         <div class="flex flex-col sm:flex-row justify-center gap-4">
             <a href="login.html" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg">
                 <i class="fa-solid fa-right-to-bracket"></i> Buat Akun Warga
             </a>
-            <a href="https://wa.me/6285113236312" class="px-8 py-4 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-emerald-400 font-medium rounded-full transition-colors flex items-center justify-center gap-2">
+            <a href="https://wa.me/6285113236312" class="px-8 py-4 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-emerald-400 font-medium rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
                 <i class="fa-solid fa-location-dot"></i> Kunjungi Lokasi Kami
             </a>
         </div>
