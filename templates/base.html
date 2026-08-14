@@ -376,7 +376,7 @@
         }
         .badminton-lines { position: absolute; inset: 6px; border: 1px solid rgba(255,255,255,0.1); }
         .badminton-center-line { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px solid rgba(255,255,255,0.1); transform: translateX(-50%); }
-        .badminton-net { absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.2); transform: translateY(-50%); }
+        .badminton-net { position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.2); transform: translateY(-50%); }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 flex flex-col min-h-screen relative pb-[180px] lg:pb-0 font-sans z-0 selection:bg-slate-600/50 selection:text-white">
@@ -474,13 +474,13 @@
         <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
                 
-                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo Saja, Tanpa Teks) -->
+                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo Saja, Tanpa Teks yang menyesakkan) -->
                 <div class="flex items-center shrink-0 lg:flex-1">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
                         <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
                     </a>
 
-                    <!-- Header Desktop Rotator -->
+                    <!-- Header Desktop Rotator (Disembunyikan di Mobile) -->
                     <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-start text-white w-full h-12 ml-4 pl-4 border-l border-slate-700 overflow-hidden">
                         <div id="header-state-2" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
                             <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Sistem Pencatatan Sampah Terpadu</span>
@@ -501,48 +501,6 @@
                         <a href="{{ url_for('home') }}" class="desktop-link active">Beranda</a>
                         <a href="#tentang" class="desktop-link">Tentang BSU</a>
                         <a href="{{ url_for('jadwal_sholat_page') }}" class="desktop-link">Religi</a>
-                    </div>
-
-                    <!-- Dropdown Mobile (Hamburger) -->
-                    <div class="relative group z-50 xl:hidden">
-                        <button onclick="toggleDropdown('info-dropdown')" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 active:scale-95">
-                            <i class="fa-solid fa-bars text-sm"></i>
-                        </button>
-                        
-                        <!-- Perbaikan Tampil utuh: overflow-hidden biasa, membiarkan tinggi menu mengikuti konten agar tidak kepotong -->
-                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
-                            <div class="bubble-tail" style="right: 18px;"></div>
-                            
-                            <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-inner">
-                                {% if session.get('user') %}
-                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
-                                        <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
-                                    </div>
-                                    <a href="{{ url_for('dashboard') }}" class="block px-5 py-3.5 text-sm text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"><i class="fa-solid fa-gauge w-6 text-center text-slate-400"></i> Halaman Tabungan</a>
-                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                {% else %}
-                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Status Lokasi</span>
-                                        <div class="flex items-center gap-2 text-sm font-medium text-slate-300">
-                                            <i class="fa-solid fa-location-crosshairs text-slate-500"></i><span id="mobile-user-location" class="truncate">Mencari lokasi...</span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-
-                                <div class="py-1">
-                                    <a href="{{ url_for('home') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-house w-6 text-center text-slate-500"></i> Beranda Publik</a>
-                                    <a href="#tentang" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-building-columns w-6 text-center text-slate-500"></i> Tentang BSU</a>
-                                    <a href="{{ url_for('jadwal_sholat_page') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-mosque w-6 text-center text-slate-500"></i> Religi</a>
-                                    <a href="/lokasi" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Lokasi</a>
-                                </div>
-
-                                {% if session.get('user') %}
-                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
-                                {% endif %}
-                            </div>
-                        </div>
                     </div>
 
                     {% if session.get('user') %}
@@ -577,14 +535,58 @@
                             </div>
                         </div>
                     {% else %}
-                        <!-- Tombol Login Premium (Modern & Simple) -->
+                        <!-- Tombol Login Premium (Modern & Simple) diletakkan SEBELUM hamburger -->
                         <div class="flex items-center">
-                            <a href="login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-3 border border-slate-600 shadow-sm">
-                                <span class="tracking-wide">FORM SETOR SAMPAH</span>
+                            <a href="login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-2 border border-slate-600 shadow-sm">
+                                <span class="tracking-wide whitespace-nowrap">FORM SETOR</span>
                                 <div class="bg-slate-700 group-hover:bg-slate-600 text-white rounded-full w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-[10px] md:text-xs transition-transform group-hover:translate-x-0.5"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
                             </a>
                         </div>
                     {% endif %}
+
+                    <!-- Dropdown Mobile (Hamburger) dipindah ke paling ujung kanan agar tidak terpotong -->
+                    <div class="relative group z-50 xl:hidden">
+                        <button onclick="toggleDropdown('info-dropdown')" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 active:scale-95">
+                            <i class="fa-solid fa-bars text-sm"></i>
+                        </button>
+                        
+                        <!-- Menu tampil utuh karena mengikuti batas kanan layar -->
+                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
+                            <!-- Posisi ekor panah disesuaikan ke tengah tombol hamburger -->
+                            <div class="bubble-tail" style="right: 12px;"></div>
+                            
+                            <!-- Dihilangkan overflow scroll dan batas height agar tampil full utuh -->
+                            <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-inner">
+                                {% if session.get('user') %}
+                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
+                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
+                                        <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
+                                    </div>
+                                    <a href="{{ url_for('dashboard') }}" class="block px-5 py-3.5 text-sm text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"><i class="fa-solid fa-gauge w-6 text-center text-slate-400"></i> Halaman Tabungan</a>
+                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
+                                {% else %}
+                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
+                                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Status Lokasi</span>
+                                        <div class="flex items-center gap-2 text-sm font-medium text-slate-300">
+                                            <i class="fa-solid fa-location-crosshairs text-slate-500"></i><span id="mobile-user-location" class="truncate">Mencari lokasi...</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                <div class="py-1">
+                                    <a href="{{ url_for('home') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-house w-6 text-center text-slate-500"></i> Beranda Publik</a>
+                                    <a href="#tentang" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-building-columns w-6 text-center text-slate-500"></i> Tentang BSU</a>
+                                    <a href="{{ url_for('jadwal_sholat_page') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-mosque w-6 text-center text-slate-500"></i> Religi</a>
+                                    <a href="/lokasi" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Lokasi</a>
+                                </div>
+
+                                {% if session.get('user') %}
+                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
+                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
