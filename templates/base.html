@@ -22,12 +22,12 @@
                 document.documentElement.innerHTML = `
                     <div style="background:#0f172a; color:#ffffff; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:system-ui, sans-serif; text-align:center; padding:20px;">
                         <i class="fa-solid fa-shield-halved" style="font-size:50px; margin-bottom:20px; color:#475569;"></i>
-                        <h1 style="font-size:24px; font-weight:800; margin-bottom:10px; letter-spacing:1px;">AKSES DITOLAK</h1>
-                        <p style="color:#94a3b8; font-size:14px;">Sistem mendeteksi hal yang mencurigakan. Akses dilarang demi keamanan data BSU.</p>
-                        <p style="color:#64748b; font-size:12px; margin-top:20px;">Kode Error: UA_BLACKLISTED</p>
+                        <h1 style="font-size:24px; font-weight:800; margin-bottom:10px; letter-spacing:1px;">AKSES DITUTUP</h1>
+                        <p style="color:#94a3b8; font-size:14px;">Sistem mendeteksi hal yang tidak biasa. Akses ditutup demi keamanan data warga.</p>
+                        <p style="color:#64748b; font-size:12px; margin-top:20px;">Kode Eror: UA_BLACKLISTED</p>
                     </div>
                 `;
-                throw new Error("Security Violation: Access Denied");
+                throw new Error("Pelanggaran Keamanan: Akses Ditolak");
             }
             setInterval(() => {
                 const start = performance.now();
@@ -265,17 +265,6 @@
         
         .merdeka-font { font-family: 'Oswald', sans-serif; } 
 
-        /* Mobile Marquee Animation */
-        @keyframes scrollX {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .marquee-mobile-wrapper {
-            display: flex;
-            width: 200%;
-            animation: scrollX 8s linear infinite;
-        }
-
         /* iOS MOBILE BUBBLE MENU - Adapted for Modern Dark */
         .ios-bubble-menu {
             border-radius: 1.5rem; 
@@ -364,7 +353,7 @@
             100% { transform: translateY(-100%); }
         }
 
-        .clock-container { display: flex; align-items: center; justify-content: center; height: 100%; font-family: 'Inter', monospace; font-weight: 600; font-size: 11px; color: #f8fafc; min-width: 85px; }
+        .clock-container { display: flex; align-items: center; justify-content: center; height: 100%; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #f8fafc; min-width: 95px; }
 
         .desktop-link { color: #94a3b8; font-weight: 500; padding: 8px 18px; border-radius: 20px; transition: all 0.3s ease; font-size: 0.9rem; }
         .desktop-link:hover { color: #f1f5f9; background: rgba(255,255,255,0.05); }
@@ -410,13 +399,13 @@
             </div>
             
             <div class="text-center space-y-3">
-                <h1 class="text-3xl md:text-5xl font-bold text-white tracking-wider uppercase drop-shadow-md">Akses Ditangguhkan</h1>
-                <p class="text-slate-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">Sistem mendeteksi hal yang mencurigakan. Akses Anda dibatasi sementara demi keamanan data.</p>
+                <h1 class="text-3xl md:text-5xl font-bold text-white tracking-wider uppercase drop-shadow-md">Akses Sementara Ditutup</h1>
+                <p class="text-slate-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">Sistem mendeteksi ada hal yang tidak biasa. Untuk menjaga keamanan data, akses dibatasi sementara waktu.</p>
             </div>
             
             <div class="bg-white/5 backdrop-blur-xl border border-white/5 rounded-3xl p-8 text-center w-full shadow-lg relative overflow-hidden mt-2">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-600 via-slate-400 to-slate-600"></div>
-                <p class="text-slate-400 text-xs uppercase tracking-widest mb-3 font-semibold">Waktu Pemulihan</p>
+                <p class="text-slate-400 text-xs uppercase tracking-widest mb-3 font-semibold">Waktu Tunggu Buka Kembali</p>
                 <p id="penalty-timer" class="text-5xl md:text-6xl merdeka-font font-bold text-white tracking-wider">60:00</p>
             </div>
 
@@ -425,7 +414,7 @@
                 <div class="badminton-center-line"></div>
                 <div class="badminton-net"></div>
                 
-                <div class="absolute top-3 left-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg text-white/90 text-[10px] font-medium z-0 border border-white/5"><i class="fa-solid fa-recycle mr-2"></i> Edukasi Kebersihan</div>
+                <div class="absolute top-3 left-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg text-white/90 text-[10px] font-medium z-0 border border-white/5"><i class="fa-solid fa-recycle mr-2"></i> Game Bersih-bersih</div>
                 <div class="absolute bottom-3 right-4 bg-black/50 backdrop-blur-md px-4 py-2 rounded-xl text-white/90 text-xs font-semibold z-0 border border-white/10 shadow-lg">Skor: <span id="game-score" class="text-slate-300 text-sm ml-1">0</span></div>
                 
                 <div id="game-ball" class="absolute w-12 h-12 cursor-pointer text-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center z-10" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">♻️</div>
@@ -434,13 +423,13 @@
             <button id="express-btn" onclick="reducePenaltyExpress()" class="w-full bg-white/5 hover:bg-white/10 text-white font-medium py-4 px-6 rounded-2xl shadow-lg border border-white/5 transition-all active:scale-[0.98] flex items-center justify-center gap-4 mt-2 backdrop-blur-md">
                 <i class="fa-solid fa-bolt text-slate-400 text-xl"></i> 
                 <div class="text-left">
-                    <div class="text-sm md:text-base leading-tight">Percepat Pemulihan</div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">Baca Panduan Pengelolaan Sampah</div>
+                    <div class="text-sm md:text-base leading-tight">Buka Akses Lebih Cepat</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">Baca Cara Kelola Sampah</div>
                 </div>
             </button>
             
             <div class="text-center text-xs text-slate-500 w-full mt-4 flex flex-col gap-1">
-                <span>Sesi Terekam pada IP:</span>
+                <span>Data tersimpan pada IP:</span>
                 <span id="penalty-ip" class="text-slate-400 font-mono tracking-wider">Memeriksa...</span>
             </div>
         </div>
@@ -448,7 +437,7 @@
 
     <div id="inspect-warning-toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[10005] bg-[#0f172a]/95 backdrop-blur-xl text-slate-200 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 transition-all duration-1000 hidden opacity-0 -translate-y-full w-[90vw] max-w-md border border-slate-700">
         <i class="fa-solid fa-shield-halved text-2xl animate-pulse shrink-0 text-slate-400"></i>
-        <p class="text-[11px] md:text-xs font-medium leading-relaxed">Inspeksi elemen tidak diizinkan. Sistem kami menjaga keamanan data warga dengan sangat ketat.</p>
+        <p class="text-[11px] md:text-xs font-medium leading-relaxed">Pengecekan elemen dilarang. Keamanan dan data aplikasi sedang dilindungi.</p>
     </div>
 
     <!-- PRIVACY OVERLAY -->
@@ -458,10 +447,10 @@
             <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-slate-800 rounded-full mix-blend-overlay filter blur-3xl opacity-10"></div>
             
             <div class="relative z-10 flex flex-col items-center">
-                <i class="fa-solid fa-shield-check text-6xl text-slate-400 mb-6"></i>
-                <h2 class="text-xl md:text-2xl font-bold mb-4 text-white tracking-widest uppercase">Layar Terlindungi</h2>
+                <i class="fa-solid fa-lock text-6xl text-slate-400 mb-6"></i>
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-white tracking-widest uppercase">Layar Dikunci Otomatis</h2>
                 <div class="h-px w-24 bg-gradient-to-r from-transparent via-slate-500/30 to-transparent mb-5"></div>
-                <p class="text-sm text-slate-400 leading-relaxed font-light">Sesi aplikasi Anda sedang dilindungi secara otomatis di latar belakang agar data tetap aman.</p>
+                <p class="text-sm text-slate-400 leading-relaxed font-light">Aplikasi sedang berjalan di latar belakang. Data Anda aman dan terlindungi.</p>
             </div>
         </div>
     </div>
@@ -476,7 +465,7 @@
                 <span class="w-2 h-2 bg-slate-300 rounded-full animate-pulse delay-75"></span>
                 <span class="w-2 h-2 bg-slate-500 rounded-full animate-pulse delay-150"></span>
             </div>
-            <p class="text-slate-400 mt-6 font-medium tracking-[0.3em] text-[9px] md:text-[10px] uppercase relative z-10">Memuat Sistem</p>
+            <p class="text-slate-400 mt-6 font-medium tracking-[0.3em] text-[9px] md:text-[10px] uppercase relative z-10">Menyiapkan Sistem...</p>
         </div>
     </div>
 
@@ -485,45 +474,19 @@
         <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
             <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
                 
-                <!-- Kiri: Logo & Dynamic Text (Diperbaiki agar tidak terpotong di mobile) -->
-                <div class="flex items-center gap-3 md:gap-4 border-r border-slate-700 pr-3 md:pr-4 mr-2 lg:mr-4 lg:flex-1 overflow-hidden min-w-0 shrink">
+                <!-- Kiri: Logo (Tampilan Mobile Hanya Logo) -->
+                <div class="flex items-center shrink-0 lg:flex-1">
                     <a href="{{ url_for('home') }}" class="flex items-center group shrink-0">
                         <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
                     </a>
 
-                    {% if session.get('user') %}
-                        {% set safe_nama = session.get('nama') %}
-                        {% if not safe_nama %}{% set safe_nama = 'Warga' %}{% endif %}
-                        
-                        <div class="xl:hidden h-8 w-px bg-slate-700 mx-1 shrink-0"></div>
-                        
-                        <div class="xl:hidden flex flex-col justify-center min-w-0 pr-1 shrink">
-                            <div class="flex items-center gap-1.5 text-[11px] md:text-xs font-semibold text-white leading-tight">
-                                <span class="truncate tracking-wide">{{ safe_nama }}</span>
-                            </div>
-                            <div class="flex items-center mt-1">
-                                <span class="text-[9px] font-medium text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                                    <i class="fa-solid fa-shield-check text-[8px]"></i> Terverifikasi
-                                </span>
-                            </div>
-                        </div>
-                    {% else %}
-                        <!-- Mobile Marquee untuk "BSU Bunga Tanjung Lestari" -->
-                        <div id="mobile-guest-schedule" class="xl:hidden relative flex-1 h-8 ml-1 overflow-hidden flex items-center w-full min-w-0">
-                            <div class="marquee-mobile-wrapper">
-                                <span class="text-[12px] font-medium text-slate-300 w-1/2 whitespace-nowrap pl-2">BSU Bunga Tanjung Lestari</span>
-                                <span class="text-[12px] font-medium text-slate-300 w-1/2 whitespace-nowrap pl-2">BSU Bunga Tanjung Lestari</span>
-                            </div>
-                        </div>
-                    {% endif %}
-
                     <!-- Header Desktop Rotator -->
-                    <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-start text-white w-full h-12 overflow-hidden">
+                    <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-start text-white w-full h-12 ml-4 pl-4 border-l border-slate-700 overflow-hidden">
                         <div id="header-state-2" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Sistem Informasi Pengelolaan Sampah</span>
+                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Sistem Pencatatan Sampah Terpadu</span>
                         </div>
                         <div id="header-state-3" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Menabung Sampah Menjaga Lingkungan</span>
+                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Mengubah Sampah Menjadi Berkah</span>
                         </div>
                         <div id="header-state-4" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
                             <span class="text-[13px] font-bold tracking-widest uppercase text-white truncate">BSU BUNGA TANJUNG LESTARI</span>
@@ -536,46 +499,47 @@
                     
                     <div class="hidden xl:flex items-center space-x-1 mr-4 bg-slate-800/50 p-1 rounded-full border border-slate-700/50">
                         <a href="{{ url_for('home') }}" class="desktop-link active">Beranda</a>
-                        <a href="#tentang" class="desktop-link">Tentang Kami</a>
+                        <a href="#tentang" class="desktop-link">Tentang BSU</a>
                         <a href="{{ url_for('jadwal_sholat_page') }}" class="desktop-link">Religi</a>
                     </div>
 
-                    <!-- Dropdown Mobile -->
+                    <!-- Dropdown Mobile (Hamburger) -->
                     <div class="relative group z-50 xl:hidden">
                         <button onclick="toggleDropdown('info-dropdown')" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 active:scale-95">
                             <i class="fa-solid fa-bars text-sm"></i>
                         </button>
                         
-                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
+                        <!-- Penyesuaian max-h dan overflow agar tidak terpotong di HP kecil -->
+                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-60 z-[9999]">
                             <div class="bubble-tail"></div>
                             
-                            <div class="overflow-hidden rounded-2xl">
+                            <div class="overflow-y-auto overflow-x-hidden max-h-[60vh] rounded-[14px] custom-scroll bg-slate-900 shadow-inner">
                                 {% if session.get('user') %}
                                     <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Data Warga</p>
+                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
                                         <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
                                     </div>
-                                    <a href="{{ url_for('dashboard') }}" class="block px-5 py-3.5 text-sm text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"><i class="fa-solid fa-gauge w-6 text-center text-slate-400"></i> Dasbor Warga</a>
+                                    <a href="{{ url_for('dashboard') }}" class="block px-5 py-3.5 text-sm text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"><i class="fa-solid fa-gauge w-6 text-center text-slate-400"></i> Halaman Tabungan</a>
                                     <div class="h-px bg-slate-700 my-1 mx-4"></div>
                                 {% else %}
                                     <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Lokasi Anda</span>
+                                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Status Lokasi</span>
                                         <div class="flex items-center gap-2 text-sm font-medium text-slate-300">
-                                            <i class="fa-solid fa-location-crosshairs text-slate-500"></i><span id="mobile-user-location" class="truncate">Mendeteksi...</span>
+                                            <i class="fa-solid fa-location-crosshairs text-slate-500"></i><span id="mobile-user-location" class="truncate">Mencari lokasi...</span>
                                         </div>
                                     </div>
                                 {% endif %}
 
-                                <div class="py-1 bg-slate-900">
-                                    <a href="{{ url_for('home') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-house w-6 text-center text-slate-500"></i> Beranda Utama</a>
-                                    <a href="#tentang" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-building-columns w-6 text-center text-slate-500"></i> Tentang Kami</a>
-                                    <a href="{{ url_for('jadwal_sholat_page') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-mosque w-6 text-center text-slate-500"></i> Jadwal Ibadah</a>
-                                    <a href="/lokasi" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Wilayah</a>
+                                <div class="py-1">
+                                    <a href="{{ url_for('home') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-house w-6 text-center text-slate-500"></i> Beranda Publik</a>
+                                    <a href="#tentang" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-building-columns w-6 text-center text-slate-500"></i> Tentang BSU</a>
+                                    <a href="{{ url_for('jadwal_sholat_page') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-mosque w-6 text-center text-slate-500"></i> Religi</a>
+                                    <a href="/lokasi" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Lokasi</a>
                                 </div>
 
                                 {% if session.get('user') %}
                                     <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
+                                    <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -591,7 +555,7 @@
                                         {{ session.get('nama', 'Member').split(' ')[0] if session.get('nama') else 'Member' }}
                                     </span>
                                     <span class="text-[9px] font-medium text-slate-400 mt-0.5">
-                                        Warga Aktif
+                                        Warga Terdaftar
                                     </span>
                                 </div>
                                 <i class="fa-solid fa-chevron-down text-[10px] text-slate-500 ml-2"></i>
@@ -605,7 +569,7 @@
                                         <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
                                     </div>
                                     <div class="py-1">
-                                        <a href="{{ url_for('dashboard') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-terminal w-6 text-center text-slate-500"></i> Dasbor Warga</a>
+                                        <a href="{{ url_for('dashboard') }}" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-wallet w-6 text-center text-slate-500"></i> Cek Tabungan</a>
                                     </div>
                                     <div class="h-px bg-slate-700 my-1 mx-4"></div>
                                     <a href="{{ url_for('logout') }}" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
@@ -613,10 +577,10 @@
                             </div>
                         </div>
                     {% else %}
-                        <!-- Tombol Login (Modern) -->
+                        <!-- Tombol Login Premium (Modern & Simple) -->
                         <div class="flex items-center">
                             <a href="login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-3 border border-slate-600 shadow-sm">
-                                <span class="tracking-wide">FORM PENIMBANGAN</span>
+                                <span class="tracking-wide">FORM SETOR SAMPAH</span>
                                 <div class="bg-slate-700 group-hover:bg-slate-600 text-white rounded-full w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-[10px] md:text-xs transition-transform group-hover:translate-x-0.5"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
                             </a>
                         </div>
@@ -669,22 +633,22 @@
                             <img src="https://iili.io/C6oIUAX.md.png" alt="Logo BSU" class="h-24 md:h-32 mx-auto mb-8 opacity-90 hover:-translate-y-1 transition-transform duration-500">
                             
                             <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-wide leading-tight">
-                                Menjaga Lingkungan & Meningkatkan Ekonomi
+                                Menjaga Lingkungan, Meningkatkan Ekonomi Warga
                             </h2>
                             
                             <p class="text-base md:text-lg text-slate-400 leading-relaxed mb-14 font-light">
-                                Bank Sampah resmi yang beroperasi untuk mengelola sampah secara modern, transparan, dan ramah lingkungan. <span class="font-medium text-slate-300">Jadikan sampah rumah tangga Anda sebagai tabungan untuk masa depan.</span>
+                                Bank Sampah Unit (BSU) resmi yang mengelola sampah desa secara modern, transparan, dan ramah lingkungan. <span class="font-medium text-slate-300">Ubah sampah rumah tangga Anda menjadi tabungan yang bermanfaat.</span>
                             </p>
 
-                            <!-- Fitur Cards: Modern, Tidy, Subdued Colors -->
+                            <!-- Fitur Cards: Modern, Tidy, Bahasa Mudah Dipahami -->
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-8 text-left">
                                 
                                 <div class="bg-slate-900/50 p-6 md:p-8 rounded-3xl border border-slate-700/50 shadow-md hover:bg-slate-800 hover:border-slate-600 hover:-translate-y-1 transition-all duration-300 relative group backdrop-blur-sm">
                                     <div class="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center mb-5 text-slate-400 border border-slate-700 group-hover:text-slate-200 transition-all duration-300">
-                                        <i class="fa-solid fa-scale-balanced text-xl"></i>
+                                        <i class="fa-solid fa-list-check text-xl"></i>
                                     </div>
                                     <h3 class="font-semibold text-lg text-slate-200 mb-2 tracking-wide">Pencatatan Terpusat</h3>
-                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Semua data penimbangan dan tabungan warga dicatat secara terpusat agar jelas, akurat, dan transparan untuk semua anggota.</p>
+                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Sistem pencatatan dan penimbangan rutin yang terpusat untuk memastikan data tabungan sampah Anda aman dan transparan.</p>
                                 </div>
 
                                 <div class="bg-slate-900/50 p-6 md:p-8 rounded-3xl border border-slate-700/50 shadow-md hover:bg-slate-800 hover:border-slate-600 hover:-translate-y-1 transition-all duration-300 relative group backdrop-blur-sm">
@@ -692,27 +656,27 @@
                                         <i class="fa-solid fa-wallet text-xl"></i>
                                     </div>
                                     <h3 class="font-semibold text-lg text-slate-200 mb-2 tracking-wide">Tabungan Warga</h3>
-                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Tukarkan sampah plastik, logam, dan kertas Anda menjadi uang yang bisa dicairkan untuk kebutuhan sehari-hari keluarga.</p>
+                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Fasilitas untuk mengubah sampah plastik, kertas, dan logam menjadi uang tabungan yang bisa dicairkan untuk kebutuhan sehari-hari.</p>
                                 </div>
 
                                 <div class="bg-slate-900/50 p-6 md:p-8 rounded-3xl border border-slate-700/50 shadow-md hover:bg-slate-800 hover:border-slate-600 hover:-translate-y-1 transition-all duration-300 relative group backdrop-blur-sm">
                                     <div class="w-12 h-12 bg-slate-800 rounded-xl flex items-center justify-center mb-5 text-slate-400 border border-slate-700 group-hover:text-slate-200 transition-all duration-300">
-                                        <i class="fa-solid fa-leaf text-xl"></i>
+                                        <i class="fa-solid fa-seedling text-xl"></i>
                                     </div>
                                     <h3 class="font-semibold text-lg text-slate-200 mb-2 tracking-wide">Pusat Belajar Bertani</h3>
-                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Dilengkapi dengan fasilitas <i>Green House</i> dan taman terbuka sebagai tempat warga belajar bercocok tanam yang sehat dan ramah lingkungan.</p>
+                                    <p class="text-slate-500 text-sm leading-relaxed font-light">Terdapat fasilitas lahan hijau (Green House) yang digunakan sebagai tempat belajar bertani ramah lingkungan bagi seluruh warga.</p>
                                 </div>
 
                             </div>
                             
-                            <!-- CYBER SECURITY STATEMENT -->
+                            <!-- CYBER SECURITY STATEMENT (Bahasa Awam) -->
                             <div class="mt-12 p-6 rounded-2xl bg-slate-800/40 border border-slate-700/60 flex flex-col md:flex-row items-center gap-5 text-left transition-all hover:bg-slate-800/60 shadow-sm">
                                 <div class="w-14 h-14 rounded-full bg-slate-900 flex items-center justify-center shrink-0 border border-slate-700 shadow-inner">
                                     <i class="fa-solid fa-shield-halved text-xl text-slate-400"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-slate-200 font-semibold mb-1.5 tracking-wide text-sm md:text-base text-center md:text-left">Keamanan Data Terjamin</h3>
-                                    <p class="text-sm text-slate-500 font-light leading-relaxed text-center md:text-left">Walaupun dikelola di tingkat desa, BSU Bunga Tanjung Lestari menjaga privasi dan keamanan data Anda dengan standar tinggi. Seluruh data identitas dan catatan tabungan warga dilindungi agar aman dari pencurian dan kebocoran data digital.</p>
+                                    <h3 class="text-slate-200 font-semibold mb-1.5 tracking-wide text-sm md:text-base text-center md:text-left">Keamanan Data Warga Terjamin (Cyber Security)</h3>
+                                    <p class="text-sm text-slate-500 font-light leading-relaxed text-center md:text-left">Walaupun dikelola di tingkat desa, BSU Bunga Tanjung Lestari menjaga privasi dan keamanan data dengan ketat. Semua data identitas warga dan catatan tabungan dilindungi dari kejahatan dan ancaman digital.</p>
                                 </div>
                             </div>
 
@@ -734,33 +698,33 @@
                         <h4 class="text-sm font-bold text-slate-300 tracking-widest uppercase">BSU BUNGA TANJUNG LESTARI</h4>
                     </div>
                 </div>
-                <p class="text-[13px] leading-relaxed font-light text-slate-500">Hadir untuk mengelola sampah dengan baik agar lingkungan desa tetap bersih dan memberi manfaat ekonomi bagi warga Kabupaten Pekalongan.</p>
+                <p class="text-[13px] leading-relaxed font-light text-slate-500">Berkomitmen mengelola sampah rumah tangga untuk menciptakan lingkungan yang bersih dan memberikan manfaat ekonomi bagi masyarakat di Kabupaten Pekalongan.</p>
             </div>
             <div>
                 <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Menu Utama</h4>
                 <ul class="space-y-3 text-[13px] font-light">
                     <li><a href="{{ url_for('home') }}" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Beranda Utama</a></li>
-                    <li><a href="#tentang" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Tentang Kami</a></li>
-                    <li><a href="/lokasi" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Peta Wilayah</a></li>
-                    <li><a href="{{ url_for('jadwal_sholat_page') }}" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Jadwal Ibadah</a></li>
+                    <li><a href="#tentang" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Tentang BSU</a></li>
+                    <li><a href="/lokasi" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Peta Lokasi BSU</a></li>
+                    <li><a href="{{ url_for('jadwal_sholat_page') }}" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Religi</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Layanan Utama</h4>
+                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Layanan BSU</h4>
                 <ul class="space-y-3 text-[13px] font-light">
-                    <li><a href="login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Formulir Penimbangan</a></li>
-                    <li><a href="login.html" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Masuk Akun BSU</a></li>
-                    <li><a href="#" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Info Lingkungan</a></li>
+                    <li><a href="login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Form Setor Sampah</a></li>
+                    <li><a href="login.html" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Masuk Akun Warga</a></li>
+                    <li><a href="#" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Berita Lingkungan</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Kontak Bantuan</h4>
+                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Kontak Kami</h4>
                 <ul class="space-y-4 text-[13px] font-light text-slate-500">
                     <li class="flex items-start gap-3">
                         <i class="fa-brands fa-whatsapp text-slate-400 mt-1"></i> 
                         <div>
                             <a href="https://wa.me/6285113236312" class="text-slate-400 hover:text-slate-200 transition-colors block tracking-wider">0851-1323-6312</a>
-                            <span class="text-[10px] text-slate-600 uppercase tracking-wide">Nomor Pengurus BSU</span>
+                            <span class="text-[10px] text-slate-600 uppercase tracking-wide">Pengurus BSU (Telepon/WA)</span>
                         </div>
                     </li>
                     <li class="flex items-start gap-3">
@@ -797,9 +761,9 @@
     </div>
 
     <div class="desktop-bottom-bar items-center px-6 shadow-md select-none transition-all duration-300">
-        <div class="bg-slate-800/80 h-6 flex items-center px-3 rounded text-slate-300 text-[10px] font-bold uppercase tracking-widest gap-2 mr-5 border border-slate-700"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-pulse shadow-sm"></span> PENGUMUMAN BSU</div>
+        <div class="bg-slate-800/80 h-6 flex items-center px-3 rounded text-slate-300 text-[10px] font-bold uppercase tracking-widest gap-2 mr-5 border border-slate-700"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-pulse shadow-sm"></span> INFO BSU</div>
         <div class="ticker-wrap relative flex-1"><div id="unified-ticker-desktop"></div></div>
-        <div class="bg-slate-800/50 h-8 px-4 rounded-lg border border-slate-700 flex items-center gap-2 ml-5 text-slate-400 text-[11px] font-medium transition-colors hover:bg-slate-700/80"><i class="fa-solid fa-satellite-dish text-slate-500"></i><span id="desktop-user-location">Mengidentifikasi Lokasi...</span></div>
+        <div class="bg-slate-800/50 h-8 px-4 rounded-lg border border-slate-700 flex items-center gap-2 ml-5 text-slate-400 text-[11px] font-medium transition-colors hover:bg-slate-700/80"><i class="fa-solid fa-satellite-dish text-slate-500"></i><span id="desktop-user-location">Mencari lokasi...</span></div>
         <div class="bg-slate-800/50 h-8 px-4 rounded-lg border border-slate-700 flex items-center ml-3 font-mono text-slate-400 transition-colors hover:bg-slate-700/80"><div id="clock-desktop" class="clock-container text-[11px] transition-all duration-300">Memuat...</div></div>
     </div>
 
@@ -906,14 +870,14 @@
 
         function updateTicker() {
             const data = [
-                "Layanan BSU Bunga Tanjung Lestari buka secara berkala untuk warga sekitar.",
-                "Tingkatkan pendapatan desa dengan ikut serta dalam program daur ulang sampah.",
-                "Mari jaga kebersihan lingkungan bersama-sama agar desa kita makin asri dan sehat.",
-                "Tukarkan sampah plastik, kertas, dan besi tua Anda menjadi uang tabungan di BSU.",
-                "Fasilitas Green House kami digunakan sebagai tempat belajar bertani yang ramah lingkungan.",
-                "Jangan bakar sampah sembarangan agar udara di pemukiman kita tetap bersih dan segar.",
-                "Mari wujudkan Kabupaten Pekalongan yang bersih dan hijau melalui pengelolaan sampah yang baik.",
-                "Sistem pendataan BSU menjamin tabungan Anda dicatat dengan aman, jelas, dan transparan."
+                "Layanan penimbangan sampah BSU Bunga Tanjung Lestari beroperasi secara rutin untuk menjaga kebersihan lingkungan desa.",
+                "Mari tingkatkan ekonomi desa dengan aktif menabung sampah yang bisa didaur ulang.",
+                "Bersama-sama kita kelola sampah dengan baik agar desa menjadi lebih bersih, asri, dan sehat.",
+                "Jadikan sampah plastik, kardus, dan besi bekas Anda sebagai tabungan yang bermanfaat di BSU.",
+                "Fasilitas Green House kami terbuka bagi warga yang ingin belajar menanam sayuran dan tumbuhan ramah lingkungan.",
+                "Stop bakar sampah sembarangan! Mari jaga udara desa kita tetap bersih dan sehat untuk dihirup.",
+                "Dukung Kabupaten Pekalongan yang bersih dan hijau dengan mengelola sampah rumah tangga sebaik mungkin.",
+                "Sistem pencatatan BSU menjamin saldo tabungan warga tercatat dengan jujur, aman, dan bisa dipercaya."
             ];
             
             const now = new Date();
@@ -956,53 +920,57 @@
         }
         updateTicker();
         
-        // --- JAM DAN CUACA (KAB PEKALONGAN) BERGANTIAN ---
-        let currentTemp = "Memuat Suhu...";
-        
-        async function fetchTemperature() {
+        // --- LOGIKA JAM & CUACA BERGANTIAN ---
+        let currentTempHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cuaca...';
+        async function fetchWeather() {
             try {
-                // Koordinat Kajen, Kab. Pekalongan
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-7.0333&longitude=109.5833&current_weather=true'); 
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-7.03&longitude=109.58&current_weather=true');
                 const data = await res.json();
                 if(data && data.current_weather) {
-                    currentTemp = `${Math.round(data.current_weather.temperature)}°C`;
+                    currentTempHTML = `<i class="fa-solid fa-cloud-sun text-yellow-500 mr-1"></i> ${Math.round(data.current_weather.temperature)}°C`;
                 }
-            } catch (e) { 
-                currentTemp = "28°C"; // Fallback jika gagal
+            } catch (e) {
                 console.error("Gagal mengambil data cuaca", e);
+                currentTempHTML = '<i class="fa-solid fa-cloud text-slate-500 mr-1"></i> --°C';
             }
         }
-        
-        fetchTemperature();
-        setInterval(fetchTemperature, 10 * 60 * 1000); // Update suhu setiap 10 menit
-        
-        let toggleTimer = 0;
+        fetchWeather();
+        setInterval(fetchWeather, 30 * 60 * 1000); // Update cuaca setiap 30 menit
 
-        function updateClockAndWeather() {
+        let displayMode = 'clock'; 
+        let displayTimer = 0; 
+
+        function updateTimeAndWeather() {
             const now = new Date();
             const wibTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
             const timeString = wibTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
-            
-            toggleTimer = (toggleTimer + 1) % 25; // Total siklus 25 detik
-            
-            let displayHTML = "";
-            
-            // 0 - 19: Tampilkan Jam (20 detik)
-            // 20 - 24: Tampilkan Cuaca (5 detik)
-            if (toggleTimer < 20) {
-                displayHTML = `${timeString} WIB`;
-            } else {
-                displayHTML = `<i class="fa-solid fa-cloud-sun text-slate-400 mr-1.5" title="Suhu Kab. Pekalongan"></i> ${currentTemp}`;
-            }
+            const clockHTML = `<i class="fa-regular fa-clock text-slate-400 mr-1"></i> ${timeString} WIB`;
 
-            const mobileClock = document.getElementById('clock-mobile');
-            const desktopClock = document.getElementById('clock-desktop');
+            let htmlToShow = "";
             
-            if(mobileClock) mobileClock.innerHTML = displayHTML;
-            if(desktopClock) desktopClock.innerHTML = displayHTML;
+            // Bergantian: 20 Detik Jam -> 5 Detik Cuaca
+            if (displayMode === 'clock') {
+                htmlToShow = clockHTML;
+                if (displayTimer >= 20) {
+                    displayMode = 'weather';
+                    displayTimer = 0;
+                }
+            } else {
+                htmlToShow = currentTempHTML;
+                if (displayTimer >= 5) {
+                    displayMode = 'clock';
+                    displayTimer = 0;
+                }
+            }
+            
+            displayTimer++;
+
+            [document.getElementById('clock-mobile'), document.getElementById('clock-desktop')].forEach(el => {
+                if(el) { el.innerHTML = htmlToShow; }
+            });
         }
-        
-        setInterval(updateClockAndWeather, 1000); 
+        setInterval(updateTimeAndWeather, 1000); 
+        updateTimeAndWeather(); // Panggilan awal
 
         async function fetchUserLocation() {
             try {
@@ -1018,7 +986,7 @@
 
         window.addEventListener('click', function(e){   
             if (!e.target.closest('.relative.group') && !e.target.closest('.xl\\:hidden.flex-col') && !e.target.closest('#mobile-guest-schedule')){
-                document.querySelectorAll('.dropdown-menu-mobile').forEach(d => d.classList.add('hidden'));
+                document.querySelectorAll('.dropdown-menu-mobile, .ios-bubble-menu').forEach(d => d.classList.add('hidden'));
             }
         });
     </script>
