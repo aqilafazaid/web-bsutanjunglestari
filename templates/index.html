@@ -4,118 +4,99 @@
 
 {% block content %}
 <style>
-    /* Mengadopsi font dari base.html terbaru */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     .font-bsu { font-family: 'Inter', sans-serif; }
-    .font-display { font-family: 'Oswald', sans-serif; }
     
-    /* Premium Glass Card untuk Dark Theme */
-    .premium-glass {
-        background: rgba(30, 41, 59, 0.6);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    /* Desain Card Profesional & Clean */
+    .pro-card {
+        background: #1e293b; /* slate-800 */
+        border: 1px solid #334155; /* slate-700 */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+    }
+    
+    .pro-card:hover {
+        border-color: #10b981; /* emerald-500 */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
     }
 
-    /* Animasi Teks Premium */
-    .text-gradient-premium {
-        background: linear-gradient(135deg, #34d399 0%, #2dd4bf 50%, #10b981 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-size: 200% auto;
-    }
-
-    /* Animasi Mengambang (Floating) */
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-    }
-    .animate-float { animation: float 6s ease-in-out infinite; }
-
-    /* CUSTOM FAQ STYLE - Dark Premium */
+    /* FAQ interaktif yang elegan */
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
     details[open] summary i { transform: rotate(180deg); }
-    details[open] .faq-content { animation: fadeInDown 0.3s ease-in-out; }
+    details[open] .faq-content { 
+        animation: slideDown 0.3s ease-out forwards; 
+    }
     
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-10px); }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-5px); }
         to { opacity: 1; transform: translateY(0); }
     }
 </style>
 
 <!-- HERO SECTION -->
-<section class="relative pt-6 pb-16 lg:pb-24 overflow-hidden z-10 font-bsu">
-    <!-- Glow efek di background -->
-    <div class="absolute top-20 left-10 w-[500px] h-[500px] bg-emerald-600/15 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-teal-800/10 rounded-full blur-[120px] pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+<section class="relative pt-8 pb-16 lg:pt-16 lg:pb-24 overflow-hidden z-10 font-bsu">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
             
             <!-- Teks Hero -->
-            <div class="flex-1 text-center lg:text-left space-y-6 lg:space-y-8 mt-4 lg:mt-0">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full shadow-sm">
-                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span> 
+            <div class="flex-1 text-center lg:text-left space-y-6 lg:space-y-8">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 border border-slate-700 text-emerald-400 text-xs font-medium rounded-full">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> 
                     Langkah Kecil, Manfaat Besar
                 </div>
                 
-                <h1 class="text-4xl md:text-5xl lg:text-[4rem] font-bold text-white leading-[1.15] tracking-tight">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
                     Bersama Menjaga Desa, <br class="hidden lg:block">
-                    <span class="text-gradient-premium font-black">Meraih Berkah Bersama</span>
+                    <span class="text-emerald-400">Meraih Berkah Bersama</span>
                 </h1>
                 
-                <p class="text-slate-300 font-light text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    Selamat datang di <strong class="text-white font-semibold">BSU Bunga Tanjung Lestari</strong>. Setiap botol plastik dan kardus bekas yang Anda kumpulkan adalah wujud kepedulian pada desa kita. Mari wujudkan lingkungan yang asri dan jadikan sampah Anda sebagai <strong class="text-emerald-400 font-medium">uang tabungan</strong> keluarga.
+                <p class="text-slate-400 text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Selamat datang di <strong class="text-slate-200 font-semibold">BSU Bunga Tanjung Lestari</strong>. Mari wujudkan lingkungan yang asri, kelola sampah rumah tangga dengan bijak, dan jadikan barang bekas Anda sebagai tabungan masa depan keluarga.
                 </p>
                 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-                    <a href="login.html" class="px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold rounded-2xl shadow-[0_10px_30px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-3 transform hover:-translate-y-1">
-                        <i class="fa-solid fa-wallet text-lg"></i> Mulai Menabung Sampah
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                    <a href="login.html" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wallet"></i> Mulai Menabung
                     </a>
-                    <a href="https://wa.me/6285113236312" target="_blank" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-medium rounded-2xl transition-all flex items-center justify-center gap-3">
-                        <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i> Hubungi Pengurus
+                    <a href="https://wa.me/6285113236312" target="_blank" class="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-emerald-400"></i> Hubungi Pengurus
                     </a>
                 </div>
             </div>
 
-            <!-- Gambar Drone & Visual Profesional -->
-            <div class="flex-1 w-full max-w-2xl lg:max-w-xl relative">
-                <!-- Frame Gambar 16:9 -->
-                <div class="relative rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-700 group z-10">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10"></div>
-                    <img src="https://iili.io/CPp6r6N.md.png" alt="Fasilitas BSU Bunga Tanjung Lestari" class="w-full h-auto aspect-video object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+            <!-- Gambar Visual Drone Profesional -->
+            <div class="flex-1 w-full max-w-2xl lg:max-w-xl relative mt-8 lg:mt-0">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50 bg-slate-800">
+                    <!-- Overlay gradasi halus agar gambar tidak terlalu kontras -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent z-10"></div>
+                    
+                    <img src="https://iili.io/CPp6r6N.md.png" alt="Fasilitas BSU Bunga Tanjung Lestari dari Udara" class="w-full h-auto aspect-video object-cover">
                     
                     <!-- Label Keterangan Gambar -->
                     <div class="absolute bottom-4 left-5 z-20 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                            <i class="fa-solid fa-location-dot"></i>
+                        <div class="w-8 h-8 rounded-full bg-slate-800/80 backdrop-blur-sm border border-slate-600 flex items-center justify-center text-emerald-400">
+                            <i class="fa-solid fa-location-dot text-sm"></i>
                         </div>
                         <div>
-                            <p class="text-white font-bold text-sm drop-shadow-md">Tanjung Kulon, Kajen</p>
-                            <p class="text-slate-300 text-[10px] font-medium uppercase tracking-wider drop-shadow-md">Pusat Layanan BSU</p>
+                            <p class="text-white font-medium text-sm">Tanjung Kulon, Kajen</p>
+                            <p class="text-slate-300 text-[10px] uppercase tracking-wide">Pusat Layanan BSU</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Floating Stats Card (Animasi Mengambang) -->
-                <div class="absolute -bottom-6 -right-4 md:-right-8 lg:-left-12 z-20 premium-glass p-5 rounded-2xl animate-float border-emerald-500/30 w-[200px] shadow-2xl">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center text-white text-xl shadow-inner flex-shrink-0">
-                            <i class="fa-solid fa-people-carry-box"></i>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-black text-white">{{ stats.nasabah | default('150+') }}</div>
-                            <div class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider leading-tight">Warga Bergabung</div>
-                        </div>
+                <!-- Informasi Statistik Clean -->
+                <div class="absolute -bottom-6 right-4 lg:-left-8 z-20 bg-slate-800 border border-slate-700 p-4 rounded-xl shadow-xl flex items-center gap-4">
+                    <div class="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold text-white leading-none">{{ stats.nasabah | default('150+') }}</div>
+                        <div class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-1">Warga Bergabung</div>
                     </div>
                 </div>
-                
-                <!-- Aksen Dekoratif -->
-                <div class="absolute -top-6 -right-6 w-24 h-24 bg-teal-500/20 rounded-full blur-2xl z-0"></div>
             </div>
 
         </div>
@@ -123,212 +104,178 @@
 </section>
 
 <!-- QUOTE INSPIRATIF -->
-<section class="py-8 font-bsu relative z-20 -mt-8">
-    <div class="max-w-5xl mx-auto px-4 md:px-6">
-        <div class="bg-gradient-to-r from-slate-800 to-slate-800/50 p-6 md:p-8 rounded-3xl border border-slate-700 shadow-lg text-center relative overflow-hidden">
-            <i class="fa-solid fa-quote-left absolute top-4 left-6 text-4xl text-slate-700/50"></i>
-            <p class="text-slate-300 text-base md:text-lg italic font-light relative z-10">
-                "Alam yang bersih adalah warisan terbaik untuk anak cucu kita. Jangan biarkan sampah terbuang sia-sia, kelola dengan bijak dan rasakan manfaat ekonominya."
+<section class="py-6 font-bsu relative z-20">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+        <div class="bg-slate-800/50 p-6 md:p-8 rounded-2xl border border-slate-700/50 text-center relative">
+            <i class="fa-solid fa-quote-left text-3xl text-slate-600 mb-4 block"></i>
+            <p class="text-slate-300 text-base md:text-lg font-light leading-relaxed">
+                "Alam yang bersih adalah warisan terbaik untuk anak cucu kita. Jangan biarkan sampah terbuang sia-sia, kelola dengan bijak dan rasakan manfaat ekonominya bersama BSU Bunga Tanjung Lestari."
             </p>
         </div>
     </div>
 </section>
 
-<!-- VIDEO PROFIL BSU (Google Drive Embed) -->
-<section class="py-12 md:py-16 font-bsu relative z-20">
+<!-- VIDEO PROFIL BSU (Seamless HTML5 Video via Google Drive) -->
+<section class="py-12 md:py-16 font-bsu">
     <div class="max-w-5xl mx-auto px-4 md:px-6">
-        <div class="text-center mb-10">
-            <span class="text-emerald-400 font-bold text-[10px] uppercase tracking-[0.2em] bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full">
-                Sekilas Kegiatan
-            </span>
-            <h2 class="text-2xl md:text-3xl font-bold text-white mt-5 tracking-wide">Video Profil BSU Bunga Tanjung Lestari</h2>
-            <p class="text-slate-400 mt-3 text-sm md:text-base font-light max-w-2xl mx-auto">Mengenal lebih dekat aktivitas dan komitmen warga dalam menjaga kelestarian lingkungan desa.</p>
+        <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Mengenal Kami Lebih Dekat</h2>
+            <p class="text-slate-400 mt-2 text-sm md:text-base font-light max-w-2xl mx-auto">Saksikan dedikasi dan komitmen nyata warga dalam menjaga kelestarian lingkungan desa.</p>
         </div>
         
-        <!-- Frame Video -->
-        <div class="premium-glass p-2 md:p-3 rounded-[2rem] shadow-2xl relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-tr from-emerald-900/20 to-teal-900/20 z-0"></div>
-            
-            <div class="relative z-10 w-full aspect-video rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/50 shadow-inner">
-                <!-- Ganti ID Video Drive di URL bawah ini. Autoplay di browser membutuhkan parameter mute=1 -->
-                <iframe 
-                    src="https://drive.google.com/file/d/1X8dLTwVBhnQp_OLxrIBixH3MEjxLqGc4/preview?autoplay=1&mute=1" 
-                    class="w-full h-full object-cover" 
-                    frameborder="0" 
-                    allow="autoplay; fullscreen" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+        <!-- Video Player Responsif -->
+        <div class="w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shadow-xl relative">
+            <!-- 
+                ID Video Drive Anda: 1X8dLTwVBhnQp_OLxrIBixH3MEjxLqGc4
+                Format URL Download untuk HTML5 Video agar bisa autoplay & loop rapi di HP tanpa terpotong
+            -->
+            <video 
+                src="https://drive.google.com/uc?export=download&id=1X8dLTwVBhnQp_OLxrIBixH3MEjxLqGc4" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="w-full h-full object-cover">
+                Maaf, peramban Anda tidak mendukung pemutaran video secara langsung.
+            </video>
         </div>
     </div>
 </section>
 
-<!-- MENGAPA BERGABUNG (Benefit untuk Orang Awam) -->
-<section class="py-12 md:py-20 border-t border-slate-800/50 font-bsu relative overflow-hidden mt-8">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        <div class="text-center mb-14">
-            <h2 class="text-2xl md:text-4xl font-bold text-white tracking-wide">Mengapa Anda Harus Bergabung?</h2>
-            <p class="text-slate-400 mt-4 max-w-2xl mx-auto text-sm md:text-base font-light">Program Bank Sampah Unit ini dibuat sangat mudah agar siapa saja bisa ikut menjaga lingkungan sambil mendapatkan keuntungan.</p>
+<!-- MENGAPA BERGABUNG -->
+<section class="py-12 md:py-20 border-t border-slate-800 font-bsu">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Manfaat Bergabung Bersama BSU</h2>
+            <p class="text-slate-400 mt-3 max-w-2xl mx-auto text-sm md:text-base font-light">Sistem yang dirancang sederhana untuk memudahkan setiap warga mendapatkan keuntungan nyata.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            <!-- Benefit 1 -->
-            <div class="premium-glass p-8 rounded-3xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20">
-                    <i class="fa-solid fa-house-circle-check text-2xl"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="pro-card p-6 md:p-8 rounded-2xl">
+                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-house-circle-check text-xl"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-white mb-3">Lingkungan Rumah Asri</h3>
+                <h3 class="text-lg font-semibold text-white mb-2">Lingkungan Asri</h3>
                 <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Barang bekas seperti kardus, botol, dan plastik tidak lagi menumpuk dan menjadi sarang nyamuk. Setorkan kepada kami agar pekarangan rumah Anda kembali bersih dan lega.
+                    Kardus dan botol bekas tidak lagi menumpuk menjadi sarang penyakit. Serahkan pada kami agar rumah Anda senantiasa rapi dan bersih.
                 </p>
             </div>
             
-            <!-- Benefit 2 -->
-            <div class="premium-glass p-8 rounded-3xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="w-14 h-14 bg-teal-500/10 text-teal-400 rounded-2xl flex items-center justify-center mb-6 border border-teal-500/20">
-                    <i class="fa-solid fa-hand-holding-dollar text-2xl"></i>
+            <div class="pro-card p-6 md:p-8 rounded-2xl">
+                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-hand-holding-dollar text-xl"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-white mb-3">Ubah Sampah Jadi Uang</h3>
+                <h3 class="text-lg font-semibold text-white mb-2">Pemasukan Tambahan</h3>
                 <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Sampah anorganik Anda memiliki nilai jual! Kami menukarnya dengan uang yang langsung masuk ke buku tabungan Anda. Tabungan ini bisa dicairkan untuk tambahan uang belanja.
+                    Sampah anorganik memiliki nilai jual. Setorkan dan jadikan saldo tabungan yang dapat dicairkan kapan saja untuk membantu kebutuhan keluarga.
                 </p>
             </div>
 
-            <!-- Benefit 3 -->
-            <div class="premium-glass p-8 rounded-3xl hover:-translate-y-2 transition-transform duration-300">
-                <div class="w-14 h-14 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mb-6 border border-emerald-500/20">
-                    <i class="fa-solid fa-scale-balanced text-2xl"></i>
+            <div class="pro-card p-6 md:p-8 rounded-2xl">
+                <div class="w-12 h-12 bg-slate-700 text-emerald-400 rounded-xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-scale-balanced text-xl"></i>
                 </div>
-                <h3 class="text-xl font-semibold text-white mb-3">Jujur & Transparan</h3>
+                <h3 class="text-lg font-semibold text-white mb-2">Sistem Transparan</h3>
                 <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Proses penimbangan dilakukan di depan Anda menggunakan timbangan digital yang akurat. Harga beli sampah juga jelas dan sesuai dengan harga pasar terkini.
+                    Setiap penimbangan dilakukan secara terbuka menggunakan alat digital. Harga beli sampah terstandarisasi dan dapat diakses dengan mudah oleh warga.
                 </p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CARA KERJA (Langkah Mudah) -->
-<section class="py-16 md:py-24 bg-slate-800/30 border-y border-slate-700/50 font-bsu relative">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        
-        <div class="text-center mb-16">
-            <span class="text-emerald-400 font-bold text-[10px] uppercase tracking-[0.2em] bg-emerald-500/10 border border-emerald-500/20 px-4 py-1.5 rounded-full">
-                Cara Mudah Memulai Kebaikan
-            </span>
-            <h2 class="text-3xl md:text-4xl font-bold text-white mt-6 tracking-wide">4 Langkah Meraih Berkah dari Sampah</h2>
+<!-- CARA KERJA -->
+<section class="py-16 bg-slate-800/30 border-y border-slate-800 font-bsu">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">4 Langkah Meraih Berkah dari Sampah</h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <!-- Step 1 -->
-            <div class="relative group">
-                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-emerald-500 text-emerald-400 flex items-center justify-center font-black text-2xl mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)] z-10 relative transition-transform group-hover:scale-110">1</div>
-                <div class="hidden lg:block absolute top-8 left-16 w-[calc(100%-4rem)] h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
-                
-                <h4 class="font-bold text-lg text-white mb-2">Kumpulkan & Pilah</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Pisahkan sampah kering (kardus, botol, gelas plastik, buku bekas) dari sampah basah di rumah Anda.
-                </p>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
+                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">01</div>
+                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Kumpulkan & Pilah</h4>
+                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Pisahkan sampah kering (kardus, botol, gelas plastik, kertas) dari sampah basah dapur.</p>
             </div>
 
-            <!-- Step 2 -->
-            <div class="relative group">
-                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-teal-500 text-teal-400 flex items-center justify-center font-black text-2xl mb-6 shadow-[0_0_15px_rgba(45,212,191,0.2)] z-10 relative transition-transform group-hover:scale-110">2</div>
-                <div class="hidden lg:block absolute top-8 left-16 w-[calc(100%-4rem)] h-[2px] bg-gradient-to-r from-teal-500/50 to-transparent"></div>
-                
-                <h4 class="font-bold text-lg text-white mb-2">Bawa ke Lokasi</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Bawa sampah yang sudah Anda kumpulkan ke fasilitas BSU Bunga Tanjung Lestari pada jam operasional kami.
-                </p>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
+                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">02</div>
+                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Bawa ke Lokasi</h4>
+                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Bawa hasil pilahan ke fasilitas BSU Bunga Tanjung Lestari pada jam operasional kami.</p>
             </div>
 
-            <!-- Step 3 -->
-            <div class="relative group">
-                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-emerald-500 text-emerald-400 flex items-center justify-center font-black text-2xl mb-6 shadow-[0_0_15px_rgba(16,185,129,0.2)] z-10 relative transition-transform group-hover:scale-110">3</div>
-                <div class="hidden lg:block absolute top-8 left-16 w-[calc(100%-4rem)] h-[2px] bg-gradient-to-r from-emerald-500/50 to-transparent"></div>
-                
-                <h4 class="font-bold text-lg text-white mb-2">Proses Timbang</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Petugas ramah kami akan menimbang sampah Anda secara jujur menggunakan timbangan digital yang akurat.
-                </p>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 relative">
+                <div class="text-4xl font-black text-slate-700 absolute top-4 right-6">03</div>
+                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Proses Timbang</h4>
+                <p class="text-slate-400 text-sm leading-relaxed font-light relative z-10">Petugas akan menimbang sampah Anda dengan timbangan digital yang akurat dan terbuka.</p>
             </div>
 
-            <!-- Step 4 -->
-            <div class="relative group">
-                <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center font-black text-2xl mb-6 shadow-[0_0_20px_rgba(16,185,129,0.5)] z-10 relative transition-transform group-hover:scale-110">4</div>
-                
-                <h4 class="font-bold text-lg text-white mb-2">Terima Tabungan</h4>
-                <p class="text-slate-400 text-sm leading-relaxed font-light">
-                    Berat sampah langsung dihitung menjadi nilai rupiah dan dicatat di buku tabungan Anda. Sangat mudah!
-                </p>
+            <div class="bg-emerald-600 p-6 rounded-2xl shadow-lg relative">
+                <div class="text-4xl font-black text-emerald-700/50 absolute top-4 right-6">04</div>
+                <h4 class="font-semibold text-white mb-2 mt-4 relative z-10">Terima Saldo</h4>
+                <p class="text-emerald-100 text-sm leading-relaxed font-light relative z-10">Berat otomatis dikonversi menjadi rupiah dan langsung masuk ke saldo tabungan Anda.</p>
             </div>
 
         </div>
-
     </div>
 </section>
 
 <!-- FAQ SECTION -->
-<section class="py-16 md:py-24 bg-transparent font-bsu">
-    <div class="max-w-4xl mx-auto px-4 md:px-6">
+<section class="py-16 md:py-24 font-bsu">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
         
-        <div class="text-center mb-12">
-            <h3 class="text-2xl md:text-4xl font-bold text-white tracking-wide">Tanya Jawab (FAQ)</h3>
-            <p class="text-slate-400 mt-3 font-light">Beberapa pertanyaan yang sering diajukan oleh warga desa.</p>
+        <div class="text-center mb-10">
+            <h3 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Tanya Jawab (FAQ)</h3>
         </div>
 
-        <div class="space-y-4">
-            
-            <details class="group premium-glass rounded-2xl cursor-pointer" open>
-                <summary class="flex justify-between items-center font-semibold text-slate-200 text-sm md:text-base p-6">
-                    <span>Apakah mendaftar menjadi anggota BSU dipungut biaya?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-emerald-400"><i class="fa-solid fa-chevron-down"></i></span>
+        <div class="space-y-3">
+            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer" open>
+                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
+                    <span>Apakah ada biaya untuk bergabung?</span>
+                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
                 </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-6 pb-6 font-light">
-                    <strong>100% Gratis!</strong> Anda tidak perlu membayar biaya pendaftaran sepeser pun. Cukup bawa fotokopi KTP ke lokasi kami, dan petugas akan langsung membuatkan buku tabungan BSU atas nama Anda secara cuma-cuma.
+                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
+                    <strong>Sama sekali tidak.</strong> Pendaftaran gratis. Cukup bawa fotokopi identitas, dan petugas akan membuatkan buku tabungan atas nama Anda.
                 </div>
             </details>
 
-            <details class="group premium-glass rounded-2xl cursor-pointer">
-                <summary class="flex justify-between items-center font-semibold text-slate-200 text-sm md:text-base p-6">
-                    <span>Kapan uang hasil penjualan sampah bisa dicairkan?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-emerald-400"><i class="fa-solid fa-chevron-down"></i></span>
+            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
+                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
+                    <span>Kapan tabungan bisa dicairkan menjadi uang tunai?</span>
+                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
                 </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-6 pb-6 font-light">
-                    Uang tabungan Anda dapat diambil (dicairkan) sesuai dengan kesepakatan jadwal pencairan, biasanya menjelang Hari Raya Idul Fitri atau pada waktu-waktu tertentu yang telah disepakati bersama pengurus agar tabungan terkumpul cukup banyak dan sangat membantu kebutuhan pokok warga.
+                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
+                    Pencairan biasanya dilakukan sesuai jadwal kesepakatan bersama (misalnya menjelang Hari Raya) agar dana yang terkumpul cukup besar dan bermanfaat maksimal untuk keluarga Anda.
                 </div>
             </details>
 
-            <details class="group premium-glass rounded-2xl cursor-pointer">
-                <summary class="flex justify-between items-center font-semibold text-slate-200 text-sm md:text-base p-6">
+            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
+                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
                     <span>Apakah sampah harus dibersihkan dulu sebelum disetor?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-emerald-400"><i class="fa-solid fa-chevron-down"></i></span>
+                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
                 </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-6 pb-6 font-light">
-                    Sangat disarankan. Misalnya, untuk botol plastik bekas minuman manis, pastikan isinya sudah dibuang dan botol sedikit dibilas agar tidak mengundang semut atau lalat, lalu diremukkan agar hemat tempat. Sampah yang lebih bersih juga lebih mudah dikelola.
+                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
+                    Ya. Membilas botol plastik dari sisa minuman akan mencegah datangnya semut dan menjaga kebersihan fasilitas. Sampah yang bersih lebih mudah dikelola dan tidak berbau.
                 </div>
             </details>
 
-            <details class="group premium-glass rounded-2xl cursor-pointer">
-                <summary class="flex justify-between items-center font-semibold text-slate-200 text-sm md:text-base p-6">
-                    <span>Sampah jenis apa saja yang TIDAK BISA disetor ke BSU?</span>
-                    <span class="transition-transform duration-300 group-open:rotate-180 text-emerald-400"><i class="fa-solid fa-chevron-down"></i></span>
+            <details class="group bg-slate-800 border border-slate-700 rounded-xl cursor-pointer">
+                <summary class="flex justify-between items-center font-medium text-slate-200 text-sm md:text-base p-5">
+                    <span>Jenis sampah apa yang tidak diterima?</span>
+                    <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400"><i class="fa-solid fa-chevron-down"></i></span>
                 </summary>
-                <div class="faq-content text-slate-400 text-sm leading-relaxed px-6 pb-6 font-light">
-                    Kami <strong>tidak menerima</strong> sampah basah/organik seperti sisa makanan basi, popok bayi bekas (diapers), pembalut bekas, sampah beracun/medis (seperti jarum suntik), dan sampah yang berbau sangat menyengat. Kami khusus menerima sampah kering yang dapat didaur ulang seperti kertas, plastik kemasan, logam, dan kardus.
+                <div class="faq-content text-slate-400 text-sm leading-relaxed px-5 pb-5 font-light border-t border-slate-700/50 mt-2 pt-4">
+                    Kami tidak melayani penyetoran sampah basah/sisa makanan, popok bekas, atau sampah beracun/medis. Kami berfokus pada sampah anorganik yang dapat didaur ulang.
                 </div>
             </details>
-
         </div>
 
-        <div class="mt-12 text-center">
-            <p class="text-sm text-slate-400">Masih ragu atau punya pertanyaan lain?</p>
-            <a href="https://wa.me/6285113236312" class="inline-block mt-3 px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-emerald-400 font-medium rounded-full transition-colors shadow-sm">
-                <i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Chat Pengurus BSU Sekarang
+        <div class="mt-10 text-center">
+            <a href="https://wa.me/6285113236312" class="inline-flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 transition-colors font-medium">
+                <i class="fa-brands fa-whatsapp"></i> Punya pertanyaan lain? Hubungi Pengurus
             </a>
         </div>
-
     </div>
 </section>
 {% endblock %}
