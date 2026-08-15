@@ -9,966 +9,324 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    
-    <script>
-        // Security checks - Deteksi Bot/Anomali
-        (function() {
-            const ua = navigator.userAgent.toLowerCase();
-            const forbidden = ['tools', 'toolsbrowser', 'kiwi', 'inspect', 'debugger', 'bot', 'crawler', 'spider'];
-            if (forbidden.some(x => ua.includes(x))) {
-                window.stop();
-                document.documentElement.innerHTML = `
-                    <div style="background:#0f172a; color:#ffffff; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:system-ui, sans-serif; text-align:center; padding:20px;">
-                        <i class="fa-solid fa-shield-halved" style="font-size:50px; margin-bottom:20px; color:#475569;"></i>
-                        <h1 style="font-size:24px; font-weight:800; margin-bottom:10px; letter-spacing:1px;">AKSES DITUTUP</h1>
-                        <p style="color:#94a3b8; font-size:14px;">Sistem mendeteksi hal yang tidak biasa. Akses ditutup demi keamanan data warga.</p>
-                        <p style="color:#64748b; font-size:12px; margin-top:20px;">Kode Eror: UA_BLACKLISTED</p>
-                    </div>
-                `;
-                throw new Error("Pelanggaran Keamanan: Akses Ditolak");
-            }
-        })();
-    </script>
 
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: { 
-                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'] 
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'] 
                     },
                     colors: { 
-                        brand: { dark: '#0f172a', primary: '#334155', secondary: '#475569', light: '#f1f5f9', surface: '#1e293b' } 
+                        ios: { bg: '#000000', surface: '#121212', glass: 'rgba(18, 18, 18, 0.75)' } 
                     },
                     padding: { 'safe': 'env(safe-area-inset-bottom)' }
                 }
             }
         }
     </script>
-
-    <script>
-        // === LOGIKA KEAMANAN KHUSUS DESKTOP/LAPTOP ===
-        window.userIP = "Memeriksa...";
-        const PENALTY_DURATION = 60 * 60 * 1000; 
-        
-        function isMobileDevice() {
-            return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1) || window.innerWidth <= 768;
-        }
-
-        function checkPenaltyStatus() {
-            if (isMobileDevice()) return false; 
-            try {
-                const blockUntil = localStorage.getItem('bsu_block_until');
-                if (blockUntil && Date.now() < parseInt(blockUntil)) {
-                    activatePenalty(parseInt(blockUntil));
-                    return true;
-                } else if (blockUntil) {
-                    localStorage.removeItem('bsu_block_until');
-                    localStorage.setItem('bsu_strikes', 0);
-                }
-            } catch(e) {}
-            return false;
-        }
-
-        let inspectWarningTimer;
-        function showInspectWarning() {
-            if (isMobileDevice()) return; 
-            const warningEl = document.getElementById('inspect-warning-toast');
-            if (warningEl) {
-                warningEl.classList.remove('hidden', 'opacity-0', '-translate-y-full');
-                warningEl.classList.add('opacity-100', 'translate-y-0');
-                clearTimeout(inspectWarningTimer);
-                inspectWarningTimer = setTimeout(() => {
-                    warningEl.classList.remove('opacity-100', 'translate-y-0');
-                    warningEl.classList.add('opacity-0', '-translate-y-full');
-                    setTimeout(() => warningEl.classList.add('hidden'), 1000);
-                }, 8000); 
-            }
-        }
-
-        function handleSecurityViolation() {
-            if (isMobileDevice()) return; 
-            try {
-                let strikes = parseInt(localStorage.getItem('bsu_strikes') || '0');
-                strikes++;
-                localStorage.setItem('bsu_strikes', strikes);
-                if (strikes >= 3) {
-                    const blockUntil = Date.now() + PENALTY_DURATION;
-                    localStorage.setItem('bsu_block_until', blockUntil);
-                    activatePenalty(blockUntil);
-                } else { showInspectWarning(); }
-            } catch(e) { showInspectWarning(); }
-        }
-
-        function activatePenalty(blockUntil) {
-            document.body.style.overflow = 'hidden';
-            const loader = document.getElementById('initial-loader');
-            if(loader) loader.style.display = 'none';
-            const overlay = document.getElementById('penalty-overlay');
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
-            document.getElementById('penalty-ip').innerText = window.userIP;
-
-            window.addEventListener('keydown', blockAllKeys, {capture: true});
-            window.addEventListener('contextmenu', blockAllKeys, {capture: true});
-            window.addEventListener('wheel', blockAllKeys, {capture: true, passive: false});
-
-            let score = 0;
-            const ball = document.getElementById('game-ball');
-            if (ball) {
-                ball.onclick = function(e) {
-                    e.stopPropagation();
-                    score++;
-                    document.getElementById('game-score').innerText = score;
-                    ball.style.left = (Math.floor(Math.random() * 70) + 15) + '%';
-                    ball.style.top = (Math.floor(Math.random() * 70) + 15) + '%';
-                };
-                setInterval(() => {
-                    if(!overlay.classList.contains('hidden')) {
-                        ball.style.left = (Math.floor(Math.random() * 70) + 15) + '%';
-                        ball.style.top = (Math.floor(Math.random() * 70) + 15) + '%';
-                    }
-                }, 1500); 
-            }
-
-            const timerEl = document.getElementById('penalty-timer');
-            const interval = setInterval(() => {
-                const remaining = blockUntil - Date.now();
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    localStorage.removeItem('bsu_block_until');
-                    localStorage.setItem('bsu_strikes', 0);
-                    document.body.style.overflow = '';
-                    overlay.classList.add('hidden');
-                    overlay.classList.remove('flex');
-                    window.location.reload(); 
-                } else {
-                    const h = Math.floor(remaining / 3600000).toString().padStart(2, '0');
-                    const m = Math.floor((remaining % 3600000) / 60000).toString().padStart(2, '0');
-                    const s = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
-                    timerEl.innerText = h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
-                }
-            }, 1000);
-        }
-
-        function reducePenaltyExpress() {
-            const newBlockUntil = Date.now() + 60000; 
-            localStorage.setItem('bsu_block_until', newBlockUntil.toString());
-            window.open('https://www.google.com/search?q=tata+kelola+sampah+terpadu', '_blank');
-            window.location.reload();
-        }
-
-        function blockAllKeys(e) { 
-            if(e.target.closest('#express-btn') || e.target.closest('#game-ball')) return;
-            e.stopPropagation(); e.preventDefault(); return false; 
-        }
-
-        document.addEventListener('contextmenu', event => { 
-            if (isMobileDevice()) return; 
-            if (event.target.closest('#express-btn')) return;
-            event.preventDefault(); handleSecurityViolation(); 
-        });
-        
-        document.onkeydown = function(e) {
-            if (isMobileDevice()) return; 
-            let isBlocked = false;
-            if(e.keyCode == 123) isBlocked = true; 
-            if(e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) isBlocked = true;
-            if(e.ctrlKey && (e.keyCode == 'U'.charCodeAt(0) || e.keyCode == 'S'.charCodeAt(0) || e.keyCode == 'P'.charCodeAt(0))) isBlocked = true;
-            if(isBlocked) { e.preventDefault(); handleSecurityViolation(); return false; }
-        }
-        
-        if (!isMobileDevice()) {
-            document.addEventListener('dragstart', event => event.preventDefault());
-            document.addEventListener('selectstart', event => event.preventDefault());
-            setInterval(() => {
-                const start = performance.now();
-                debugger; 
-                const end = performance.now();
-                if (end - start > 100) {
-                    handleSecurityViolation();
-                }
-            }, 500);
-        }
-
-        let isAudioUnlocked = false;
-        function unlockAudio() {
-            if (isAudioUnlocked) return;
-            const secAudio = document.getElementById('security-audio');
-            if (secAudio) {
-                secAudio.play().then(() => {
-                    secAudio.pause();
-                    isAudioUnlocked = true;
-                    document.body.removeEventListener('click', unlockAudio);
-                    document.body.removeEventListener('touchstart', unlockAudio);
-                }).catch(e => { console.log("Audio unlock tertunda"); });
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            document.body.addEventListener('click', unlockAudio);
-            document.body.addEventListener('touchstart', unlockAudio);
-        });
-
-        function enablePrivacyMode() {
-            document.body.classList.add('privacy-blur');
-            document.getElementById('security-overlay').style.display = 'flex';
-            const secAudio = document.getElementById('security-audio');
-            if(secAudio) {
-                secAudio.play().then(() => {
-                    if ('mediaSession' in navigator) {
-                        navigator.mediaSession.metadata = new MediaMetadata({
-                            title: 'Keamanan BSU Aktif', artist: 'Sistem Keamanan BSU', album: 'Layar Terkunci',
-                            artwork: [{ src: "https://iili.io/C6oIUAX.md.png", sizes: '192x192', type: 'image/png' }]
-                        });
-                        navigator.mediaSession.setActionHandler('pause', function() { secAudio.pause(); });
-                        navigator.mediaSession.setActionHandler('play', function() { secAudio.play(); });
-                    }
-                }).catch(e => console.log("Autoplay dicegah."));
-            }
-        }
-
-        function disablePrivacyMode() {
-            document.body.classList.remove('privacy-blur');
-            document.getElementById('security-overlay').style.display = 'none';
-            const secAudio = document.getElementById('security-audio');
-            if(secAudio) secAudio.pause();
-        }
-
-        window.addEventListener('blur', enablePrivacyMode);
-        window.addEventListener('focus', disablePrivacyMode);
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) enablePrivacyMode(); else disablePrivacyMode();
-        });
-    </script>
     
     <style>
-        body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; background-color: #0f172a; }
-        html { -webkit-tap-highlight-color: rgba(0,0,0,0); }
-        a, button, .nav-item, input { -webkit-tap-highlight-color: rgba(255, 255, 255, 0.05); } 
-        img { pointer-events: none; -webkit-user-drag: none; user-drag: none; }
-
-        .privacy-blur > *:not(#security-overlay):not(#penalty-overlay):not(.bsu-bg) {
-            filter: blur(25px) brightness(0.6); pointer-events: none; opacity: 0.4; transition: filter 0.3s ease; 
+        body { 
+            background-color: #000000; 
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
         }
+        
+        /* Smooth Scrollbar for Desktop */
+        ::-webkit-scrollbar { width: 6px; } 
+        ::-webkit-scrollbar-track { background: transparent; } 
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
+        /* iOS Splash Loader */
         #initial-loader {
             position: fixed; inset: 0; z-index: 9999;
-            background: #0f172a;
+            background: #000000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 1.5s ease, visibility 1.5s ease; overflow: hidden; 
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .loader-glow {
-            position: absolute; width: 250px; height: 250px; background: #64748b;
-            filter: blur(100px); opacity: 0.15; border-radius: 50%; animation: pulse-glow 4s infinite alternate ease-in-out;
-        }
-        @keyframes pulse-glow { from { transform: scale(0.8); opacity: 0.1; } to { transform: scale(1.2); opacity: 0.2; } }
-        
-        .bsu-bg {
-            background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 70%);
-        }
-        
-        .merdeka-font { font-family: 'Oswald', sans-serif; } 
-        .font-bsu { font-family: 'Inter', sans-serif; }
 
-        .ios-bubble-menu {
-            border-radius: 1.5rem; 
-            background: rgba(30, 41, 59, 0.95);
+        /* Glassmorphism utilities */
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-bottom {
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-            padding: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transform-origin: top right;
-            animation: bubblePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .bubble-tail {
-            position: absolute;
-            top: -6px;
-            right: 16px;
-            width: 14px;
-            height: 14px;
-            background: rgba(30, 41, 59, 0.95);
-            transform: rotate(45deg);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
-            border-top-left-radius: 4px;
-            z-index: -1;
-        }
-        @keyframes bubblePop {
-            0% { opacity: 0; transform: scale(0.9) translate(10px, -10px); }
-            100% { opacity: 1; transform: scale(1) translate(0, 0); }
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
         }
 
-        .ios-dock {
-            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); border-radius: 40px; margin: 0;
-            width: 100%; height: 74px; display: flex; justify-content: space-around;
-            align-items: center; padding: 0 16px; position: relative;
+        /* Dynamic Island Toast */
+        .dynamic-island {
+            animation: slideDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        .ios-dock-container { position: fixed; bottom: env(safe-area-inset-bottom, 24px); left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 420px; z-index: 60; margin-bottom: 24px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #64748b; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; width: 100%; border-radius: 20px; }
-        .nav-item i { font-size: 1.35rem; margin-bottom: 5px; transition: transform 0.3s; z-index: 2; }
-        .nav-item span { font-size: 10px; font-weight: 500; line-height: 1; z-index: 2; transition: color 0.3s; }
-        .nav-item:hover { color: #94a3b8; }
-        .nav-item.active { color: #cbd5e1; }
-        .nav-item.active i { transform: translateY(-3px); text-shadow: 0 4px 15px rgba(255,255,255,0.2); }
-
-        .glass-ticker-floating {
-            background: rgba(30, 41, 59, 0.9); border: 1px solid rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); border-radius: 20px; 
-            width: calc(100% - 32px); max-width: 420px; height: 38px; display: flex; align-items: center; overflow: hidden; position: fixed; bottom: calc(env(safe-area-inset-bottom, 24px) + 105px); left: 50%; transform: translateX(-50%); z-index: 50; 
+        @keyframes slideDown {
+            0% { transform: translate(-50%, -150%) scale(0.9); opacity: 0; }
+            100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
         }
 
-        .desktop-bottom-bar { background: #0f172a; border-top: 1px solid rgba(255,255,255,0.05); height: 44px; width: 100%; position: fixed; bottom: 0; z-index: 40; display: none; }
-        @media (min-width: 1024px) { .desktop-bottom-bar { display: flex; } .glass-ticker-floating { display: none; } .ios-dock-container { display: none; } }
-
-        .ticker-wrap { width: 100%; overflow: hidden; height: 100%; display: flex; align-items: center; position: relative; }
-        .ticker-move { display: inline-flex; white-space: nowrap; animation: ticker 600s linear infinite; }
-        .ticker-item { padding: 0 4rem; display: flex; align-items: center; color: #cbd5e1; font-weight: 400; font-size: 0.85rem; letter-spacing: 0.5px; } 
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-
-        .glass-ticker-floating.night-mode-active { height: 56px; }
-        .desktop-bottom-bar.night-mode-active { height: 56px; }
-
-        .ticker-vertical-move {
-            display: flex; flex-direction: column; width: 100%; align-items: flex-start;
-            animation: tickerVertical 500s linear infinite; 
-        }
-        .ticker-item-vert {
-            height: 56px; display: flex; align-items: center;
-            padding: 0 1rem; color: #94a3b8; font-family: 'Inter', sans-serif;
-            font-size: 0.8rem; font-weight: 500; letter-spacing: 0.3px;
-            width: 100%; flex-shrink: 0; 
-            border-left: 2px solid #64748b; background: linear-gradient(90deg, rgba(100,116,139,0.05) 0%, transparent 100%);
-        }
-        .ticker-item-vert span {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            white-space: normal;
-            line-height: 1.5;
-        }
-        @keyframes tickerVertical {
-            0% { transform: translateY(56px); }
-            100% { transform: translateY(-100%); }
-        }
-
-        .clock-container { display: flex; align-items: center; justify-content: center; height: 100%; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; color: #f8fafc; min-width: 95px; }
-
-        /* ACTIVE NAV LINKS STYLING */
-        .desktop-link { color: #94a3b8; font-weight: 500; padding: 8px 18px; border-radius: 20px; transition: all 0.3s ease; font-size: 0.9rem; }
-        .desktop-link:hover { color: #f1f5f9; background: rgba(255,255,255,0.05); }
-        .desktop-link.active { color: #ffffff; font-weight: 700; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); }
-
-        .custom-scroll::-webkit-scrollbar { width: 4px; } .custom-scroll::-webkit-scrollbar-track { background: transparent; } .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        /* IG Style Bottom Nav Item */
+        .nav-item { transition: transform 0.2s ease, color 0.2s ease; }
+        .nav-item:active { transform: scale(0.9); }
+        .nav-item.active i { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         
-        .badminton-court {
-            background-color: #334155;
-            border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-        }
-        .badminton-lines { position: absolute; inset: 6px; border: 1px solid rgba(255,255,255,0.1); }
-        .badminton-center-line { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px solid rgba(255,255,255,0.1); transform: translateX(-50%); }
-        .badminton-net { position: absolute; top: 50%; left: 0; right: 0; border-top: 1px dashed rgba(255,255,255,0.2); transform: translateY(-50%); }
+        .desktop-link { color: #8e8e8e; font-weight: 500; padding: 6px 14px; border-radius: 20px; transition: color 0.3s ease; font-size: 0.9rem; }
+        .desktop-link:hover { color: #ffffff; }
+        .desktop-link.active { color: #ffffff; font-weight: 700; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-200 flex flex-col min-h-screen relative pb-[180px] lg:pb-0 font-sans z-0 selection:bg-slate-600/50 selection:text-white">
+<body class="font-sans min-h-screen relative pb-[90px] lg:pb-0 selection:bg-neutral-800 selection:text-white">
 
-    <div class="fixed inset-0 z-[-2] bsu-bg"></div>
-    <div class="fixed inset-0 z-[-1] opacity-[0.03] mix-blend-overlay bg-[url('https://images.unsplash.com/photo-1518605368461-1e122b10287b?auto=format&fit=crop&q=80')] bg-cover bg-center bg-fixed bg-no-repeat"></div>
-
-    <audio id="security-audio" src="" loop preload="none"></audio>
-
-    <!-- PENALTY OVERLAY -->
-    <div id="penalty-overlay" class="fixed inset-0 z-[100005] bg-[#0f172a] text-white hidden flex-col items-center justify-start overflow-y-auto custom-scroll py-8 px-4">
-        <div class="absolute inset-0 z-[-1] bg-gradient-to-b from-[#1e293b] to-transparent"></div>
-        <div class="w-full max-w-lg mx-auto flex flex-col items-center gap-6 mt-4 pb-12">
-            <img src="https://iili.io/C6oIUAX.md.png" class="h-16 w-16 mb-2 opacity-80" alt="Logo BSU">
-
-            <div class="flex items-center gap-4 animate-pulse">
-                <i class="fa-solid fa-shield text-4xl text-slate-600"></i>
-                <i class="fa-solid fa-lock text-5xl md:text-6xl text-slate-400"></i>
-                <i class="fa-solid fa-shield text-4xl text-slate-600"></i>
-            </div>
-            
-            <div class="text-center space-y-3">
-                <h1 class="text-3xl md:text-5xl font-bold text-white tracking-wider uppercase drop-shadow-md">Akses Sementara Ditutup</h1>
-                <p class="text-slate-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">Sistem mendeteksi ada hal yang tidak biasa. Untuk menjaga keamanan data, akses dibatasi sementara waktu.</p>
-            </div>
-            
-            <div class="bg-white/5 backdrop-blur-xl border border-white/5 rounded-3xl p-8 text-center w-full shadow-lg relative overflow-hidden mt-2">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-slate-600 via-slate-400 to-slate-600"></div>
-                <p class="text-slate-400 text-xs uppercase tracking-widest mb-3 font-semibold">Waktu Tunggu Buka Kembali</p>
-                <p id="penalty-timer" class="text-5xl md:text-6xl merdeka-font font-bold text-white tracking-wider">60:00</p>
-            </div>
-
-            <div id="penalty-game" class="badminton-court relative w-full h-40 md:h-48 rounded-2xl overflow-hidden shadow-lg select-none mt-2">
-                <div class="badminton-lines"></div>
-                <div class="badminton-center-line"></div>
-                <div class="badminton-net"></div>
-                
-                <div class="absolute top-3 left-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg text-white/90 text-[10px] font-medium z-0 border border-white/5"><i class="fa-solid fa-recycle mr-2"></i> Game Bersih-bersih</div>
-                <div class="absolute bottom-3 right-4 bg-black/50 backdrop-blur-md px-4 py-2 rounded-xl text-white/90 text-xs font-semibold z-0 border border-white/10 shadow-lg">Skor: <span id="game-score" class="text-slate-300 text-sm ml-1">0</span></div>
-                
-                <div id="game-ball" class="absolute w-12 h-12 cursor-pointer text-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center z-10" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">♻️</div>
-            </div>
-
-            <button id="express-btn" onclick="reducePenaltyExpress()" class="w-full bg-white/5 hover:bg-white/10 text-white font-medium py-4 px-6 rounded-2xl shadow-lg border border-white/5 transition-all active:scale-[0.98] flex items-center justify-center gap-4 mt-2 backdrop-blur-md">
-                <i class="fa-solid fa-bolt text-slate-400 text-xl"></i> 
-                <div class="text-left">
-                    <div class="text-sm md:text-base leading-tight">Buka Akses Lebih Cepat</div>
-                    <div class="text-[10px] text-slate-400 mt-0.5">Baca Cara Kelola Sampah</div>
-                </div>
-            </button>
-            
-            <div class="text-center text-xs text-slate-500 w-full mt-4 flex flex-col gap-1">
-                <span>Data tersimpan pada IP:</span>
-                <span id="penalty-ip" class="text-slate-400 font-mono tracking-wider">Memeriksa...</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="inspect-warning-toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[10005] bg-[#0f172a]/95 backdrop-blur-xl text-slate-200 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 transition-all duration-1000 hidden opacity-0 -translate-y-full w-[90vw] max-w-md border border-slate-700">
-        <i class="fa-solid fa-shield-halved text-2xl animate-pulse shrink-0 text-slate-400"></i>
-        <p class="text-[11px] md:text-xs font-medium leading-relaxed">Pengecekan elemen dilarang. Keamanan dan data aplikasi sedang dilindungi.</p>
-    </div>
-
-    <!-- PRIVACY OVERLAY -->
-    <div id="security-overlay" style="display: none; position: fixed; inset: 0; z-index: 10000; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);">
-        <div class="p-8 relative overflow-hidden bg-slate-800/90 border border-slate-700/50 shadow-2xl backdrop-blur-xl rounded-3xl text-center max-w-sm w-[90%]">
-            <i class="fa-solid fa-lock text-6xl text-slate-400 mb-6"></i>
-            <h2 class="text-xl md:text-2xl font-bold mb-4 text-white tracking-widest uppercase">Layar Dikunci Otomatis</h2>
-            <div class="h-px w-24 bg-gradient-to-r from-transparent via-slate-500/30 to-transparent mb-5 mx-auto"></div>
-            <p class="text-sm text-slate-400 leading-relaxed font-light">Aplikasi sedang berjalan di latar belakang. Data Anda aman dan terlindungi.</p>
-        </div>
-    </div>
-
-    <!-- INITIAL LOADER -->
+    <!-- INITIAL LOADER (Clean iOS Style) -->
     <div id="initial-loader">
-        <div class="relative flex flex-col items-center">
-            <div class="loader-glow"></div>
-            <img src="https://iili.io/C6oIUAX.md.png" class="h-24 md:h-28 mb-10 relative z-10 animate-bounce opacity-80" alt="BSU Loading">
-            <div class="flex gap-3 relative z-10">
-                <span class="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></span>
-                <span class="w-2 h-2 bg-slate-300 rounded-full animate-pulse delay-75"></span>
-                <span class="w-2 h-2 bg-slate-500 rounded-full animate-pulse delay-150"></span>
-            </div>
-            <p class="text-slate-400 mt-6 font-medium tracking-[0.3em] text-[9px] md:text-[10px] uppercase relative z-10">Menyiapkan Sistem...</p>
-        </div>
+        <img src="https://iili.io/C6oIUAX.md.png" class="h-20 md:h-24 opacity-90 transition-transform duration-1000 scale-95" alt="BSU Loading" id="loader-img">
     </div>
 
-    <!-- NAVBAR PREMIUM -->
-    <nav class="fixed top-4 left-0 right-0 w-full z-50 px-3 lg:px-8 transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto bg-[#1e293b]/90 backdrop-blur-xl shadow-lg rounded-2xl lg:rounded-[2rem] border border-white/5">
-            <div class="flex justify-between items-center h-16 md:h-20 px-4 md:px-6 lg:px-8 w-full">
+    <!-- NAVBAR TOP (IG/iOS Glass Header) -->
+    <nav class="fixed top-0 left-0 right-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-[1200px] mx-auto">
+            <div class="flex justify-between items-center h-14 md:h-16 px-4 md:px-6 w-full">
                 
-                <!-- Kiri: Logo -->
-                <div class="flex items-center shrink-0 lg:flex-1">
-                    <a href="/" class="flex items-center group shrink-0">
-                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105">
+                <!-- Kiri: Logo & Info -->
+                <div class="flex items-center gap-3">
+                    <a href="/" class="shrink-0 active:scale-95 transition-transform">
+                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 object-contain">
                     </a>
-
-                    <!-- Header Desktop Rotator -->
-                    <div id="desktop-header-dynamic" class="hidden lg:flex relative items-center justify-start text-white w-full h-12 ml-4 pl-4 border-l border-slate-700 overflow-hidden">
-                        <div id="header-state-2" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Sistem Pencatatan Sampah Terpadu</span>
-                        </div>
-                        <div id="header-state-3" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-[14px] font-medium text-slate-300 tracking-wide truncate">Mengubah Sampah Menjadi Berkah</span>
-                        </div>
-                        <div id="header-state-4" class="hidden absolute flex items-center justify-start transition-opacity duration-1000 opacity-0 w-full">
-                            <span class="text-[13px] font-bold tracking-widest uppercase text-white truncate">BSU BUNGA TANJUNG LESTARI</span>
+                    <div class="hidden md:flex flex-col">
+                        <span class="text-white font-semibold text-[13px] tracking-wide">Bunga Tanjung Lestari</span>
+                        <div class="flex items-center gap-1.5 text-[10px] text-neutral-400 font-medium">
+                            <i class="fa-solid fa-location-arrow text-[9px]"></i>
+                            <span id="desktop-user-location">Mencari lokasi akurat...</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Kanan: Navigasi & Action -->
-                <div class="flex items-center gap-2 lg:gap-4 justify-end shrink-0 relative">
+                <!-- Kanan: Navigasi Desktop & Actions -->
+                <div class="flex items-center gap-4 justify-end">
                     
-                    <div class="hidden xl:flex items-center space-x-1 mr-4 bg-slate-800/50 p-1 rounded-full border border-slate-700/50">
+                    <div class="hidden lg:flex items-center space-x-2 mr-2">
                         <a href="/" class="desktop-link">Beranda</a>
-                        <a href="/about" class="desktop-link">Tentang BSU</a>
+                        <a href="/about" class="desktop-link">Tentang</a>
                         <a href="/jadwal-sholat" class="desktop-link">Religi</a>
                     </div>
 
-                    {% if session and session.get('user') %}
-                        <!-- Desktop Profil -->
-                        <div class="relative group z-50 hidden xl:block">
-                            <button onclick="toggleDropdown('profile-dropdown-desktop')" class="flex items-center gap-3 pl-1.5 pr-5 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 transition-all border border-slate-700 text-left">
-                                <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=475569&color=fff&bold=true" class="h-8 w-8 rounded-full border border-slate-600">
-                                <div class="flex flex-col">
-                                    <span class="text-xs font-semibold text-white tracking-wide">
-                                        {{ session.get('nama', 'Member').split(' ')[0] if session.get('nama') else 'Member' }}
-                                    </span>
-                                    <span class="text-[9px] font-medium text-slate-400 mt-0.5">
-                                        Warga Terdaftar
-                                    </span>
-                                </div>
-                                <i class="fa-solid fa-chevron-down text-[10px] text-slate-500 ml-2"></i>
-                            </button>
-                            
-                            <div id="profile-dropdown-desktop" class="hidden ios-bubble-menu absolute top-[60px] right-0 w-64 z-[9999]">
-                                <div class="bubble-tail" style="right: 25px;"></div>
-                                <div class="overflow-hidden rounded-2xl bg-slate-900">
-                                    <div class="px-5 py-4 border-b border-slate-700 bg-slate-800 flex flex-col">
-                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Status Akun</p>
-                                        <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
-                                    </div>
-                                    <div class="py-1">
-                                        <a href="/dashboard" class="block px-5 py-3 text-sm text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-colors"><i class="fa-solid fa-wallet w-6 text-center text-slate-500"></i> Cek Tabungan</a>
-                                    </div>
-                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                    <a href="/logout" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
-                                </div>
-                            </div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-neutral-300 text-xs font-mono hidden md:flex items-center gap-2 bg-neutral-900 px-3 py-1.5 rounded-full border border-neutral-800">
+                            <span id="clock-desktop">Memuat...</span>
                         </div>
-                    {% else %}
-                        <!-- Tombol Login Premium (Modern) -->
-                        <div class="flex items-center">
-                            <a href="/login" class="group bg-slate-800 hover:bg-slate-700 text-slate-300 pl-4 pr-1.5 md:pl-5 md:pr-1.5 py-1.5 md:py-1.5 rounded-full font-medium text-[11px] md:text-sm transition-all duration-300 flex items-center gap-2 border border-slate-600 shadow-sm">
-                                <span class="tracking-wide whitespace-nowrap">FORM SETOR</span>
-                                <div class="bg-slate-700 group-hover:bg-slate-600 text-white rounded-full w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-[10px] md:text-xs transition-transform group-hover:translate-x-0.5"><i class="fa-solid fa-arrow-right-to-bracket"></i></div>
+
+                        {% if session and session.get('user') %}
+                            <a href="/dashboard" class="flex items-center justify-center w-8 h-8 rounded-full border border-neutral-700 overflow-hidden active:scale-95 transition-transform">
+                                <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=121212&color=fff&bold=true" class="w-full h-full object-cover">
                             </a>
-                        </div>
-                    {% endif %}
-
-                    <!-- Dropdown Mobile (Hamburger) -->
-                    <div class="relative group z-50 xl:hidden">
-                        <button onclick="toggleDropdown('info-dropdown')" class="w-9 h-9 md:w-10 md:h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 active:scale-95">
-                            <i class="fa-solid fa-bars text-sm"></i>
-                        </button>
-                        
-                        <div id="info-dropdown" class="hidden ios-bubble-menu absolute top-[55px] right-0 w-64 z-[9999]">
-                            <div class="bubble-tail" style="right: 12px;"></div>
-                            
-                            <div class="overflow-hidden rounded-2xl bg-slate-900 shadow-inner">
-                                {% if session and session.get('user') %}
-                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <p class="text-[9px] text-slate-400 uppercase font-bold tracking-widest mb-1">Akun Warga</p>
-                                        <p class="text-sm font-bold text-white truncate">{{ session.get('nama', 'Member') }}</p>
-                                    </div>
-                                    <a href="/dashboard" class="block px-5 py-3.5 text-sm text-slate-300 font-medium hover:bg-slate-700 hover:text-white transition-colors"><i class="fa-solid fa-gauge w-6 text-center text-slate-400"></i> Halaman Tabungan</a>
-                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                {% else %}
-                                    <div class="px-5 py-4 bg-slate-800 border-b border-slate-700 flex flex-col">
-                                        <span class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1">Status Lokasi</span>
-                                        <div class="flex items-center gap-2 text-sm font-medium text-slate-300">
-                                            <i class="fa-solid fa-location-crosshairs text-slate-500"></i><span id="mobile-user-location" class="truncate">Mencari lokasi...</span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-
-                                <div class="py-1">
-                                    <a href="/" class="block px-5 py-3 text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hover:text-white"><i class="fa-solid fa-house w-6 text-center text-slate-500"></i> Beranda Publik</a>
-                                    <a href="/about" class="block px-5 py-3 text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hover:text-white"><i class="fa-solid fa-building-columns w-6 text-center text-slate-500"></i> Tentang BSU</a>
-                                    <a href="/jadwal-sholat" class="block px-5 py-3 text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hover:text-white"><i class="fa-solid fa-mosque w-6 text-center text-slate-500"></i> Religi</a>
-                                    <a href="/lokasi" class="block px-5 py-3 text-sm font-medium transition-colors text-slate-300 hover:bg-slate-800 hover:text-white"><i class="fa-solid fa-map-location-dot w-6 text-center text-slate-500"></i> Peta Lokasi</a>
-                                </div>
-
-                                {% if session and session.get('user') %}
-                                    <div class="h-px bg-slate-700 my-1 mx-4"></div>
-                                    <a href="/logout" class="block px-5 py-3.5 text-sm text-red-400 font-medium hover:bg-slate-800 hover:text-red-300 transition-colors bg-slate-900"><i class="fa-solid fa-power-off w-6 text-center"></i> Keluar Akun</a>
-                                {% endif %}
-                            </div>
-                        </div>
+                        {% else %}
+                            <a href="/login" class="bg-white text-black px-4 py-1.5 rounded-full font-semibold text-xs transition-transform active:scale-95 hover:bg-neutral-200">
+                                Masuk
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- DYNAMIC ISLAND (Flash Messages) -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="fixed top-24 md:top-28 left-1/2 transform -translate-x-1/2 z-[100] w-[90%] max-w-lg space-y-3 pointer-events-none">
+            <div class="fixed top-16 left-1/2 -translate-x-1/2 z-[100] w-max max-w-[90vw] pointer-events-none dynamic-island flex flex-col gap-2">
                 {% for category, message in messages %}
-                    <div class="p-4 md:p-5 rounded-2xl text-sm font-medium shadow-xl flex items-center gap-4 backdrop-blur-2xl pointer-events-auto border
-                        {% if category == 'error' or category == 'danger' %} bg-red-900/90 text-red-100 border-red-500/30
-                        {% elif category == 'success' %} bg-slate-800/90 text-slate-200 border-slate-500/50
-                        {% else %} bg-slate-800/90 text-slate-200 border-slate-600/50 {% endif %}">
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border
-                            {% if category == 'error' %} bg-red-500/20 border-red-500/50 text-red-400
-                            {% elif category == 'success' %} bg-slate-700 border-slate-500 text-slate-300
-                            {% else %} bg-slate-700 border-slate-500 text-slate-300 {% endif %}">
-                            <i class="fa-solid {% if category == 'error' %}fa-xmark{% elif category == 'success' %}fa-check{% else %}fa-info{% endif %} text-xs"></i> 
+                    <div class="bg-neutral-900/90 backdrop-blur-xl border border-neutral-700/50 px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-3 pointer-events-auto">
+                        <div class="flex items-center justify-center w-6 h-6 rounded-full 
+                            {% if category == 'error' or category == 'danger' %} bg-red-500/20 text-red-500
+                            {% elif category == 'success' %} bg-green-500/20 text-green-500
+                            {% else %} bg-blue-500/20 text-blue-500 {% endif %}">
+                            <i class="fa-solid {% if category == 'error' %}fa-xmark{% elif category == 'success' %}fa-check{% else %}fa-info{% endif %} text-[10px]"></i> 
                         </div>
-                        <p class="leading-relaxed tracking-wide">{{ message }}</p>
+                        <p class="text-xs font-medium text-white tracking-wide pr-2">{{ message }}</p>
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
     {% endwith %}
 
-    <main class="flex-grow z-10 relative pt-[100px] md:pt-[130px]">
-        <!-- Container Utama dengan Desain Modern Elegan -->
-        <div class="bg-slate-900 w-full min-h-screen rounded-t-[2.5rem] md:rounded-t-[3.5rem] shadow-[0_-20px_40px_rgba(0,0,0,0.3)] relative border-t border-white/5">
-            <div class="absolute inset-0 z-0 opacity-[0.02]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 32px 32px;"></div>
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[300px] bg-slate-500/5 rounded-[100%] blur-[80px] pointer-events-none"></div>
-
-            <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-16 relative z-10">
-                {% block content %}
-                <!-- Tempat inject dari masing-masing page -->
-                {% endblock %}
-            </div>
+    <main class="flex-grow z-10 relative pt-[70px] md:pt-[80px]">
+        <!-- Container Utama - Clean Modern -->
+        <div class="max-w-[1200px] mx-auto px-0 md:px-6 relative z-10 min-h-screen">
+            {% block content %}
+            <!-- Tempat inject dari masing-masing page -->
+            {% endblock %}
         </div>
     </main>
 
-    <footer class="bg-[#0b111a] text-slate-400 pt-20 pb-48 lg:pb-20 font-sans border-t border-slate-800 relative overflow-hidden">
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[150px] bg-slate-800/10 blur-[100px] pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 relative z-10">
-            <div class="space-y-5">
-                <div class="flex items-center gap-4">
-                    <img src="https://iili.io/C6oIUAX.md.png" class="w-10 h-10 opacity-70" alt="Logo BSU">
-                    <div>
-                        <h4 class="text-sm font-bold text-slate-300 tracking-widest uppercase">BSU BUNGA TANJUNG LESTARI</h4>
-                    </div>
+    <!-- MOBILE DOCK BOTTOM (Instagram Style) -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full z-50 glass-bottom pb-safe pt-1">
+        <nav class="flex justify-around items-center h-14 px-2">
+            <!-- Home -->
+            <a href="/" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+                <i class="fa-solid fa-house text-xl md:text-2xl"></i>
+            </a>
+            
+            <!-- Lokasi / Map -->
+            <a href="/lokasi" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+                <i class="fa-solid fa-location-dot text-xl md:text-2xl"></i>
+            </a>
+
+            <!-- Tombol Tambah (Setor Sampah / Login) ala IG New Post -->
+            <a href="/login" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+                <div class="bg-white text-black w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center shadow-lg transform rotate-3">
+                    <i class="fa-solid fa-plus text-xl"></i>
                 </div>
-                <p class="text-[13px] leading-relaxed font-light text-slate-500">Berkomitmen mengelola sampah rumah tangga untuk menciptakan lingkungan yang bersih dan memberikan manfaat ekonomi bagi masyarakat di Kabupaten Pekalongan.</p>
-            </div>
-            <div>
-                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Menu Utama</h4>
-                <ul class="space-y-3 text-[13px] font-light">
-                    <li><a href="/" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Beranda Utama</a></li>
-                    <li><a href="/about" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Tentang BSU</a></li>
-                    <li><a href="/lokasi" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Peta Lokasi BSU</a></li>
-                    <li><a href="/jadwal-sholat" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Religi</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Layanan BSU</h4>
-                <ul class="space-y-3 text-[13px] font-light">
-                    <li><a href="/login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Form Setor Sampah</a></li>
-                    <li><a href="/login" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Masuk Akun Warga</a></li>
-                    <li><a href="#" class="hover:text-slate-200 transition-colors flex items-center gap-3"><i class="fa-solid fa-angle-right text-[9px] text-slate-600"></i> Berita Lingkungan</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold text-[10px] text-slate-300 uppercase tracking-[0.25em] mb-6 border-b border-slate-700 pb-3 inline-block">Kontak Kami</h4>
-                <ul class="space-y-4 text-[13px] font-light text-slate-500">
-                    <li class="flex items-start gap-3">
-                        <i class="fa-brands fa-whatsapp text-slate-400 mt-1"></i> 
-                        <div>
-                            <a href="https://wa.me/6285113236312" class="text-slate-400 hover:text-slate-200 transition-colors block tracking-wider">0851-1323-6312</a>
-                            <span class="text-[10px] text-slate-600 uppercase tracking-wide">Pengurus BSU (Telepon/WA)</span>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <i class="fa-solid fa-location-dot text-slate-400 mt-1"></i>
-                        <span class="leading-relaxed">Tanjung Kulon, Kec. Kajen<br>Kabupaten Pekalongan</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- WATERMARK -->
-        <div class="border-t border-slate-800 pt-8 text-center flex flex-col items-center px-4 relative z-10">
-            <p class="text-[11px] text-slate-600 mb-2 font-light tracking-wide">&copy; 2026 Hak Cipta Dilindungi. Bank Sampah Unit Bunga Tanjung Lestari.</p>
-            <div class="text-[9px] font-medium text-slate-700 tracking-[0.1em] uppercase">
-                Pengembangan Oleh: Mahasiswa KKNT IDBU 54 Pekalongan - Aqila Faza
-            </div>
+            </a>
+
+            <!-- Religi -->
+            <a href="/jadwal-sholat" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+                <i class="fa-solid fa-mosque text-xl md:text-2xl"></i>
+            </a>
+
+            <!-- Profile / Account -->
+            <a href="{% if session and session.get('user') %}/dashboard{% else %}/login{% endif %}" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+                {% if session and session.get('user') %}
+                    <div class="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-transparent overflow-hidden profile-ring">
+                        <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=222&color=fff&bold=true" class="w-full h-full object-cover">
+                    </div>
+                {% else %}
+                    <i class="fa-regular fa-circle-user text-[22px] md:text-2xl"></i>
+                {% endif %}
+            </a>
+        </nav>
+        <style>
+            /* Active profile ring ala IG Story */
+            .nav-item.active .profile-ring { border-color: #ffffff; }
+        </style>
+    </div>
+
+    <!-- FOOTER SEDERHANA -->
+    <footer class="text-neutral-500 pb-[100px] lg:pb-10 pt-10 text-center flex flex-col items-center px-4">
+        <p class="text-[11px] font-medium tracking-wide mb-1">&copy; 2026 Bank Sampah Unit Bunga Tanjung Lestari.</p>
+        <div class="text-[10px] text-neutral-600 flex items-center gap-1">
+            <i class="fa-solid fa-code text-[9px]"></i> Aqila Faza (KKNT IDBU 54)
         </div>
     </footer>
 
-    <!-- MOBILE DOCK - Dark Premium Edition -->
-    <div class="ios-dock-container lg:hidden">
-        <nav class="ios-dock">
-            <a href="/" class="nav-item"><i class="fa-solid fa-house"></i><span>Beranda</span></a>
-            <a href="/jadwal-sholat" class="nav-item"><i class="fa-solid fa-mosque"></i><span>Religi</span></a>
-            <a href="/lokasi" class="nav-item"><i class="fa-solid fa-map-location-dot"></i><span>Lokasi</span></a>
-        </nav>
-    </div>
-
-    <!-- FLOATING TICKERS (MOBILE & DESKTOP) -->
-    <div class="glass-ticker-floating lg:hidden transition-all duration-300">
-        <div class="bg-slate-700/40 border-r border-slate-700 h-full flex items-center px-4 z-20 shrink-0 text-slate-300 text-[9px] font-bold uppercase tracking-widest gap-2"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-pulse shadow-sm"></span> INFO BSU</div>
-        <div class="ticker-wrap relative flex-1"><div id="unified-ticker-mobile"></div></div>
-        <div class="bg-slate-800/80 backdrop-blur-md h-full px-3 border-l border-slate-700 z-20 shrink-0 flex items-center"><div id="clock-mobile" class="clock-container text-[10px] text-slate-400 transition-all duration-300">Memuat...</div></div>
-    </div>
-
-    <div class="desktop-bottom-bar items-center px-6 shadow-md select-none transition-all duration-300">
-        <div class="bg-slate-800/80 h-6 flex items-center px-3 rounded text-slate-300 text-[10px] font-bold uppercase tracking-widest gap-2 mr-5 border border-slate-700"><span class="w-1.5 h-1.5 bg-slate-400 rounded-full animate-pulse shadow-sm"></span> INFO BSU</div>
-        <div class="ticker-wrap relative flex-1"><div id="unified-ticker-desktop"></div></div>
-        <div class="bg-slate-800/50 h-8 px-4 rounded-lg border border-slate-700 flex items-center gap-2 ml-5 text-slate-400 text-[11px] font-medium transition-colors hover:bg-slate-700/80"><i class="fa-solid fa-satellite-dish text-slate-500"></i><span id="desktop-user-location">Mencari lokasi...</span></div>
-        <div class="bg-slate-800/50 h-8 px-4 rounded-lg border border-slate-700 flex items-center ml-3 font-mono text-slate-400 transition-colors hover:bg-slate-700/80"><div id="clock-desktop" class="clock-container text-[11px] transition-all duration-300">Memuat...</div></div>
-    </div>
-
     <script>
-        function updateMobileGreeting() {
-            const hour = new Date().getHours();
-            let greeting = "Selamat Malam,";
-            if (hour >= 4 && hour < 11) greeting = "Selamat Pagi,";
-            else if (hour >= 11 && hour < 15) greeting = "Selamat Siang,";
-            else if (hour >= 15 && hour < 18) greeting = "Selamat Sore,";
-            
-            const greetEl = document.getElementById('mobile-greeting');
-            if(greetEl) greetEl.innerText = greeting;
-        }
-        updateMobileGreeting();
-
-        function initHeaderRotator() {
-            const dynamicHeader = document.getElementById('desktop-header-dynamic');
-            let states = [];
-            
-            if (dynamicHeader) {
-                states.push({ id: 'header-state-2', duration: 7000 }); 
-                states.push({ id: 'header-state-3', duration: 7000 }); 
-                states.push({ id: 'header-state-4', duration: 12000 }); 
-            }
-
-            let currentIndex = 0;
-            if(states.length === 0) return;
-
-            function showNextState() {
-                states.forEach(state => {
-                    const el = document.getElementById(state.id);
-                    if(el) { el.style.opacity = '0'; setTimeout(() => { el.classList.add('hidden'); el.classList.remove('flex'); }, 1000); }
-                });
-
-                const currentEl = document.getElementById(states[currentIndex].id);
-                if(currentEl) {
-                    setTimeout(() => { currentEl.classList.remove('hidden'); currentEl.classList.add('flex'); void currentEl.offsetWidth; currentEl.style.opacity = '1'; }, 1050);
-                }
-
-                const delay = states[currentIndex].duration;
-                currentIndex = (currentIndex + 1) % states.length;
-                setTimeout(showNextState, delay);
-            }
-            showNextState();
-        }
-        
-        initHeaderRotator();
-
-        const bsuLogoUrl = "https://iili.io/C6oIUAX.md.png";
-        const hutRiLogoUrl = "https://iili.io/C4vsGPs.md.png";
-        
-        const batasLogo81 = new Date("2026-08-29T23:59:59");
-        let isHutRi = (new Date() <= batasLogo81);
-        const navbarLogo = document.getElementById('navbar-logo');
-
-        if (navbarLogo) {
-            if (!isHutRi) {
-                navbarLogo.src = bsuLogoUrl;
-            } else {
-                navbarLogo.style.transition = "all 0.8s ease-in-out";
-                function swapLogo() {
-                    if(new Date() > batasLogo81) {
-                        navbarLogo.src = bsuLogoUrl;
-                        return;
-                    }
-
-                    navbarLogo.style.opacity = 0;
-                    navbarLogo.style.filter = "drop-shadow(0 2px 10px rgba(255,255,255,1)) brightness(1.2)";
-                    
-                    setTimeout(() => {
-                        isHutRi = !isHutRi;
-                        navbarLogo.src = isHutRi ? hutRiLogoUrl : bsuLogoUrl;
-                        navbarLogo.className = "h-8 md:h-9 object-contain opacity-90 transition-transform duration-300 group-hover:scale-105"; 
-                        navbarLogo.style.opacity = 1;
-                        navbarLogo.style.filter = "";
-                        
-                        const nextDelay = isHutRi ? 8000 : 25000;
-                        setTimeout(swapLogo, nextDelay);
-                    }, 800); 
-                }
-                setTimeout(swapLogo, 8000);
-            }
-        }
-
-        function forceHideLoader() {
-            const loader = document.getElementById('initial-loader');
-            if(loader && loader.style.display !== 'none') {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; loader.style.display = 'none'; }, 1500);
-            }
-        }
-
+        // --- ANIMASI LOADING IOS ---
         window.addEventListener('DOMContentLoaded', () => {
-            try { if(!checkPenaltyStatus()) setTimeout(forceHideLoader, 1200); } catch(e) { forceHideLoader(); }
-        });
-        setTimeout(forceHideLoader, 3000);
-
-        function toggleDropdown(id) {
-            const el = document.getElementById(id);
-            document.querySelectorAll('.ios-bubble-menu, .dropdown-menu-mobile').forEach(d => { if(d.id !== id) d.classList.add('hidden'); });
-            el.classList.toggle('hidden');
-        }
-
-        function updateTicker() {
-            const data = [
-                "Layanan penimbangan sampah BSU Bunga Tanjung Lestari beroperasi secara rutin untuk menjaga kebersihan lingkungan desa.",
-                "Mari tingkatkan ekonomi desa dengan aktif menabung sampah yang bisa didaur ulang.",
-                "Bersama-sama kita kelola sampah dengan baik agar desa menjadi lebih bersih, asri, dan sehat.",
-                "Jadikan sampah plastik, kardus, dan besi bekas Anda sebagai tabungan yang bermanfaat di BSU.",
-                "Fasilitas Green House kami terbuka bagi warga yang ingin belajar menanam sayuran dan tumbuhan ramah lingkungan.",
-                "Stop bakar sampah sembarangan! Mari jaga udara desa kita tetap bersih dan sehat untuk dihirup.",
-                "Dukung Kabupaten Pekalongan yang bersih dan hijau dengan mengelola sampah rumah tangga sebaik mungkin.",
-                "Sistem pencatatan BSU menjamin saldo tabungan warga tercatat dengan jujur, aman, dan bisa dipercaya."
-            ];
+            const loaderImg = document.getElementById('loader-img');
+            if(loaderImg) loaderImg.style.transform = "scale(1)";
             
-            const now = new Date();
-            const wibNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
-            const ch = wibNow.getHours();
-            const cm = wibNow.getMinutes();
-            
-            const isNightMode = (ch == 2 && cm >= 15) || (ch > 2 && ch < 7) ;
-
-            const mobTicker = document.getElementById('unified-ticker-mobile');
-            const deskTicker = document.getElementById('unified-ticker-desktop');
-
-            if(isNightMode) {
-                const floatBar = document.querySelector('.glass-ticker-floating');
-                if(floatBar) floatBar.classList.add('night-mode-active');
-                
-                const deskBar = document.querySelector('.desktop-bottom-bar');
-                if(deskBar) deskBar.classList.add('night-mode-active');
-
-                if(mobTicker) mobTicker.className = 'ticker-vertical-move';
-                if(deskTicker) deskTicker.className = 'ticker-vertical-move';
-                
-                const items = data.map(n => `<div class="ticker-item-vert"><span>${n}</span></div>`).join('');
-                if(mobTicker) mobTicker.innerHTML = items.repeat(15);
-                if(deskTicker) deskTicker.innerHTML = items.repeat(15);
-            } else {
-                const floatBar = document.querySelector('.glass-ticker-floating');
-                if(floatBar) floatBar.classList.remove('night-mode-active');
-                
-                const deskBar = document.querySelector('.desktop-bottom-bar');
-                if(deskBar) deskBar.classList.remove('night-mode-active');
-
-                if(mobTicker) mobTicker.className = 'ticker-move';
-                if(deskTicker) deskTicker.className = 'ticker-move';
-                
-                const items = data.map(n => `<div class="ticker-item">${n}</div><span class="text-white/10 font-light flex items-center text-xs px-2">•</span>`).join('');
-                if(mobTicker) mobTicker.innerHTML = items.repeat(6);
-                if(deskTicker) deskTicker.innerHTML = items.repeat(6);
-            }
-        }
-        updateTicker();
-        
-        // --- LOGIKA JAM & CUACA BERGANTIAN ---
-        let currentTempHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cuaca...';
-        async function fetchWeather() {
-            try {
-                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-7.03&longitude=109.58&current_weather=true');
-                const data = await res.json();
-                if(data && data.current_weather) {
-                    currentTempHTML = `<i class="fa-solid fa-cloud-sun text-yellow-500 mr-1"></i> ${Math.round(data.current_weather.temperature)}°C`;
+            setTimeout(() => {
+                const loader = document.getElementById('initial-loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 800);
                 }
-            } catch (e) {
-                console.error("Gagal mengambil data cuaca", e);
-                currentTempHTML = '<i class="fa-solid fa-cloud text-slate-500 mr-1"></i> --°C';
+            }, 1000);
+        });
+
+        // --- AKURASI LOKASI (GEOLOCATION + REVERSE GEOCODING) ---
+        async function fetchAccurateLocation() {
+            const updateText = (text) => {
+                const desktopLoc = document.getElementById('desktop-user-location');
+                if(desktopLoc) desktopLoc.innerText = text;
+            };
+
+            // Fungsi Cadangan menggunakan IP API jika GPS ditolak/gagal
+            const fallbackLocation = async () => {
+                try {
+                    const res = await fetch('https://ipapi.co/json/'); 
+                    const data = await res.json();
+                    updateText(`${data.city}, ${data.region}`);
+                } catch (e) { 
+                    updateText("Lokasi tidak diketahui"); 
+                }
+            };
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    try {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        // Reverse Geocoding via Nominatim OpenStreetMap
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await res.json();
+                        
+                        // Ekstrak nama desa/kecamatan/kota
+                        const place = data.address.village || data.address.town || data.address.city || data.address.county || "Akurasi Ditemukan";
+                        updateText(place);
+                    } catch (e) {
+                        fallbackLocation();
+                    }
+                }, (error) => {
+                    fallbackLocation();
+                }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+            } else {
+                fallbackLocation();
             }
         }
-        fetchWeather();
-        setInterval(fetchWeather, 30 * 60 * 1000); // Update cuaca setiap 30 menit
+        fetchAccurateLocation();
 
-        let displayMode = 'clock'; 
-        let displayTimer = 0; 
-
-        function updateTimeAndWeather() {
+        // --- JAM REALTIME ---
+        function updateTime() {
             const now = new Date();
             const wibTime = new Date(now.getTime() + (now.getTimezoneOffset() * 60000) + (3600000 * 7));
-            const timeString = wibTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
-            const clockHTML = `<i class="fa-regular fa-clock text-slate-400 mr-1"></i> ${timeString} WIB`;
-
-            let htmlToShow = "";
+            const timeString = wibTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(/\./g, ':');
             
-            // Bergantian: 20 Detik Jam -> 5 Detik Cuaca
-            if (displayMode === 'clock') {
-                htmlToShow = clockHTML;
-                if (displayTimer >= 20) {
-                    displayMode = 'weather';
-                    displayTimer = 0;
-                }
-            } else {
-                htmlToShow = currentTempHTML;
-                if (displayTimer >= 5) {
-                    displayMode = 'clock';
-                    displayTimer = 0;
-                }
-            }
-            
-            displayTimer++;
-
-            [document.getElementById('clock-mobile'), document.getElementById('clock-desktop')].forEach(el => {
-                if(el) { el.innerHTML = htmlToShow; }
-            });
+            const clockEl = document.getElementById('clock-desktop');
+            if(clockEl) clockEl.innerHTML = `${timeString} WIB`;
         }
-        setInterval(updateTimeAndWeather, 1000); 
-        updateTimeAndWeather(); // Panggilan awal
+        setInterval(updateTime, 1000); 
+        updateTime();
 
-        async function fetchUserLocation() {
-            try {
-                const res = await fetch('https://ipapi.co/json/'); const data = await res.json();
-                window.userIP = data.ip || 'Anomali Jaringan';
-                const locString = `${data.city}, ${data.region}`;
-                ['desktop-user-location', 'mobile-user-location'].forEach(id => {
-                    const el = document.getElementById(id); if(el) el.innerText = locString;
-                });
-            } catch (e) { console.error("Gagal verifikasi lokasi", e); }
-        }
-        fetchUserLocation();
-
-        window.addEventListener('click', function(e){   
-            if (!e.target.closest('.relative.group') && !e.target.closest('.xl\\:hidden.flex-col') && !e.target.closest('#mobile-guest-schedule')){
-                document.querySelectorAll('.ios-bubble-menu, .dropdown-menu-mobile').forEach(d => d.classList.add('hidden'));
-            }
-        });
-
-        // --- HIGHLIGHT ACTIVE MENU OTOMATIS ---
+        // --- HIGHLIGHT MENU AKTIF (IG STYLE) ---
         function updateActiveNav() {
             const currentPath = window.location.pathname;
-
             const checkActive = (href) => {
                 if (!href || href === '#' || href.startsWith('http')) return false;
-                // Normalisasi href 
                 const cleanHref = href.endsWith('/') && href.length > 1 ? href.slice(0, -1) : href;
                 const cleanPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
-                
                 if (cleanHref === '/' && cleanPath === '/') return true;
                 if (cleanHref !== '/' && cleanPath.includes(cleanHref)) return true;
                 return false;
             };
 
-            // 1. Desktop Nav
+            // Desktop Links
             document.querySelectorAll('.desktop-link').forEach(link => {
-                if (checkActive(link.getAttribute('href'))) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+                if (checkActive(link.getAttribute('href'))) link.classList.add('active');
+                else link.classList.remove('active');
             });
 
-            // 2. Mobile Dock Bottom
-            document.querySelectorAll('.ios-dock .nav-item').forEach(link => {
+            // Mobile Bottom Dock
+            document.querySelectorAll('.glass-bottom .nav-item').forEach(link => {
+                // Untuk IG Layout, kita ubah icon jadi solid dan terang jika aktif
                 if (checkActive(link.getAttribute('href'))) {
                     link.classList.add('active');
+                    link.classList.replace('text-neutral-500', 'text-white');
+                    const icon = link.querySelector('i');
+                    if(icon) { icon.classList.replace('fa-regular', 'fa-solid'); }
                 } else {
                     link.classList.remove('active');
-                }
-            });
-
-            // 3. Mobile Dropdown Hamburger
-            document.querySelectorAll('#info-dropdown a.block').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && !href.includes('logout') && !href.includes('dashboard')) {
-                    if (checkActive(href)) {
-                        link.classList.remove('text-slate-300');
-                        link.classList.add('text-white', 'bg-slate-800');
-                    } else {
-                        link.classList.add('text-slate-300');
-                        link.classList.remove('text-white', 'bg-slate-800');
-                    }
+                    link.classList.replace('text-white', 'text-neutral-500');
                 }
             });
         }
-
         document.addEventListener('DOMContentLoaded', updateActiveNav);
+
+        // --- HILANGKAN FLASH MESSAGE OTOMATIS ---
+        setTimeout(() => {
+            const island = document.querySelector('.dynamic-island');
+            if(island) {
+                island.style.transition = 'all 0.5s ease';
+                island.style.opacity = '0';
+                island.style.transform = 'translate(-50%, -150%) scale(0.9)';
+                setTimeout(() => island.remove(), 500);
+            }
+        }, 5000);
     </script>
 </body>
 </html>
