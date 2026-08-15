@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Pojok Religi - KTVDI{% endblock %}
+{% block title %}Pojok Religi - BSU Bunga Tanjung Lestari{% endblock %}
 
 {% block content %}
 
@@ -229,8 +229,8 @@
                     </span>
                     <span>Pojok <span class="text-gold-gradient">Religi</span></span>
                 </h1>
-                <p class="txt-secondary text-sm font-bold tracking-[0.2em] uppercase pl-1 mt-2">Menyajikan Info Religi yang Akurat</p>
-                <p class="txt-gold text-sm italic mt-1 font-bold">Kedamaian untuk seluruh umat manusia, rahmat bagi semesta alam.</p>
+                <p class="txt-secondary text-sm font-bold tracking-[0.2em] uppercase pl-1 mt-2">Fasilitas Religi Warga BSU Bunga Tanjung Lestari</p>
+                <p class="txt-gold text-sm italic mt-1 font-bold">Kebersihan sebagian dari iman. Menjaga bumi adalah wujud rasa syukur kepada Sang Pencipta.</p>
             </div>
 
             <div class="w-full lg:w-auto flex flex-col gap-2">
@@ -758,10 +758,12 @@
 
         window.randomHadits = function() {
             const hadits = [
-                "Senyummu di hadapan saudaramu adalah sedekah bagimu.", 
+                "Kebersihan itu sebagian dari iman. (HR. Muslim)",
+                "Menyingkirkan gangguan (seperti sampah atau duri) dari jalan adalah sedekah. (HR. Bukhari & Muslim)",
+                "Senyummu di hadapan saudaramu adalah sedekah bagimu. (HR. Tirmidzi)",
+                "Sesungguhnya Allah Maha Indah dan menyukai keindahan, Maha Bersih dan menyukai kebersihan. (HR. Tirmidzi)",
                 "Setiap yang memabukkan adalah khamr, dan setiap khamr adalah haram.",
-                "Seseorang itu tergantung pada agama temannya. Maka perhatikanlah dengan siapa kamu berteman.",
-                "Barangsiapa meniru suatu kaum, maka ia termasuk golongan mereka."
+                "Seseorang itu tergantung pada agama temannya. Maka perhatikanlah dengan siapa kamu berteman."
             ];
             const h = hadits[Math.floor(Math.random() * hadits.length)];
             $('#haditsContent').html(`<div class="flex-1 flex flex-col justify-center"><i class="fa-solid fa-quote-left text-3xl text-[var(--theme-gold)] opacity-50 mb-3"></i><p class="text-base txt-primary font-bold leading-relaxed">"${h}"</p></div>`);
@@ -893,7 +895,6 @@
                         let addr = data.address || {};
                         let userKecamatan = addr.city_district || addr.village || addr.suburb || '';
 
-                        // Perbaikan Logika Deteksi Kab/Kota secara Akurat
                         let qCity = (addr.city || addr.town || addr.municipality || "").toLowerCase();
                         let qCounty = (addr.county || "").toLowerCase();
 
@@ -903,7 +904,6 @@
                             let optText = $(this).text().toLowerCase();
                             let score = 0;
                             
-                            // Untuk daerah rawan ganda (Pekalongan, Semarang, Tegal, dll)
                             let isAmbigous = optText.includes('semarang') || optText.includes('pekalongan') || optText.includes('tegal') || optText.includes('magelang') || optText.includes('kediri') || optText.includes('blitar') || optText.includes('malang') || optText.includes('mojokerto') || optText.includes('pasuruan');
 
                             if (isAmbigous) {
@@ -911,7 +911,6 @@
                                     if (qCity && optText.includes(qCity.replace('kota', '').trim())) score += 50;
                                 } else if (optText.includes('kab.')) {
                                     if (qCounty && optText.includes(qCounty.replace('kabupaten', 'kab.').trim())) score += 50;
-                                    // Fallback Nominatim jika digabung
                                     if (qCity.includes('kabupaten') && optText.includes(qCity.replace('kabupaten', 'kab.').trim())) score += 50;
                                 }
                             } else {
