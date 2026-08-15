@@ -3,86 +3,120 @@
 {% block title %}Form Penimbangan - BSU Bunga Tanjung Lestari{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-[#020617] py-12 px-4 relative overflow-hidden font-sans">
-    
-    <!-- Animasi Background Premium BSU (Warna Emerald & Teal) -->
-    <div class="absolute top-0 left-0 w-96 h-96 bg-emerald-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 animate-blob"></div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-teal-500 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
-    <div class="absolute -bottom-32 left-20 w-96 h-96 bg-emerald-900 rounded-full mix-blend-overlay filter blur-[100px] opacity-40 animate-blob animation-delay-4000"></div>
-
-    <div class="max-w-md w-full bg-slate-900/60 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 p-8 sm:p-10 relative z-10">
-        
-        <!-- Aksen Garis Atas -->
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-600 via-teal-400 to-emerald-600 opacity-90"></div>
-
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 text-emerald-400 mb-6 shadow-inner border border-emerald-500/20">
-                <i class="fa-solid fa-clipboard-list text-4xl drop-shadow-[0_0_15px_rgba(52,211,153,0.4)]"></i>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-wide mb-2">Form Penimbangan</h1>
-            <p class="text-slate-400 text-sm leading-relaxed">Sistem Pencatatan Setoran Sampah<br>BSU Bunga Tanjung Lestari</p>
-        </div>
-
-        <!-- Panduan Singkat untuk Orang Awam -->
-        <div class="bg-slate-800/50 rounded-2xl p-5 mb-8 border border-white/5">
-            <h3 class="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4 text-center">Cara Pengisian</h3>
-            <ul class="space-y-4">
-                <li class="flex items-center gap-4 text-sm text-slate-300 font-medium">
-                    <div class="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center text-emerald-500 shrink-0 border border-white/5">1</div>
-                    <span>Pastikan sampah sudah dipilah & ditimbang.</span>
-                </li>
-                <li class="flex items-center gap-4 text-sm text-slate-300 font-medium">
-                    <div class="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center text-emerald-500 shrink-0 border border-white/5">2</div>
-                    <span>Klik tombol warna hijau di bawah.</span>
-                </li>
-                <li class="flex items-center gap-4 text-sm text-slate-300 font-medium">
-                    <div class="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center text-emerald-500 shrink-0 border border-white/5">3</div>
-                    <span>Isi data di Google Form yang terbuka.</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Tombol Utama Terintegrasi Google Form -->
-        <div class="space-y-4">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWZExJ2eRp-LARaidM-n7apMANtPMsLRfZ2iN8ME1y_yjh6Q/viewform?usp=sharing&ouid=107155382477867343051" target="_blank" rel="noopener noreferrer" 
-               class="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-[15px] sm:text-base py-4 sm:py-5 rounded-2xl shadow-[0_10px_25px_rgba(16,185,129,0.3)] transform hover:-translate-y-1 transition-all duration-300 group">
-                <i class="fa-solid fa-pen-to-square text-lg group-hover:scale-110 transition-transform"></i>
-                ISI FORMULIR SEKARANG
-            </a>
-            
-            <a href="{{ url_for('home') }}" class="w-full flex items-center justify-center gap-2 bg-transparent hover:bg-white/5 text-slate-400 hover:text-white font-medium py-3.5 rounded-xl border border-white/10 transition-all duration-300">
-                <i class="fa-solid fa-arrow-left text-sm"></i>
-                Kembali ke Beranda
-            </a>
-        </div>
-
-        <div class="mt-8 text-center border-t border-white/10 pt-6">
-            <p class="text-xs text-slate-500 font-light">
-                Kesulitan mengisi form? <br>
-                <a href="https://wa.me/6285113236312" target="_blank" class="text-emerald-400 font-medium hover:text-emerald-300 transition-colors inline-flex items-center gap-1.5 mt-2">
-                    <i class="fa-brands fa-whatsapp"></i> Hubungi Pengurus BSU
-                </a>
-            </p>
-        </div>
-    </div>
-</div>
-
 <style>
-    /* Animasi Blob Background */
-    @keyframes blob {
+    /* Animasi Background Blobs */
+    @keyframes slow-blob {
         0% { transform: translate(0px, 0px) scale(1); }
         33% { transform: translate(30px, -50px) scale(1.1); }
         66% { transform: translate(-20px, 20px) scale(0.9); }
         100% { transform: translate(0px, 0px) scale(1); }
     }
-    .animate-blob {
-        animation: blob 8s infinite ease-in-out;
+    .animate-blob { animation: slow-blob 10s infinite alternate ease-in-out; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+
+    /* Animasi Entry Card */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    .animation-delay-2000 {
-        animation-delay: 2.5s;
+    .animate-fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* Efek Shimmer pada Tombol Utama (Sangat mencolok untuk orang awam) */
+    @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
     }
-    .animation-delay-4000 {
-        animation-delay: 5s;
+    .btn-shimmer {
+        background: linear-gradient(90deg, #10b981 0%, #34d399 25%, #10b981 50%);
+        background-size: 200% auto;
+        color: #000000;
+        animation: shimmer 3s infinite linear;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .btn-shimmer:active { transform: scale(0.96); }
+
+    /* Bouncing Arrow untuk memandu mata */
+    @keyframes bounce-subtle {
+        0%, 100% { transform: translateY(-10%); }
+        50% { transform: translateY(10%); }
+    }
+    .animate-bounce-subtle { animation: bounce-subtle 1.5s infinite ease-in-out; }
 </style>
+
+<div class="min-h-screen flex items-center justify-center bg-[#000000] py-16 px-4 relative overflow-hidden font-sans">
+    
+    <!-- Latar Belakang Modern OLED dengan Aksen Emerald -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:24px_24px] opacity-30"></div>
+    <div class="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-emerald-600/20 rounded-full filter blur-[120px] animate-blob pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-teal-600/10 rounded-full filter blur-[100px] animate-blob animation-delay-2000 pointer-events-none"></div>
+
+    <!-- Container Utama (Card iOS Style) -->
+    <div class="max-w-md w-full bg-[#121212]/90 backdrop-blur-3xl rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.8)] border border-neutral-800 p-6 sm:p-10 relative z-10 animate-fade-in-up">
+        
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-[1.5rem] bg-emerald-500/10 text-emerald-400 mb-5 border border-emerald-500/20 shadow-[0_0_30px_rgba(16,185,129,0.15)] relative">
+                <i class="fa-solid fa-weight-scale text-4xl"></i>
+                <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-ping"></div>
+                <div class="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full"></div>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">Mulai Menimbang</h1>
+            <p class="text-neutral-400 text-sm leading-relaxed font-light">Sistem Pencatatan Setoran Sampah<br>BSU Bunga Tanjung Lestari</p>
+        </div>
+
+        <!-- Panduan Visual (Sangat Jelas & Ramah Pemula) -->
+        <div class="bg-black/50 rounded-2xl p-5 mb-6 border border-neutral-800">
+            <h3 class="text-white text-xs font-bold uppercase tracking-widest mb-4 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-list-check text-emerald-500"></i> Cara Pengisian
+            </h3>
+            <ul class="space-y-4">
+                <li class="flex items-center gap-4 bg-neutral-900/50 p-3 rounded-xl border border-neutral-800">
+                    <div class="w-8 h-8 rounded-full bg-[#121212] flex items-center justify-center text-white shrink-0 border border-neutral-700 font-bold shadow-inner">1</div>
+                    <span class="text-sm text-neutral-300 font-light">Pastikan sampah sudah <strong class="text-white font-medium">dipilah & ditimbang</strong>.</span>
+                </li>
+                <li class="flex items-center gap-4 bg-neutral-900/50 p-3 rounded-xl border border-neutral-800">
+                    <div class="w-8 h-8 rounded-full bg-[#121212] flex items-center justify-center text-white shrink-0 border border-neutral-700 font-bold shadow-inner">2</div>
+                    <span class="text-sm text-neutral-300 font-light">Klik tombol <strong class="text-emerald-400 font-medium">warna hijau</strong> di bawah ini.</span>
+                </li>
+                <li class="flex items-center gap-4 bg-neutral-900/50 p-3 rounded-xl border border-neutral-800">
+                    <div class="w-8 h-8 rounded-full bg-[#121212] flex items-center justify-center text-white shrink-0 border border-neutral-700 font-bold shadow-inner">3</div>
+                    <span class="text-sm text-neutral-300 font-light">Isi data pada formulir yang terbuka.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Indikator Panah -->
+        <div class="text-center mb-3 animate-bounce-subtle text-emerald-500">
+            <i class="fa-solid fa-angles-down text-xl"></i>
+        </div>
+
+        <!-- Tombol Utama (Mencolok, Interaktif, Shimmer) -->
+        <div class="space-y-4">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWZExJ2eRp-LARaidM-n7apMANtPMsLRfZ2iN8ME1y_yjh6Q/viewform?usp=sharing&ouid=107155382477867343051" target="_blank" rel="noopener noreferrer" 
+               class="w-full flex flex-col items-center justify-center gap-1 btn-shimmer font-bold py-4 rounded-2xl shadow-[0_10px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_15px_40px_rgba(16,185,129,0.5)] group">
+                <div class="flex items-center gap-2 text-base sm:text-lg tracking-wide">
+                    <i class="fa-brands fa-google group-hover:rotate-12 transition-transform"></i>
+                    BUKA FORMULIR
+                </div>
+                <span class="text-[10px] opacity-75 font-medium uppercase tracking-widest">(Aman & Resmi)</span>
+            </a>
+            
+            <!-- Tombol Kembali -->
+            <a href="{{ url_for('home') }}" class="w-full flex items-center justify-center gap-2 bg-[#121212] hover:bg-neutral-800 text-neutral-400 hover:text-white font-medium py-3.5 rounded-xl border border-neutral-800 transition-colors duration-300 active:scale-95">
+                <i class="fa-solid fa-arrow-left text-sm"></i>
+                Batal & Kembali
+            </a>
+        </div>
+
+        <!-- Bantuan -->
+        <div class="mt-8 text-center pt-5 border-t border-neutral-800">
+            <p class="text-[11px] text-neutral-500 font-light uppercase tracking-widest mb-2">Butuh Bantuan?</p>
+            <a href="https://wa.me/6285113236312" target="_blank" class="inline-flex items-center gap-2 text-sm text-white font-medium bg-neutral-900 px-4 py-2 rounded-full border border-neutral-800 hover:border-emerald-500 hover:text-emerald-400 transition-colors">
+                <i class="fa-brands fa-whatsapp text-emerald-500 text-lg"></i> Hubungi Pengurus
+            </a>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}
