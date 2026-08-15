@@ -4,32 +4,26 @@
 
 {% block content %}
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    /* Styling Khusus Halaman Tentang (Modern OLED Theme) */
+    .hero-glow-about {
+        background: radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(20, 184, 166, 0.08) 0%, transparent 50%);
+    }
 
-    .font-bsu { font-family: 'Inter', sans-serif; }
-
-    /* Latar Belakang Utama */
-    .about-hero-bg {
-        background: radial-gradient(circle at top right, #064e3b 0%, #0f172a 50%, #020617 100%);
+    .bento-glass {
+        background: #121212;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 1.5rem;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease, box-shadow 0.3s ease;
         position: relative;
+        overflow: hidden;
     }
-
-    /* Efek Glassmorphism Premium */
-    .premium-glass-card {
-        background: rgba(30, 41, 59, 0.4);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-    }
-    .premium-glass-card:hover {
+    .bento-glass:hover {
         transform: translateY(-5px);
         border-color: rgba(16, 185, 129, 0.3);
-        box-shadow: 0 30px 60px -15px rgba(16, 185, 129, 0.15);
+        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.15);
     }
 
-    /* Teks Gradasi Emas & Zamrud */
     .text-gradient-emerald {
         background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
         -webkit-background-clip: text;
@@ -42,54 +36,52 @@
         width: 100%;
         border-radius: 1.5rem;
         overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         border: 1px solid rgba(255,255,255,0.1);
-        background-color: #020617;
+        background-color: #000000;
     }
-    
-    /* Overlay Gradien pada Video agar Teks Terbaca */
     .video-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(2,6,23,0.9) 0%, rgba(2,6,23,0.4) 40%, rgba(2,6,23,0.1) 100%);
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
         z-index: 10;
-        pointer-events: none; /* Supaya klik tidak terhalang */
+        pointer-events: none;
     }
 
-    /* Animasi Masuk */
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Scroll Reveal Animation Classes */
+    .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .animate-fade-up {
-        animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .reveal-on-scroll.is-visible {
+        opacity: 1;
+        transform: translateY(0);
     }
-    .delay-100 { animation-delay: 0.1s; opacity: 0; }
-    .delay-200 { animation-delay: 0.2s; opacity: 0; }
-    .delay-300 { animation-delay: 0.3s; opacity: 0; }
+    .delay-100 { transition-delay: 0.1s; }
+    .delay-200 { transition-delay: 0.2s; }
+    .delay-300 { transition-delay: 0.3s; }
 </style>
 
 <!-- 1. HERO & VIDEO SECTION -->
-<section class="about-hero-bg pt-8 pb-16 lg:pt-12 lg:pb-24 font-bsu border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+<section class="pt-12 pb-16 lg:pt-20 lg:pb-24 border-b border-neutral-900 hero-glow-about overflow-hidden">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
         
         <!-- Header Text -->
-        <div class="text-center max-w-4xl mx-auto mb-10 md:mb-16 animate-fade-up">
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-900/30 border border-emerald-500/30 text-emerald-400 text-xs font-semibold rounded-full mb-6 tracking-widest uppercase">
-                <i class="fa-solid fa-leaf"></i> Tentang BSU
+        <div class="text-center max-w-4xl mx-auto mb-10 md:mb-16 reveal-on-scroll is-visible">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full mb-6 tracking-widest uppercase">
+                <i class="fa-solid fa-leaf"></i> Profil Kami
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-6">
                 Merawat Bumi Sejak dari <br class="hidden md:block">
-                <span class="text-gradient-emerald">Pekarangan Sendiri</span>
+                <span class="text-gradient-emerald">Pekarangan Sendiri.</span>
             </h1>
-            <p class="text-slate-400 text-base md:text-xl leading-relaxed font-light">
-                Mengenal lebih dekat perjalanan BSU Bunga Tanjung Lestari dalam mengubah paradigma pengelolaan sampah desa menjadi motor penggerak ekonomi kerakyatan.
+            <p class="text-neutral-400 text-sm md:text-base lg:text-lg leading-relaxed font-light max-w-3xl mx-auto">
+                Mengenal lebih dekat perjalanan BSU Bunga Tanjung Lestari dalam mengubah paradigma pengelolaan limbah rumah tangga menjadi motor penggerak sirkular ekonomi pedesaan.
             </p>
         </div>
 
-        <!-- Drone Video Embed Terintegrasi Langsung (HTML5 AutoPlay) -->
-        <div class="seamless-video-container aspect-video md:aspect-[21/9] animate-fade-up delay-100 relative group">
-            <!-- Penggunaan tag video dengan parameter mutlak untuk autoplay di HP -->
+        <!-- Drone Video Embed Terintegrasi -->
+        <div class="seamless-video-container aspect-video md:aspect-[21/9] reveal-on-scroll is-visible delay-200 group shadow-[0_30px_60px_rgba(0,0,0,0.6)]">
             <video 
                 autoplay 
                 loop 
@@ -98,7 +90,6 @@
                 preload="auto"
                 crossorigin="anonymous"
                 class="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105 pointer-events-none">
-                <!-- Link di bawah menggunakan trick export=download agar terbaca sebagai MP4 mentah oleh browser -->
                 <source src="https://drive.google.com/uc?export=download&id=1eDt3XBvsCeC0-JdPpOak5S-nv-uLVwFz" type="video/mp4">
             </video>
             
@@ -108,8 +99,8 @@
                         <i class="fa-solid fa-drone-front text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-white font-bold text-lg md:text-xl drop-shadow-lg leading-tight">Fasilitas Terpadu BSU Bunga Tanjung Lestari</h3>
-                        <p class="text-emerald-300 text-[10px] md:text-xs uppercase tracking-widest font-medium drop-shadow-md mt-1">Tanjung Kulon, Kajen - Kab. Pekalongan</p>
+                        <h3 class="text-white font-bold text-lg md:text-xl drop-shadow-lg leading-tight tracking-tight">Fasilitas Terpadu BSU Bunga Tanjung Lestari</h3>
+                        <p class="text-emerald-400 text-[10px] md:text-xs uppercase tracking-widest font-bold drop-shadow-md mt-1">Tanjung Kulon, Kajen - Kab. Pekalongan</p>
                     </div>
                 </div>
             </div>
@@ -119,75 +110,74 @@
 </section>
 
 <!-- 2. CERITA KAMI & KUTIPAN DIREKTUR -->
-<section class="py-16 md:py-24 bg-slate-900 font-bsu relative overflow-hidden">
-    <!-- Dekorasi Latar -->
-    <div class="absolute top-1/2 left-0 w-[400px] h-[400px] bg-emerald-900/10 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2"></div>
-    
+<section class="py-16 md:py-24 relative overflow-hidden">
     <div class="max-w-6xl mx-auto px-4 md:px-6 relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             
-            <div class="order-2 lg:order-1 relative animate-fade-up delay-200">
-                <div class="premium-glass-card rounded-[2rem] p-8 md:p-10 relative overflow-hidden">
-                    <!-- Aksen Kutipan Background -->
-                    <i class="fa-solid fa-quote-left absolute -top-4 -left-4 text-8xl text-slate-800/50 -rotate-12 z-0"></i>
+            <div class="order-2 lg:order-1 relative reveal-on-scroll">
+                <div class="bento-glass p-8 md:p-10">
+                    <i class="fa-solid fa-quote-left absolute -top-2 -left-2 text-8xl text-neutral-800/40 -rotate-12 z-0"></i>
                     
                     <div class="relative z-10">
-                        <h3 class="text-2xl font-bold text-white mb-6 leading-snug">Berawal dari Kepedulian Kecil di Sudut Desa</h3>
-                        <div class="space-y-4 text-slate-400 text-sm md:text-base leading-relaxed font-light mb-8">
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mb-6 leading-snug tracking-tight">Berawal dari Kepedulian Kecil di Sudut Desa</h3>
+                        <div class="space-y-4 text-neutral-400 text-sm md:text-base leading-relaxed font-light mb-8">
                             <p>
-                                Berdirinya Bank Sampah Unit (BSU) Bunga Tanjung Lestari berawal dari kegelisahan warga melihat sampah rumah tangga yang menumpuk tak terkelola di lingkungan Tanjung Kulon.
+                                Berdirinya Bank Sampah Unit (BSU) Bunga Tanjung Lestari lahir dari kegelisahan mendalam melihat limbah rumah tangga yang menumpuk tak terkelola di lingkungan Desa Tanjung Kulon.
                             </p>
                             <p>
-                                Jika hanya dibakar atau dibuang, sampah akan merusak tanah dan udara yang kita wariskan untuk anak cucu. Dari sana, timbul gagasan: <strong class="text-slate-200 font-medium">Bagaimana jika sampah ini kita pilah, kita selamatkan, dan kita jadikan sesuatu yang bernilai?</strong>
+                                Jika hanya dibakar secara terbuka atau dibuang ke sungai, sampah akan merusak kesuburan tanah dan udara yang kita wariskan untuk generasi mendatang. Dari sana, timbul sebuah gagasan kolektif: <strong class="text-white font-medium">Bagaimana jika sampah ini kita pilah, kita selamatkan, dan kita ubah menjadi instrumen bernilai?</strong>
                             </p>
                         </div>
 
                         <!-- Profil Direktur BSU -->
-                        <div class="flex items-center gap-4 p-4 bg-emerald-900/20 rounded-2xl border border-emerald-500/20">
-                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white text-xl font-bold shrink-0 border-2 border-slate-800 shadow-md">
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-5 bg-gradient-to-r from-emerald-900/20 to-[#121212] rounded-2xl border border-emerald-500/20">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white text-xl font-bold shrink-0 border-2 border-[#121212] shadow-md">
                                 K
                             </div>
-                            <div>
+                            <div class="text-center sm:text-left">
                                 <p class="text-white text-sm font-semibold italic">"Kita tidak hanya membuang sampah, kita sedang menabung untuk kesehatan bumi dan kesejahteraan keluarga."</p>
-                                <p class="text-emerald-400 text-xs font-medium uppercase tracking-wider mt-1.5">— Ibu Kustiati, Direktur BSU</p>
+                                <p class="text-emerald-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mt-2">— Ibu Kustiati, Direktur BSU</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="order-1 lg:order-2 animate-fade-up delay-300">
-                <h2 class="text-sm font-bold text-emerald-500 tracking-[0.2em] uppercase mb-2">Pilar Kami</h2>
-                <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-8 leading-tight">Visi & Misi<br>Bunga Tanjung Lestari</h3>
+            <div class="order-1 lg:order-2 reveal-on-scroll delay-100">
+                <h2 class="text-[10px] md:text-xs font-bold text-emerald-500 tracking-[0.2em] uppercase mb-2">Pilar Utama Kami</h2>
+                <h3 class="text-3xl md:text-5xl font-bold text-white mb-10 leading-[1.1] tracking-tight">Visi & Misi<br>Bunga Tanjung Lestari.</h3>
                 
-                <div class="space-y-6">
-                    <div class="flex gap-4">
-                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 shadow-lg">
+                <div class="space-y-8">
+                    <!-- Point 1 -->
+                    <div class="flex gap-5 group">
+                        <div class="w-12 h-12 shrink-0 rounded-full bg-[#121212] border border-neutral-800 flex items-center justify-center text-emerald-400 shadow-lg group-hover:border-emerald-500 transition-colors">
                             <i class="fa-solid fa-earth-asia text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-bold text-slate-200 mb-1">Pelestarian Ekologi</h4>
-                            <p class="text-slate-400 text-sm font-light leading-relaxed">Mencegah polusi tanah dan udara dengan meminimalisir pembakaran sampah secara terbuka di area pemukiman warga.</p>
+                            <h4 class="text-lg font-bold text-white mb-1">Pelestarian Ekologi</h4>
+                            <p class="text-neutral-500 text-sm font-light leading-relaxed">Mencegah polusi tanah dan udara dengan meminimalisir pembakaran sampah secara terbuka di area pemukiman warga secara bertahap.</p>
                         </div>
                     </div>
                     
-                    <div class="flex gap-4">
-                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-teal-400 shadow-lg">
+                    <!-- Point 2 -->
+                    <div class="flex gap-5 group">
+                        <div class="w-12 h-12 shrink-0 rounded-full bg-[#121212] border border-neutral-800 flex items-center justify-center text-teal-400 shadow-lg group-hover:border-teal-500 transition-colors">
                             <i class="fa-solid fa-arrow-up-right-dots text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-bold text-slate-200 mb-1">Sirkular Ekonomi Rakyat</h4>
-                            <p class="text-slate-400 text-sm font-light leading-relaxed">Di bawah arahan Ibu Kustiati, barang tak terpakai diubah menjadi instrumen finansial (tabungan) yang dapat meningkatkan daya beli rumah tangga.</p>
+                            <h4 class="text-lg font-bold text-white mb-1">Sirkular Ekonomi Rakyat</h4>
+                            <p class="text-neutral-500 text-sm font-light leading-relaxed">Di bawah arahan pengurus, barang tak terpakai diubah menjadi instrumen finansial (tabungan) yang dapat meningkatkan daya beli rumah tangga desa.</p>
                         </div>
                     </div>
 
-                    <div class="flex gap-4">
-                        <div class="w-12 h-12 shrink-0 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-sky-400 shadow-lg">
+                    <!-- Point 3 -->
+                    <div class="flex gap-5 group">
+                        <div class="w-12 h-12 shrink-0 rounded-full bg-[#121212] border border-neutral-800 flex items-center justify-center text-sky-400 shadow-lg group-hover:border-sky-500 transition-colors">
                             <i class="fa-solid fa-seedling text-xl"></i>
                         </div>
                         <div>
-                            <h4 class="text-lg font-bold text-slate-200 mb-1">Edukasi Berkelanjutan</h4>
-                            <p class="text-slate-400 text-sm font-light leading-relaxed">Menjadikan area BSU dan fasilitas <i>Green House</i> kami sebagai ruang interaksi dan edukasi agrikultur ramah lingkungan bagi masyarakat luas.</p>
+                            <h4 class="text-lg font-bold text-white mb-1">Edukasi Berkelanjutan</h4>
+                            <p class="text-neutral-500 text-sm font-light leading-relaxed">Menjadikan area operasional BSU dan fasilitas <i>Green House</i> sebagai ruang interaksi dan edukasi agrikultur ramah lingkungan bagi masyarakat luas.</p>
                         </div>
                     </div>
                 </div>
@@ -198,27 +188,28 @@
 </section>
 
 <!-- 3. INOVASI DIGITAL (Sinergi KKN) -->
-<section class="py-16 md:py-24 bg-slate-800/30 border-y border-slate-800 font-bsu relative">
-    <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 24px 24px;"></div>
+<section class="py-16 md:py-24 border-y border-neutral-900 bg-[#0a0a0a] relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
     
     <div class="max-w-5xl mx-auto px-4 md:px-6 text-center relative z-10">
-        <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-4">Mendobrak Keterbatasan dengan Digitalisasi</h2>
-        <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto rounded-full mb-8"></div>
+        <div class="reveal-on-scroll">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">Mendobrak Keterbatasan dengan Digitalisasi.</h2>
+            <p class="text-neutral-400 text-sm md:text-base leading-relaxed font-light mb-10 max-w-2xl mx-auto">
+                Untuk memastikan kelancaran operasional dan keamanan data tabungan warga, BSU Bunga Tanjung Lestari kini telah bertransformasi ke era digital.
+            </p>
+        </div>
         
-        <p class="text-slate-400 text-base md:text-lg leading-relaxed font-light mb-10 max-w-3xl mx-auto">
-            Untuk memastikan kelancaran operasional dan keamanan data tabungan warga, BSU Bunga Tanjung Lestari kini telah bertransformasi. Kehadiran <strong>Portal Sistem Terpadu</strong> ini mengakhiri era pencatatan manual di buku tulis yang rawan rusak atau hilang.
-        </p>
-        
-        <div class="premium-glass-card rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-10 text-left bg-slate-900/60">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full bg-slate-800 border-4 border-emerald-500/30 flex items-center justify-center shrink-0 shadow-inner overflow-hidden relative group">
-                <i class="fa-solid fa-microchip text-4xl text-emerald-500 transform group-hover:scale-110 transition-transform duration-300"></i>
+        <div class="bento-glass p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12 text-left reveal-on-scroll delay-100">
+            <div class="w-28 h-28 md:w-36 md:h-36 rounded-full bg-[#0a0a0a] border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(16,185,129,0.1)] relative group">
+                <i class="fa-solid fa-microchip text-5xl text-emerald-500 transform group-hover:scale-110 transition-transform duration-500"></i>
+                <div class="absolute inset-0 rounded-full border border-emerald-400 animate-ping opacity-20"></div>
             </div>
             <div>
-                <h4 class="text-white font-bold text-lg md:text-xl mb-2">Transparansi dalam Genggaman</h4>
-                <p class="text-slate-400 text-sm md:text-base leading-relaxed font-light mb-4">
-                    Seluruh pencatatan berat sampah, riwayat setoran, hingga nominal tabungan kini terekam secara sistematis di server berbasis komputasi awan (<i>Cloud</i>). Warga dapat memantau hasil tabungan mereka secara *real-time* kapan saja.
+                <h4 class="text-white font-bold text-xl md:text-2xl mb-3 tracking-tight">Transparansi dalam Genggaman</h4>
+                <p class="text-neutral-400 text-sm md:text-base leading-relaxed font-light mb-5">
+                    Kehadiran <strong>Portal Sistem Terpadu</strong> ini mengakhiri era pencatatan manual di buku tulis yang rawan rusak, basah, atau hilang. Seluruh log penimbangan berat sampah hingga rekapitulasi nominal tabungan kini terekam secara sistematis di server berbasis komputasi awan (<i>Cloud</i>).
                 </p>
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 border border-slate-700 rounded-lg text-[10px] md:text-xs uppercase tracking-widest text-emerald-400 font-medium">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#000000] border border-neutral-800 rounded-full text-[10px] md:text-xs uppercase tracking-widest text-emerald-500 font-bold">
                     <i class="fa-solid fa-code"></i> Dikembangkan oleh Mahasiswa KKNT IDBU 54 Undip
                 </div>
             </div>
@@ -227,29 +218,53 @@
 </section>
 
 <!-- 4. CALL TO ACTION -->
-<section class="py-20 md:py-28 font-bsu relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-slate-900 to-[#020617] z-0"></div>
-    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-emerald-600/10 blur-[150px] z-0"></div>
+<section class="py-20 md:py-28 relative overflow-hidden">
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-emerald-600/10 blur-[150px] z-0 pointer-events-none"></div>
 
-    <div class="max-w-4xl mx-auto px-4 md:px-6 relative z-10 text-center">
-        <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-full flex items-center justify-center text-white text-3xl mb-8 shadow-[0_0_30px_rgba(16,185,129,0.4)] animate-bounce" style="animation-duration: 3s;">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 relative z-10 text-center reveal-on-scroll">
+        <div class="w-20 h-20 mx-auto bg-gradient-to-tr from-emerald-500 to-teal-400 rounded-full flex items-center justify-center text-white text-3xl mb-8 shadow-[0_0_30px_rgba(16,185,129,0.4)] transition-transform hover:scale-110 duration-300">
             <i class="fa-solid fa-hands-holding-circle"></i>
         </div>
         
-        <h2 class="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Mari Bergabung Menjadi Bagian dari Solusi</h2>
-        <p class="text-slate-400 text-base md:text-lg mb-10 font-light max-w-2xl mx-auto">
-            Tidak ada kata terlambat untuk mulai peduli. Pilah sampah Anda dari rumah, serahkan ke BSU Bunga Tanjung Lestari, dan saksikan bagaimana tumpukan limbah berubah menjadi senyuman keluarga.
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-[1.1]">Jadilah Bagian dari <br class="hidden md:block">Solusi Lingkungan.</h2>
+        <p class="text-neutral-400 text-sm md:text-base lg:text-lg mb-10 font-light max-w-2xl mx-auto">
+            Tidak ada kata terlambat untuk mulai peduli. Pilah limbah Anda dari rumah, serahkan ke pos kami, dan saksikan tumpukan masalah berubah menjadi senyuman.
         </p>
         
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="login.html" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-full transition-colors flex items-center justify-center gap-2 shadow-lg">
-                <i class="fa-solid fa-right-to-bracket"></i> Buat Akun Warga
+            <!-- Ganti "Buat Akun" dengan akses ke Form Penimbangan -->
+            <a href="/login" class="px-8 py-4 bg-white text-black font-bold rounded-full transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] text-sm">
+                <i class="fa-solid fa-weight-scale"></i> Akses Form Penimbangan
             </a>
-            <a href="https://wa.me/6285113236312" class="px-8 py-4 bg-slate-800 border border-slate-700 hover:bg-slate-700 text-emerald-400 font-medium rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
-                <i class="fa-solid fa-location-dot"></i> Kunjungi Lokasi Kami
+            <a href="https://wa.me/6285113236312" class="px-8 py-4 bg-[#121212] border border-neutral-800 hover:border-emerald-500 hover:text-emerald-400 text-white font-medium rounded-full transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 text-sm shadow-lg">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Hubungi Pengurus
             </a>
         </div>
     </div>
 </section>
+
+<!-- Script untuk Scroll Reveal Animation -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target); // Hanya animasi satu kali
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.15, // Trigger saat 15% elemen terlihat
+        rootMargin: "0px 0px -50px 0px"
+    });
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
+    });
+});
+</script>
 
 {% endblock %}
