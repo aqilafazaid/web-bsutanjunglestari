@@ -194,22 +194,12 @@
                 <span class="text-[9px] font-medium tracking-wide">Religi</span>
             </a>
 
-            <!-- Profile / Account -->
-            <a href="{% if session and session.get('user') %}/dashboard{% else %}/login{% endif %}" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
-                {% if session and session.get('user') %}
-                    <div class="w-5 h-5 rounded-full border border-transparent overflow-hidden profile-ring">
-                        <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=222&color=fff&bold=true" class="w-full h-full object-cover">
-                    </div>
-                {% else %}
-                    <i class="fa-regular fa-circle-user text-lg"></i>
-                {% endif %}
-                <span class="text-[9px] font-medium tracking-wide">Akun</span>
+            <!-- Tentang BSU -->
+            <a href="/about" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
+                <i class="fa-solid fa-circle-info text-lg"></i>
+                <span class="text-[9px] font-medium tracking-wide">Tentang</span>
             </a>
         </nav>
-        <style>
-            /* Active profile ring */
-            .nav-item.active .profile-ring { border-color: #ffffff; }
-        </style>
     </div>
 
     <!-- FOOTER SEDERHANA -->
@@ -221,6 +211,41 @@
     </footer>
 
     <script>
+        // --- LOGIKA PERGANTIAN LOGO HUT RI 81 ---
+        const bsuLogoUrl = "https://iili.io/C6oIUAX.md.png";
+        const hutRiLogoUrl = "https://iili.io/C4vsGPs.md.png";
+        const batasLogo81 = new Date("2026-08-30T23:59:59");
+        let isHutRi = (new Date() <= batasLogo81);
+        const navbarLogo = document.getElementById('navbar-logo');
+
+        if (navbarLogo) {
+            if (!isHutRi) {
+                navbarLogo.src = bsuLogoUrl;
+            } else {
+                navbarLogo.style.transition = "all 0.8s ease-in-out";
+                function swapLogo() {
+                    if(new Date() > batasLogo81) {
+                        navbarLogo.src = bsuLogoUrl;
+                        return;
+                    }
+
+                    navbarLogo.style.opacity = 0;
+                    navbarLogo.style.filter = "drop-shadow(0 2px 10px rgba(255,255,255,1)) brightness(1.2)";
+                    
+                    setTimeout(() => {
+                        isHutRi = !isHutRi;
+                        navbarLogo.src = isHutRi ? hutRiLogoUrl : bsuLogoUrl;
+                        navbarLogo.style.opacity = 1;
+                        navbarLogo.style.filter = "";
+                        
+                        const nextDelay = isHutRi ? 8000 : 25000;
+                        setTimeout(swapLogo, nextDelay);
+                    }, 800); 
+                }
+                setTimeout(swapLogo, 8000);
+            }
+        }
+
         // --- ANIMASI LOADING IOS ---
         window.addEventListener('DOMContentLoaded', () => {
             const loaderImg = document.getElementById('loader-img');
