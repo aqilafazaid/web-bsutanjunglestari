@@ -71,10 +71,11 @@
             100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
         }
 
-        /* IG Style Bottom Nav Item */
+        /* App Style Bottom Nav Item */
         .nav-item { transition: transform 0.2s ease, color 0.2s ease; }
-        .nav-item:active { transform: scale(0.9); }
-        .nav-item.active i { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .nav-item:active { transform: scale(0.95); }
+        .nav-item.active { color: #ffffff; }
+        .nav-item.active i { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         
         .desktop-link { color: #8e8e8e; font-weight: 500; padding: 6px 14px; border-radius: 20px; transition: color 0.3s ease; font-size: 0.9rem; }
         .desktop-link:hover { color: #ffffff; }
@@ -88,18 +89,19 @@
         <img src="https://iili.io/C6oIUAX.md.png" class="h-20 md:h-24 opacity-90 transition-transform duration-1000 scale-95" alt="BSU Loading" id="loader-img">
     </div>
 
-    <!-- NAVBAR TOP (IG/iOS Glass Header) -->
+    <!-- NAVBAR TOP (Glass Header) -->
     <nav class="fixed top-0 left-0 right-0 w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-[1200px] mx-auto">
             <div class="flex justify-between items-center h-14 md:h-16 px-4 md:px-6 w-full">
                 
                 <!-- Kiri: Logo & Info -->
                 <div class="flex items-center gap-3">
-                    <a href="/" class="shrink-0 active:scale-95 transition-transform">
-                        <img id="navbar-logo" src="https://iili.io/C4vsGPs.md.png" alt="Logo Utama" class="h-8 object-contain">
+                    <a href="/" class="shrink-0 active:scale-95 transition-transform flex items-center gap-2">
+                        <!-- Menggunakan Logo BSU -->
+                        <img id="navbar-logo" src="https://iili.io/C6oIUAX.md.png" alt="Logo Utama" class="h-8 md:h-9 object-contain">
                     </a>
-                    <div class="hidden md:flex flex-col">
-                        <span class="text-white font-semibold text-[13px] tracking-wide">Bunga Tanjung Lestari</span>
+                    <div class="hidden md:flex flex-col justify-center">
+                        <span class="text-white font-semibold text-[13px] tracking-wide">BSU Bunga Tanjung Lestari</span>
                         <div class="flex items-center gap-1.5 text-[10px] text-neutral-400 font-medium">
                             <i class="fa-solid fa-location-arrow text-[9px]"></i>
                             <span id="desktop-user-location">Mencari lokasi akurat...</span>
@@ -126,8 +128,9 @@
                                 <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=121212&color=fff&bold=true" class="w-full h-full object-cover">
                             </a>
                         {% else %}
-                            <a href="/login" class="bg-white text-black px-4 py-1.5 rounded-full font-semibold text-xs transition-transform active:scale-95 hover:bg-neutral-200">
-                                Masuk
+                            <!-- Tombol Form Penimbangan -->
+                            <a href="/login" class="bg-white text-black px-4 py-1.5 rounded-full font-semibold text-[11px] md:text-xs transition-transform active:scale-95 hover:bg-neutral-200 flex items-center gap-2">
+                                <i class="fa-solid fa-weight-scale"></i> Form Penimbangan
                             </a>
                         {% endif %}
                     </div>
@@ -156,7 +159,7 @@
     {% endwith %}
 
     <main class="flex-grow z-10 relative pt-[70px] md:pt-[80px]">
-        <!-- Container Utama - Clean Modern -->
+        <!-- Container Utama -->
         <div class="max-w-[1200px] mx-auto px-0 md:px-6 relative z-10 min-h-screen">
             {% block content %}
             <!-- Tempat inject dari masing-masing page -->
@@ -164,44 +167,47 @@
         </div>
     </main>
 
-    <!-- MOBILE DOCK BOTTOM (Instagram Style) -->
-    <div class="lg:hidden fixed bottom-0 left-0 w-full z-50 glass-bottom pb-safe pt-1">
+    <!-- MOBILE DOCK BOTTOM (App Style) -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full z-50 glass-bottom pb-safe pt-2">
         <nav class="flex justify-around items-center h-14 px-2">
             <!-- Home -->
-            <a href="/" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
-                <i class="fa-solid fa-house text-xl md:text-2xl"></i>
+            <a href="/" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-medium tracking-wide">Beranda</span>
             </a>
             
-            <!-- Lokasi / Map -->
-            <a href="/lokasi" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
-                <i class="fa-solid fa-location-dot text-xl md:text-2xl"></i>
+            <!-- Lokasi -->
+            <a href="/lokasi" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
+                <i class="fa-solid fa-location-dot text-lg"></i>
+                <span class="text-[9px] font-medium tracking-wide">Lokasi</span>
             </a>
 
-            <!-- Tombol Tambah (Setor Sampah / Login) ala IG New Post -->
-            <a href="/login" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
-                <div class="bg-white text-black w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center shadow-lg transform rotate-3">
-                    <i class="fa-solid fa-plus text-xl"></i>
-                </div>
+            <!-- Form Penimbangan (Menggantikan tombol IG New Post) -->
+            <a href="/login" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
+                <i class="fa-solid fa-weight-scale text-lg"></i>
+                <span class="text-[9px] font-medium tracking-wide">Timbang</span>
             </a>
 
             <!-- Religi -->
-            <a href="/jadwal-sholat" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
-                <i class="fa-solid fa-mosque text-xl md:text-2xl"></i>
+            <a href="/jadwal-sholat" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
+                <i class="fa-solid fa-mosque text-lg"></i>
+                <span class="text-[9px] font-medium tracking-wide">Religi</span>
             </a>
 
             <!-- Profile / Account -->
-            <a href="{% if session and session.get('user') %}/dashboard{% else %}/login{% endif %}" class="nav-item flex items-center justify-center w-full h-full text-neutral-500">
+            <a href="{% if session and session.get('user') %}/dashboard{% else %}/login{% endif %}" class="nav-item flex flex-col items-center justify-center w-full h-full text-neutral-500 gap-1">
                 {% if session and session.get('user') %}
-                    <div class="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-transparent overflow-hidden profile-ring">
+                    <div class="w-5 h-5 rounded-full border border-transparent overflow-hidden profile-ring">
                         <img src="https://ui-avatars.com/api/?name={{ session.get('nama', 'Member') | urlencode }}&background=222&color=fff&bold=true" class="w-full h-full object-cover">
                     </div>
                 {% else %}
-                    <i class="fa-regular fa-circle-user text-[22px] md:text-2xl"></i>
+                    <i class="fa-regular fa-circle-user text-lg"></i>
                 {% endif %}
+                <span class="text-[9px] font-medium tracking-wide">Akun</span>
             </a>
         </nav>
         <style>
-            /* Active profile ring ala IG Story */
+            /* Active profile ring */
             .nav-item.active .profile-ring { border-color: #ffffff; }
         </style>
     </div>
@@ -236,7 +242,6 @@
                 if(desktopLoc) desktopLoc.innerText = text;
             };
 
-            // Fungsi Cadangan menggunakan IP API jika GPS ditolak/gagal
             const fallbackLocation = async () => {
                 try {
                     const res = await fetch('https://ipapi.co/json/'); 
@@ -252,11 +257,8 @@
                     try {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
-                        // Reverse Geocoding via Nominatim OpenStreetMap
                         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const data = await res.json();
-                        
-                        // Ekstrak nama desa/kecamatan/kota
                         const place = data.address.village || data.address.town || data.address.city || data.address.county || "Akurasi Ditemukan";
                         updateText(place);
                     } catch (e) {
@@ -283,7 +285,7 @@
         setInterval(updateTime, 1000); 
         updateTime();
 
-        // --- HIGHLIGHT MENU AKTIF (IG STYLE) ---
+        // --- HIGHLIGHT MENU AKTIF (APP STYLE) ---
         function updateActiveNav() {
             const currentPath = window.location.pathname;
             const checkActive = (href) => {
@@ -303,12 +305,13 @@
 
             // Mobile Bottom Dock
             document.querySelectorAll('.glass-bottom .nav-item').forEach(link => {
-                // Untuk IG Layout, kita ubah icon jadi solid dan terang jika aktif
                 if (checkActive(link.getAttribute('href'))) {
                     link.classList.add('active');
                     link.classList.replace('text-neutral-500', 'text-white');
                     const icon = link.querySelector('i');
-                    if(icon) { icon.classList.replace('fa-regular', 'fa-solid'); }
+                    if(icon && icon.classList.contains('fa-regular')) { 
+                        icon.classList.replace('fa-regular', 'fa-solid'); 
+                    }
                 } else {
                     link.classList.remove('active');
                     link.classList.replace('text-white', 'text-neutral-500');
